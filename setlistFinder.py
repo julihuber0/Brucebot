@@ -38,7 +38,7 @@ async def setlistFinder(ctx, date):
     
   
           if setlist:
-            embed.add_field(name=s[0] + ":", value=setlist, inline=False)
+            embed.add_field(name=s[0] + ":", value=setlist[:5990], inline=False)
           else:
             embed.add_field(name=s[0] + ":", value="No Set Details Known", inline=False)
   
