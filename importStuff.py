@@ -11,12 +11,21 @@ cDate = datetime.datetime.now(ZoneInfo('US/Eastern'))
 
 mainURL = "http://brucebase.wikidot.com"
 
+url = urlparse.urlparse(os.environ['DATABASE_URL'])
+dbname = url.path[1:]
+user = url.username
+password = url.password
+host = url.hostname
+port = url.port
+
 # conn = sqlite3.connect(os.path.abspath(__file__) + "\Databruce\_database\database.sqlite")
-conn = psycopg2.connect(database = os.environ['DATABASE_URL'], 
-                        user = "databruce", 
-                        host= 'localhost',
-                        password = "password",
-                        port = 5432)
+conn = psycopg2.connect(
+            dbname=dbname,
+            user=user,
+            password=password,
+            host=host,
+            port=port
+            )
 cur = conn.cursor()
 
 intents = discord.Intents.default()
