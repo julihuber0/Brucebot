@@ -4,5 +4,5 @@ titlecase
 BeautifulSoup4
 discord
 lxml
-psycopg2
+psycopg3
 urllib3
