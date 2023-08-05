@@ -4,3 +4,4 @@ titlecase
 BeautifulSoup4
 discord
 lxml
+psycopg2

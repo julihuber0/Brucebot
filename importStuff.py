@@ -1,4 +1,4 @@
-import re, discord, os, datetime, sqlite3, requests
+import re, discord, os, datetime, sqlite3, requests, psycopg2
 from zoneinfo import ZoneInfo
 from discord.ext import commands
 #from keep_alive import keep_alive
@@ -11,7 +11,12 @@ cDate = datetime.datetime.now(ZoneInfo('US/Eastern'))
 
 mainURL = "http://brucebase.wikidot.com"
 
-conn = sqlite3.connect(os.path.abspath(__file__) + "\Databruce\_database\database.sqlite")
+# conn = sqlite3.connect(os.path.abspath(__file__) + "\Databruce\_database\database.sqlite")
+conn = psycopg2.connect(database = DATABASE_URL, 
+                        user = "databruce", 
+                        host= 'localhost',
+                        password = "password",
+                        port = 5432)
 cur = conn.cursor()
 
 intents = discord.Intents.default()
