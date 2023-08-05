@@ -20,8 +20,8 @@ async def setlistFinder(ctx, date):
       
           for t in temp:
             song = t[0].replace("'", "''")
-            premiere = cur.execute("""SELECT * FROM EVENTS WHERE (setlist LIKE '%' || %s || '%') ORDER BY event_id ASC""", (song,)).fetchone()
-            bustout = cur.execute("""SELECT * FROM EVENTS WHERE tour = %s AND tour != '' AND setlist LIKE '%""" + song + "%' ORDER BY event_id ASC", (r[5],)).fetchone()
+            #premiere = cur.execute("""SELECT * FROM EVENTS WHERE (setlist LIKE '%' || %s || '%') ORDER BY event_id ASC""", (song,)).fetchone()
+            #bustout = cur.execute("""SELECT * FROM EVENTS WHERE tour = %s AND tour != '' AND setlist LIKE '%""" + song + "%' ORDER BY event_id ASC", (r[5],)).fetchone()
   
             if premiere[2] == r[2]:
               setL.append(t[0] + " **[" + str(2) + "]**")
