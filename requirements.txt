@@ -4,5 +4,5 @@ titlecase
 BeautifulSoup4
 discord
 lxml
-"psycopg[binary]"
+psycopg[binary]
 urllib3
