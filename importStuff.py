@@ -1,4 +1,5 @@
-import re, discord, os, datetime, sqlite3, requests, psycopg2, urllib3
+import re, discord, os, datetime, sqlite3, requests, psycopg2
+import urllib.parse as urlparse
 from zoneinfo import ZoneInfo
 from discord.ext import commands
 #from keep_alive import keep_alive
