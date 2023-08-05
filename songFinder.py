@@ -8,10 +8,10 @@ async def sFind(ctx, *song):
   s = cur.execute("""SELECT * FROM SONGS WHERE song_name LIKE '%""" + song_name + "%'").fetchone()
 
   if s:
-    f = cur.execute("""SELECT event_url FROM EVENTS WHERE event_date=?""", (s[3],)).fetchone()
-    l = cur.execute("""SELECT event_url FROM EVENTS WHERE event_date=?""", (s[4],)).fetchone()
+    f = cur.execute("""SELECT event_url FROM EVENTS WHERE event_date=%s""", (s[3],)).fetchone()
+    l = cur.execute("""SELECT event_url FROM EVENTS WHERE event_date=%s""", (s[4],)).fetchone()
 
-    opener = cur.execute("""SELECT COUNT(song_url) FROM SETLISTS WHERE song_url=? AND song_num=1""", (s[1],)).fetchone()
+    opener = cur.execute("""SELECT COUNT(song_url) FROM SETLISTS WHERE song_url=%s AND song_num=1""", (s[1],)).fetchone()
     closer = cur.execute("""SELECT COUNT(event_url) FROM EVENTS WHERE setlist LIKE '%""" + song_name + "'").fetchone()
 
     embed = createEmbed(s[2], "[Brucebase Song Page](" + mainURL + s[1] + ")")

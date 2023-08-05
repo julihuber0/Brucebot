@@ -4,7 +4,7 @@ from importStuff import *
 async def bootlegFind(ctx, date):
 
   if dateChecker(date):
-    event_name = cur.execute("SELECT event_name FROM EVENTS WHERE event_date=?", (date,)).fetchone()
+    event_name = cur.execute("SELECT event_name FROM EVENTS WHERE event_date=%s", (date,)).fetchone()
 
     if event_name:
       embed = createEmbed("Bootlegs For: " + date, event_name[0])
