@@ -6,22 +6,22 @@ async def setlistFinder(ctx, date):
   if dateChecker(date):
     embed = createEmbed("Brucebase Results for: " + date, "")
     
-    if cur.execute("""SELECT * FROM EVENTS WHERE event_date='""" + date + "'").fetchall():
-      for r in cur.execute("""SELECT * FROM EVENTS WHERE event_date='""" + date + "'").fetchall():
+    if list(cur.execute("""SELECT * FROM EVENTS WHERE event_date='""" + date + "'")):
+      for r in list(cur.execute("""SELECT * FROM EVENTS WHERE event_date='""" + date + "'")):
         #id, date, event_url, name, location, tour
 
         embed.add_field(name="", value="[" + r[1] + "](" + mainURL + r[2] + ")\n*" + r[3] + "*", inline=False)
         embed.set_footer(text=r[5])
 
-        for s in cur.execute("""SELECT DISTINCT(set_type) FROM SETLISTS WHERE event_url=""" + r[2] + """ ORDER BY setlist_song_id ASC""").fetchall():
+        for s in list(cur.execute("""SELECT DISTINCT(set_type) FROM SETLISTS WHERE event_url=""" + r[2] + """ ORDER BY setlist_song_id ASC""")):
           setL = []
           key = ""
-          temp = cur.execute("""SELECT song_name, song_url FROM SETLISTS WHERE event_url=""" + r[2] + """ AND set_type=""" + s[0] + """ORDER BY song_num ASC""").fetchall()
+          temp = list(cur.execute("""SELECT song_name, song_url FROM SETLISTS WHERE event_url=""" + r[2] + """ AND set_type=""" + s[0] + """ORDER BY song_num ASC"""))
       
           for t in temp:
             song = t[0].replace("'", "''")
             premiere = cur.execute("""SELECT * FROM EVENTS WHERE setlist LIKE '%""" + song + "%' ORDER BY event_id ASC").fetchone()
-            bustout = cur.execute("""SELECT * FROM EVENTS WHERE tour=""" + r[5] + """AND tour != '' AND setlist LIKE '%""" + song + "%' ORDER BY event_id ASC", (r[5],)).fetchone()
+            bustout = list(cur.execute("""SELECT * FROM EVENTS WHERE tour=""" + r[5] + """AND tour != '' AND setlist LIKE '%""" + song + "%' ORDER BY event_id ASC", (r[5],)))
   
             if premiere[2] == r[2]:
               setL.append(t[0] + " **[" + str(2) + "]**")
