@@ -11,6 +11,6 @@ from bootleg import bootlegFind
 async def on_ready():
   print(f'Bot online and logged in as {bot.user}')
 
-keep_alive()
+#keep_alive()
 my_secret = os.environ['TOKEN']
 bot.run(my_secret)
