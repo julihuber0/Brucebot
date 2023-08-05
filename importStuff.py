@@ -1,4 +1,4 @@
-import re, discord, os, datetime, sqlite3, requests, psycopg2
+import re, discord, os, datetime, sqlite3, requests, psycopg2, urllib3
 from zoneinfo import ZoneInfo
 from discord.ext import commands
 #from keep_alive import keep_alive
