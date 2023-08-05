@@ -2,5 +2,6 @@ requests
 datetime
 titlecase
 BeautifulSoup4
-pandas
+discord
+zoneinfo
 lxml
