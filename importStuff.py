@@ -12,7 +12,7 @@ cDate = datetime.datetime.now(ZoneInfo('US/Eastern'))
 mainURL = "http://brucebase.wikidot.com"
 
 # conn = sqlite3.connect(os.path.abspath(__file__) + "\Databruce\_database\database.sqlite")
-conn = psycopg2.connect(database = DATABASE_URL, 
+conn = psycopg2.connect(database = os.environ['DATABASE_URL'], 
                         user = "databruce", 
                         host= 'localhost',
                         password = "password",
