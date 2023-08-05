@@ -1,4 +1,4 @@
-import re, discord, os, datetime, sqlite3, requests, psycopg3
+import re, discord, os, datetime, sqlite3, requests, psycopg
 import urllib.parse as urlparse
 from zoneinfo import ZoneInfo
 from discord.ext import commands
@@ -20,7 +20,7 @@ host = url.hostname
 port = url.port
 
 # conn = sqlite3.connect(os.path.abspath(__file__) + "\Databruce\_database\database.sqlite")
-conn = psycopg3.connect(
+conn = psycopg.connect(
             dbname=dbname,
             user=user,
             password=password,
