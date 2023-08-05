@@ -6,7 +6,7 @@ async def setlistFinder(ctx, date):
   if dateChecker(date):
     embed = createEmbed("Brucebase Results for: " + date, "")
     
-    if cur.execute("""SELECT * FROM EVENTS WHERE event_date = '""" + date + "'").fetchall():
+    if cur.execute("""SELECT * FROM EVENTS WHERE event_date = %s""", ("'" + date + "'",)).fetchall():
       for r in cur.execute("""SELECT * FROM EVENTS WHERE event_date = '""" + date + "'").fetchall():
         #id, date, event_url, name, location, tour
 
