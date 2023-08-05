@@ -6,22 +6,22 @@ async def setlistFinder(ctx, date):
   if dateChecker(date):
     embed = createEmbed("Brucebase Results for: " + date, "")
 
-    if cur.execute("""SELECT * FROM EVENTS WHERE event_date = %s""", [date]).fetchall():
-      for r in cur.execute("""SELECT * FROM EVENTS WHERE event_date = '""" + date + "'").fetchall():
+    if cur.execute("""SELECT * FROM EVENTS WHERE event_date LIKE '%""" + date + "%'").fetchall():
+      for r in cur.execute("""SELECT * FROM EVENTS WHERE event_date = %s""", [date], binary=True).fetchall():
         #id, date, event_url, name, location, tour
 
         embed.add_field(name="", value="[" + r[1] + "](" + mainURL + r[2] + ")\n*" + r[3] + "*", inline=False)
         embed.set_footer(text=r[5])
 
-        for s in cur.execute("""SELECT DISTINCT(set_type) FROM SETLISTS WHERE event_url = '""" + r[2] + """' ORDER BY setlist_song_id ASC""").fetchall():
+        for s in cur.execute("""SELECT DISTINCT(set_type) FROM SETLISTS WHERE event_url = %s""" + [r[2]] + """ ORDER BY setlist_song_id ASC""").fetchall():
           setL = []
           key = ""
-          temp = cur.execute("""SELECT song_name, song_url FROM SETLISTS WHERE event_url = '""" + r[2] + """' AND set_type = '""" + s[0] + """' ORDER BY song_num ASC""").fetchall()
+          temp = cur.execute("""SELECT song_name, song_url FROM SETLISTS WHERE event_url = %s""", [r[2]], """ AND set_type = %s""" + [s[0]] + """ ORDER BY song_num ASC""").fetchall()
       
           for t in temp:
             song = t[0].replace("'", "''")
             premiere = cur.execute("""SELECT * FROM EVENTS WHERE setlist LIKE '%""" + song + "%' ORDER BY event_id ASC").fetchone()
-            bustout = cur.execute("""SELECT * FROM EVENTS WHERE tour = '""" + r[5] + """' AND tour != '' AND setlist LIKE '%""" + song + "%' ORDER BY event_id ASC").fetchone()
+            bustout = cur.execute("""SELECT * FROM EVENTS WHERE tour = %s""" + [r[5]] + """ AND tour != '' AND setlist LIKE '%""" + song + "%' ORDER BY event_id ASC").fetchone()
   
             if premiere[2] == r[2]:
               setL.append(t[0] + " **[" + str(2) + "]**")
