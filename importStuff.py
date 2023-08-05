@@ -11,7 +11,7 @@ cDate = datetime.datetime.now(ZoneInfo('US/Eastern'))
 
 mainURL = "http://brucebase.wikidot.com"
 
-conn = sqlite3.connect(os.path.dirname(__file__) + "/Databruce/_database/database.sqlite")
+conn = sqlite3.connect(os.path.abspath(__file__) + "\Databruce\_database\database.sqlite")
 cur = conn.cursor()
 
 intents = discord.Intents.default()
