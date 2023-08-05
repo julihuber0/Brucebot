@@ -12,5 +12,4 @@ async def on_ready():
   print(f'Bot online and logged in as {bot.user}')
 
 keep_alive()
-my_secret = os.environ['DISCORD_BOT_SECRET']
-bot.run(my_secret)
+#bot.run(my_secret)
