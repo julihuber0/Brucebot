@@ -1,7 +1,7 @@
 import re, discord, os, datetime, sqlite3, requests
 from zoneinfo import ZoneInfo
 from discord.ext import commands
-from keep_alive import keep_alive
+#from keep_alive import keep_alive
 from createEmbed import createEmbed
 from errormsg import errorMessage
 
