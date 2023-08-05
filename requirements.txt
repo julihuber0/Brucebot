@@ -3,5 +3,4 @@ datetime
 titlecase
 BeautifulSoup4
 discord
-zoneinfo
 lxml
