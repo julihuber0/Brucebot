@@ -20,20 +20,22 @@ async def setlistFinder(ctx, date):
       
           for t in temp:
             #song = t[0].replace("'", "''")
+            date = "'%" + date + "%'"
             song = "'%" + t[0] + "%'"
-            premiere = cur.execute("""SELECT * FROM EVENTS WHERE setlist LIKE '%""" + date + "%' ORDER BY event_id ASC").fetchone() #ORDER BY event_id ASC
-            bustout = cur.execute("""SELECT * FROM EVENTS WHERE tour = %s AND tour != '' AND setlist LIKE %s ORDER BY event_id ASC""", (r[5],song,)).fetchone()
+            premiere = cur.execute("""SELECT event_url FROM EVENTS WHERE setlist LIKE %s ORDER BY event_id ASC""", (date,)).fetchone() #ORDER BY event_id ASC
+            bustout = cur.execute("""SELECT event_url FROM EVENTS WHERE tour = %s AND tour != '' AND setlist LIKE %s ORDER BY event_id ASC""", (r[5],song,)).fetchone()
 
-            if premiere:
-              if premiere[2] == r[2]:
-                setL.append(t[0] + " **[" + str(2) + "]**")
-            elif bustout:
-              if bustout[2] == r[2]:
-                setL.append(t[0] + " **[" + str(1) + "]**") 
-              else:
-                setL.append(t[0])
-            else:
-              setL.append(t[0])
+            # if premiere:
+            #   if premiere[0] == r[2]:
+            #     setL.append(t[0] + " **[" + str(2) + "]**")
+            # elif bustout:
+            #   if bustout[0] == r[2]:
+            #     setL.append(t[0] + " **[" + str(1) + "]**") 
+            #   else:
+            #     setL.append(t[0])
+            # else:
+            #   setL.append(t[0])
+            setL.append(t[0])
   
           setlist = ", ".join(setL)
     
