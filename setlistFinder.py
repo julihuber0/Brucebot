@@ -44,10 +44,10 @@ async def setlistFinder(ctx, date):
   
           setlist = ", ".join(setL)
     
-          if setlist:
-            embed.add_field(name=s[0] + ":", value=setlist, inline=False)
-          else:
-            embed.add_field(name=s[0] + ":", value="No Set Details Known", inline=False)
+        if setlist:
+          embed.add_field(name=s[0] + ":", value=setlist, inline=False)
+        else:
+          embed.add_field(name=s[0] + ":", value="No Set Details Known", inline=False)
   
       embed.add_field(name="", value="**[1]** - Tour Debut\n**[2]** - First Known Performance")
     else:
