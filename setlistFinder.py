@@ -19,6 +19,7 @@ async def setlistFinder(ctx, date):
           temp = cur.execute("""SELECT song_name, song_url FROM SETLISTS WHERE event_url = %s AND set_type = %s ORDER BY song_num ASC""", (r[2], s[0],)).fetchall()
       
           for t in temp:
+            setL = []
             #song = t[0].replace("'", "''")
             date = "'%" + date + "%'"
             song = "'%" + t[0] + "%'"
@@ -40,7 +41,7 @@ async def setlistFinder(ctx, date):
           setlist = ", ".join(setL)
     
           if setlist:
-            embed.add_field(name=s[0] + ":", value=setlist[:5990], inline=False)
+            embed.add_field(name=s[0] + ":", value=setlist, inline=False)
           else:
             embed.add_field(name=s[0] + ":", value="No Set Details Known", inline=False)
   
