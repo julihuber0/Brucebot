@@ -13,7 +13,7 @@ async def setlistFinder(ctx, date):
         embed.add_field(name="", value="[" + r[1] + "](" + mainURL + r[2] + ")\n*" + r[3] + "*", inline=False)
         embed.set_footer(text=r[5])
 
-        for s in cur.execute("""SELECT DISTINCT set_type FROM SETLISTS WHERE event_url = %s ORDER BY setlist_song_id ASC""", (r[2],)).fetchall():
+        for s in cur.execute("""SELECT DISTINCT set_type, setlist_song_id FROM SETLISTS WHERE event_url = %s ORDER BY setlist_song_id ASC""", (r[2],)).fetchall():
           setL = []
           key = ""
           temp = cur.execute("""SELECT song_name, song_url FROM SETLISTS WHERE event_url = %s AND set_type = %s ORDER BY song_num ASC""", (r[2], s[0],)).fetchall()
@@ -25,17 +25,17 @@ async def setlistFinder(ctx, date):
             premiere = cur.execute("""SELECT event_url FROM EVENTS WHERE setlist LIKE %s ORDER BY event_id ASC""", (date,)).fetchone() #ORDER BY event_id ASC
             bustout = cur.execute("""SELECT event_url FROM EVENTS WHERE tour = %s AND tour != '' AND setlist LIKE %s ORDER BY event_id ASC""", (r[5],song,)).fetchone()
 
-            # if premiere:
-            #   if premiere[0] == r[2]:
-            #     setL.append(t[0] + " **[" + str(2) + "]**")
-            # elif bustout:
-            #   if bustout[0] == r[2]:
-            #     setL.append(t[0] + " **[" + str(1) + "]**") 
-            #   else:
-            #     setL.append(t[0])
-            # else:
-            #   setL.append(t[0])
-            setL.append(t[0])
+            if premiere:
+              if premiere[0] == r[2]:
+                setL.append(t[0] + " **[" + str(2) + "]**")
+            elif bustout:
+              if bustout[0] == r[2]:
+                setL.append(t[0] + " **[" + str(1) + "]**") 
+              else:
+                setL.append(t[0])
+            else:
+              setL.append(t[0])
+            #setL.append(t[0])
   
           setlist = ", ".join(setL)
     
