@@ -15,7 +15,7 @@ async def setlistFinder(ctx, date):
 
         #SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url = %s ORDER BY setlist_song_id ASC
 
-        for s in cur.execute("""SELECT * FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url=%s ORDER BY set_type, setlist_song_id ASC) ORDER BY setlist_song_id ASC""", (r[2],)).fetchall():
+        for s in cur.execute("""SELECT * FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url=%s ORDER BY set_type, setlist_song_id ASC) p ORDER BY setlist_song_id ASC""", (r[2],)).fetchall():
           setL = []
           key = ""
           temp = cur.execute("""SELECT song_name, song_url FROM SETLISTS WHERE event_url = %s AND set_type = %s ORDER BY song_num ASC""", (r[2], s[0],)).fetchall()
