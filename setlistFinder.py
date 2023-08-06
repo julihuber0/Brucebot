@@ -23,22 +23,24 @@ async def setlistFinder(ctx, date):
           for t in temp:
             #setL = []
             premiere = bustout = ""
-            #song = t[0].replace("'", "''")
+            song = t[0].replace("'", "''")
             date = "'%" + date + "%'"
-            song = "'%" + t[0].replace("'", "''") + "%'"
-            premiere = cur.execute("""SELECT event_url FROM EVENTS WHERE setlist LIKE %s ORDER BY event_id ASC""", (song,)).fetchone() #ORDER BY event_id ASC
+            #song = "'%" + t[0].replace("'", "''") + "%'"
+            premiere = cur.execute("""SELECT event_url FROM EVENTS WHERE setlist LIKE '%""" + song + """%' ORDER BY event_id ASC""").fetchone() #ORDER BY event_id ASC
             bustout = cur.execute("""SELECT event_url FROM EVENTS WHERE tour = %s AND tour != '' AND setlist LIKE %s ORDER BY event_id ASC""", (r[5], song,)).fetchone()
 
             if premiere:
               if premiere[0] == r[2]:
-                setL.append(t[0] + " **[2]**")
+                # setL.append(t[0] + " **[2]**")
+                setL.append("p: " + r[2])
               else:
-                setL.append("p: " + premiere[0][0:10])
+                setL.append("p: " + premiere[0][0:15])
             elif bustout:
               if bustout[0] == r[2]:
-                setL.append(t[0] + " **[1]**")
+                setL.append("b: " + r[2])
+                # setL.append(t[0] + " **[1]**")
               else:
-                setL.append("b:" + bustout[0][0:10])
+                setL.append("b:" + bustout[0][0:15])
             else:
               setL.append(t[0])
             #setL.append(premiere[0], bustout[0])
