@@ -22,6 +22,7 @@ async def setlistFinder(ctx, date):
       
           for t in temp:
             #setL = []
+            premiere = bustout = ""
             song = t[0].replace("'", "''")
             date = "'%" + date + "%'"
             #song = "'%" + t[0].replace("'", "''") + "%'"
@@ -32,12 +33,12 @@ async def setlistFinder(ctx, date):
               if premiere[0] == r[2]:
                 setL.append(t[0] + " **[2]**")
               else:
-                setL.append(str(len(premiere[0])))
+                setL.append(premiere[0])
             elif bustout:
               if bustout[0] == r[2]:
                 setL.append(t[0] + " **[1]**")
               else:
-                setL.append(str(len(bustout[0])))
+                setL.append(bustout[0])
             else:
               setL.append(t[0])
             #setL.append(premiere[0], bustout[0])
