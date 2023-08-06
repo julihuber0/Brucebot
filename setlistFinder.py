@@ -33,12 +33,12 @@ async def setlistFinder(ctx, date):
             if s[5] not in ["Soundcheck", "Rehearsal"]:
               if premiere:
                 if premiere[0] == r[2]:
-                  setL.append(t[0] + " **[02]**")
+                  setL.append(t[0] + " **[2]**")
                 else:
                   setL.append(t[0])
               elif bustout:
                 if bustout[0] == r[2]:
-                  setL.append(t[0] + " **[01]**")
+                  setL.append(t[0] + " **[1]**")
                 else:
                   setL.append(t[0])
               else:
@@ -53,7 +53,7 @@ async def setlistFinder(ctx, date):
           else:
             embed.add_field(name=s[5] + ":", value="No Set Details Known", inline=False)
   
-      embed.add_field(name="", value="**[1]** - Tour Debut\n**[2]** - First Known Performance")
+      #embed.add_field(name="", value="**[1]** - Tour Debut\n**[2]** - First Known Performance")
     else:
       embed.add_field(name="", value="ERROR: Show Not Found", inline=False)
     
