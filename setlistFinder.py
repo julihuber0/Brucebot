@@ -53,7 +53,7 @@ async def setlistFinder(ctx, date):
           else:
             embed.add_field(name=s[5] + ":", value="No Set Details Known", inline=False)
   
-      #embed.add_field(name="", value="**[1]** - Tour Debut\n**[2]** - First Known Performance")
+      embed.add_field(name="", value="**[1]** - Tour Debut\n**[2]** - First Known Performance")
     else:
       embed.add_field(name="", value="ERROR: Show Not Found", inline=False)
     
