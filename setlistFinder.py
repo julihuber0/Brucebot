@@ -28,14 +28,18 @@ async def setlistFinder(ctx, date):
 
             if premiere:
               if premiere[0] == r[2]:
-                setL.append(t[0] + " **[" + str(2) + "]**")
+                # setL.append(t[0] + " **[" + str(2) + "]**")
+                setL.append("premiere")
             elif bustout:
               if bustout[0] == r[2]:
-                setL.append(t[0] + " **[" + str(1) + "]**") 
+                # setL.append(t[0] + " **[" + str(1) + "]**")
+                setL.append("bustout")
               else:
-                setL.append(t[0])
+                # setL.append(t[0])
+                setL.append("no bustout")
             else:
-              setL.append(t[0])
+              # setL.append(t[0])
+              setL.append("no premiere/bustout")
             #setL.append(t[0])
   
           setlist = ", ".join(setL)
