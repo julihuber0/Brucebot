@@ -33,7 +33,7 @@ async def setlistFinder(ctx, date):
             #     setL.append(t[0])
             # else:
             #   setL.append(t[0])
-            setL.append(t[0])
+            setL.append(song)
   
           setlist = ", ".join(setL)
     
