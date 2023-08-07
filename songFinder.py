@@ -4,10 +4,10 @@ from importStuff import *
 async def sFind(ctx, *song):
   #0,  1,    2,     3,     4,     5
   #id, url, name, first, last, num_plays
-  song_name = "%" + " ".join(song).replace("'", "''") + "%"
+  song_name = "'%" + " ".join(song).replace("'", "''") + "%'"
 
 
-  s = cur.execute("""SELECT * FROM SONGS WHERE song_name LIKE '%s'""", (song_name,)).fetchone()
+  s = cur.execute("""SELECT * FROM SONGS WHERE song_name LIKE %s""", (song_name,)).fetchone()
 
   if s:
     f = cur.execute("""SELECT event_url FROM EVENTS WHERE event_date = %s""", (s[3],)).fetchone()
