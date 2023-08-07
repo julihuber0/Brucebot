@@ -21,30 +21,26 @@ async def setlistFinder(ctx, date):
           temp = cur.execute("""SELECT song_name, song_url FROM SETLISTS WHERE event_url = %s AND set_type = %b ORDER BY song_num ASC""", (r[2], s[5],)).fetchall()
       
           for t in temp:
-            #setL = []
             premiere = bustout = ""
-            # song = t[0].replace("'", "''")
-            song = "'%" + t[0].replace("'", "''") + "%'"
+            song = t[0].replace("'", "''")
+            song = "'%" + song + "%'"
             date = "'%" + date + "%'"
 
-            #premiere = cur.execute("""SELECT event_url FROM EVENTS WHERE setlist LIKE %s ORDER BY event_id ASC""", (song,)).fetchone() #ORDER BY event_id ASC
-            #bustout = cur.execute("""SELECT event_url FROM EVENTS WHERE tour = %s AND tour != '' AND setlist LIKE %b ORDER BY event_id ASC""", (r[5],song,)).fetchone()
+            premiere = cur.execute("""SELECT event_url FROM EVENTS WHERE setlist LIKE %s ORDER BY event_id ASC""", (song,)).fetchone() #ORDER BY event_id ASC
+            bustout = cur.execute("""SELECT event_url FROM EVENTS WHERE tour = %s AND tour != '' AND setlist LIKE %b ORDER BY event_id ASC""", (r[5],song,)).fetchone()
 
-            # if s[5] not in ["Soundcheck", "Rehearsal"]:
-            #   if premiere:
-            #     if premiere[0] == r[2]:
-            #       setL.append(t[0] + " **[2]**")
-            #     else:
-            #       setL.append(t[0])
-            #   elif bustout:
-            #     if bustout[0] == r[2]:
-            #       setL.append(t[0] + " **[1]**")
-            #     else:
-            #       setL.append(t[0])
-            #   else:
-            #     setL.append(t[0])
-            # else:
-            setL.append(t[0])
+            if premiere:
+              if premiere[0] == r[2]:
+                setL.append(t[0] + " **[2]**")
+              else:
+                setL.append(t[0])
+            elif bustout:
+              if bustout[0] == r[2]:
+                setL.append(t[0] + " **[1]**")
+              else:
+                setL.append(t[0])
+            else:
+              setL.append(t[0])
             
           setlist = ", ".join(setL)
     
