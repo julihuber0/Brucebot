@@ -47,7 +47,7 @@ async def setlistFinder(ctx, date=None):
                   # setL.append(t[0] + " **[1]**")
                   setL.append(bustout[0])
                 else:
-                  setL.append(t[0])
+                  setL.append("Bustout: " + t[0])
               else:
                 setL.append(t[0])
               
