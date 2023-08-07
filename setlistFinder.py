@@ -29,11 +29,12 @@ async def setlistFinder(ctx, date=None):
 
               """
               premiere: search setlists table for song, make sure set_type is not soundcheck/rehearsal, sort by setlist_song_id
-              bustout: search events table for setlist with song, sort by event_id and tour = r[5]
+              bustout: search events table event_url and tour, sort ascending and select 1
+                check if bustout url == event_url
               
               """
               premiere = cur.execute("""SELECT event_url FROM EVENTS WHERE setlist ILIKE """ + song + """ ORDER BY event_id ASC""").fetchone()
-              bustout = r[5]
+              bustout = cur.execute("""SELECT event_url FROM EVENTS WHERE tour=%s AND event_url=%s ORDER BY EVENT_ID ASC""", (r[5], premiere[0],)).fetchone()
 
               if premiere and s[5] not in ['Soundcheck', 'Rehearsal']:
                 if premiere[0] == r[2]:
@@ -43,10 +44,9 @@ async def setlistFinder(ctx, date=None):
 
               if bustout and s[5] not in ['Soundcheck', 'Rehearsal']:
                 if bustout[0] == r[2]:
-                  # setL.append(t[0] + " **[1]**")
-                  setL.append(bustout)
+                  setL.append(t[0] + " **[1]**")
                 else:
-                  setL.append("B: " + t[0])
+                  setL.append(t[0])
               
               if bustout is None and premiere is None:
                 setL.append(t[0])
