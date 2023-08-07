@@ -4,9 +4,9 @@ from importStuff import *
 async def sFind(ctx, *song):
   #0,  1,    2,     3,     4,     5
   #id, url, name, first, last, num_plays
-  song = " ".join(song)
+  songn = " ".join(song)
   if len(song) > 1:
-    song_name = "'%" + song.replace("'", "''") + "%'"
+    song_name = "'%" + songn.replace("'", "''") + "%'"
 
     s = cur.execute("""SELECT * FROM SONGS WHERE song_name ILIKE """ + song_name).fetchone()
 
