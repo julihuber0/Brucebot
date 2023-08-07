@@ -4,15 +4,17 @@ from importStuff import *
 async def sFind(ctx, *song):
   #0,  1,    2,     3,     4,     5
   #id, url, name, first, last, num_plays
-  song_name = " ".join(song).replace("'", "''")
-  s = cur.execute("""SELECT * FROM SONGS WHERE song_name LIKE '%""" + song_name + "%'").fetchone()
+  song_name = "'%" + " ".join(song).replace("'", "''") + "%'"
+
+
+  s = cur.execute("""SELECT * FROM SONGS WHERE song_name LIKE %s""", (song_name,)).fetchone()
 
   if s:
-    f = cur.execute("""SELECT event_url FROM EVENTS WHERE event_date=%s""", (s[3],)).fetchone()
-    l = cur.execute("""SELECT event_url FROM EVENTS WHERE event_date=%s""", (s[4],)).fetchone()
+    f = cur.execute("""SELECT event_url FROM EVENTS WHERE event_date = %s""", (s[3],)).fetchone()
+    l = cur.execute("""SELECT event_url FROM EVENTS WHERE event_date = %s""", (s[4],)).fetchone()
 
     opener = cur.execute("""SELECT COUNT(song_url) FROM SETLISTS WHERE song_url=%s AND song_num=1""", (s[1],)).fetchone()
-    closer = cur.execute("""SELECT COUNT(event_url) FROM EVENTS WHERE setlist LIKE '%""" + song_name + "'").fetchone()
+    closer = cur.execute("""SELECT COUNT(event_url) FROM EVENTS WHERE setlist LIKE %s""", (song_name,)).fetchone()
 
     embed = createEmbed(s[2], "[Brucebase Song Page](" + mainURL + s[1] + ")")
 
