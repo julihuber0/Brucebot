@@ -26,8 +26,15 @@ async def setlistFinder(ctx, date):
             song = "'%" + song + "%'"
             date = "'%" + date + "%'"
 
-            premiere = cur.execute("""SELECT event_url FROM EVENTS WHERE setlist LIKE %s ORDER BY event_id ASC""", (song,)).fetchone() #ORDER BY event_id ASC
-            bustout = cur.execute("""SELECT event_url FROM EVENTS WHERE tour = %s AND tour != '' AND setlist LIKE %b ORDER BY event_id ASC""", (r[5],song,)).fetchone()
+            """
+            premiere: search setlists table for song, make sure set_type is not soundcheck/rehearsal, sort by setlist_song_id
+            bustout: search events table for setlist with song, sort by event_id and tour = r[5]
+            
+            """
+
+            #premiere = cur.execute("""SELECT event_url FROM EVENTS WHERE setlist LIKE %s ORDER BY event_id ASC""", (song,)).fetchone() #ORDER BY event_id ASC
+            #bustout = cur.execute("""SELECT event_url FROM EVENTS WHERE tour = %s AND tour != '' AND setlist LIKE %b ORDER BY event_id ASC""", (r[5],song,)).fetchone()
+            premiere = cur.execute("""SELECT event_url FROM SETLISTS WHERE song_name = %s ORDER BY event_id ASC LIMIT 1""").fetchone()
 
             if premiere:
               if premiere[0] == r[2]:
@@ -49,7 +56,7 @@ async def setlistFinder(ctx, date):
           else:
             embed.add_field(name=s[5] + ":", value="No Set Details Known", inline=False)
   
-      #embed.add_field(name="", value="**[1]** - Tour Debut\n**[2]** - First Known Performance")
+      embed.add_field(name="", value="**[1]** - Tour Debut\n**[2]** - First Known Performance")
     else:
       embed.add_field(name="", value="ERROR: Show Not Found", inline=False)
     
