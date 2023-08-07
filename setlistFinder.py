@@ -32,7 +32,7 @@ async def setlistFinder(ctx, date=None):
               bustout: 
               
               """
-              premiere = cur.execute("""SELECT first_played FROM SONGS WHERE song_url IS NOT DISTINCT FROM %s""", (t[0],))
+              premiere = cur.execute("""SELECT first_played FROM SONGS WHERE song_url IS NOT DISTINCT FROM %s""", (t[0],)).fetchone()
               #premiere = cur.execute("""SELECT event_url FROM SETLISTS WHERE song_name IS NOT DISTINCT FROM %s ORDER BY setlist_song_id ASC""", (t[0],)).fetchone()
               bustout = None
 
