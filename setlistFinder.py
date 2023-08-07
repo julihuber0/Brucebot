@@ -34,7 +34,8 @@ async def setlistFinder(ctx, date=None):
               """
               #premiere = cur.execute("""SELECT event_url FROM EVENTS WHERE setlist ILIKE """ + song + """ ORDER BY event_id ASC""").fetchone()
               premiere = cur.execute("""SELECT event_url FROM SETLISTS WHERE song_name=%s ORDER BY setlist_song_id ASC""", (t[0],)).fetchone()
-              
+              bustout = ""
+
               if premiere and s[5] not in ['Soundcheck', 'Rehearsal']:
                 if premiere[0] == r[2]:
                   setL.append(t[0] + " **[2]**")
