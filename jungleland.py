@@ -18,9 +18,9 @@ async def junglelandTorrent(ctx, date):
     await ctx.send(errorMessage("date"))
 
 @bot.command(aliases=['artwork'])
-async def junglelandArt(ctx, date):
+async def junglelandArt(ctx, date=None):
 
-  if dateChecker(date) and len(date) != 0:
+  if dateChecker(date) and date is not None:
     title = cur.execute("""SELECT event_name FROM EVENTS WHERE event_date = %s""", (date,)).fetchone()
     
     links = cur.execute("""SELECT artwork_url FROM ARTWORK WHERE date = %s""", (date, )).fetchall()

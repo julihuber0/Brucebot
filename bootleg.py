@@ -1,9 +1,9 @@
 from importStuff import *
 
 @bot.command(aliases=['bootleg'])
-async def bootlegFind(ctx, date):
+async def bootlegFind(ctx, date=None):
 
-  if dateChecker(date):
+  if dateChecker(date) and date is not None:
     event_name = cur.execute("SELECT event_name FROM EVENTS WHERE event_date=%s", (date,)).fetchone()
 
     if event_name:
