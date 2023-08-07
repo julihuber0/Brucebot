@@ -6,7 +6,7 @@ async def sFind(ctx, *song):
   #id, url, name, first, last, num_plays
   song_name = "'%" + " ".join(song).replace("'", "''") + "%'"
 
-  s = cur.execute("""SELECT * FROM SONGS WHERE song_name ILIKE %s""", (song_name,)).fetchone()
+  s = cur.execute("""SELECT * FROM SONGS WHERE song_name ILIKE """ + song_name).fetchone()
 
   if s:
     f = cur.execute("""SELECT event_url FROM EVENTS WHERE event_date = %s""", (s[3],)).fetchone()
