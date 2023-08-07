@@ -48,7 +48,7 @@ async def setlistFinder(ctx, date=None):
                 else:
                   setL.append(t[0])
               
-              if bustout is None and premiere is None:
+              if bustout is None or premiere is None:
                 setL.append(t[0])
               
             setlist = ", ".join(setL)
