@@ -2,7 +2,7 @@ from importStuff import *
 from botinfo import botInfo, botHelp
 from setlistFinder import setlistFinder
 from getCover import covers
-from jungleland import junglelandTorrent
+from jungleland import junglelandTorrent, junglelandArt
 from on_this_day import on_this_day
 from songFinder import sFind
 from bootleg import bootlegFind
