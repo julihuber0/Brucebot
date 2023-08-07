@@ -32,7 +32,7 @@ async def setlistFinder(ctx, date=None):
               bustout: search events table for setlist with song, sort by event_id and tour = r[5]
               
               """
-              bustout = cur.execute("""SELECT event_url FROM EVENTS WHERE tour IS NOT DISTINCT FROM """ + r[5] + """ AND setlist ILIKE """ + song + """ ORDER BY event_id ASC""").fetchone()
+              bustout = cur.execute("""SELECT event_url FROM EVENTS WHERE tour IS NOT DISTINCT FROM '""" + r[5] + """' AND setlist ILIKE """ + song + """ ORDER BY event_id ASC""").fetchone()
               premiere = cur.execute("""SELECT event_url FROM EVENTS WHERE setlist ILIKE """ + song + """ ORDER BY event_id ASC LIMIT 1""").fetchone()
 
               if premiere and s[5] not in ['Soundcheck', 'Rehearsal']:
