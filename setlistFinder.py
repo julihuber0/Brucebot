@@ -38,7 +38,7 @@ async def setlistFinder(ctx, date):
 
             
             if premiere:
-              if premiere[0] == r[2] and premiere[1] != "Soundcheck":
+              if premiere[0] == r[2] and s[5] != "Soundcheck":
                 setL.append(t[0] + " **[2]**")
               else:
                 setL.append(t[0])
