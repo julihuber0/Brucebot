@@ -41,16 +41,14 @@ async def setlistFinder(ctx, date=None):
                   setL.append(t[0] + " **[2]**")
                 else:
                   setL.append(t[0])
-
-              if bustout and s[5] not in ['Soundcheck', 'Rehearsal']:
+              elif bustout and s[5] not in ['Soundcheck', 'Rehearsal']:
                 if bustout[0] == r[2]:
                   setL.append(t[0] + " **[1]**")
                 else:
                   setL.append(t[0])
-              
-              if bustout is None or premiere is None:
+              else:
                 setL.append(t[0])
-              
+
             setlist = ", ".join(setL)
       
             if setlist:
