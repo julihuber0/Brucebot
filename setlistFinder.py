@@ -25,7 +25,7 @@ async def setlistFinder(ctx, date=None):
             for t in temp:
               song = "'%" + t[0].replace("'", "''") + "%'"
               #date = "'%" + date + "%'"
-              #tour_name = "'%" + r[5].replace("'", "''") + "%'"
+              tour_name = "'%" + r[5].replace("'", "''") + "%'"
 
               """
               premiere: search setlists table for song, make sure set_type is not soundcheck/rehearsal, sort by setlist_song_id
@@ -33,7 +33,7 @@ async def setlistFinder(ctx, date=None):
               
               """
               premiere = cur.execute("""SELECT first_played FROM SONGS WHERE song_url IS NOT DISTINCT FROM %s""", (t[1],)).fetchone()
-              bustout = cur.execute("""SELECT event_url FROM EVENTS WHERE tour = '""" + r[5] + """' AND setlist like """ + song + """ AND setlist != '' ORDER BY event_id ASC LIMIT 1""").fetchone()
+              bustout = cur.execute("""SELECT event_url FROM EVENTS WHERE tour LIKE """ + tour_name + """ AND setlist like """ + song + """ ORDER BY event_id ASC LIMIT 1""").fetchone()
 
               if premiere and s[5] not in ['Soundcheck', 'Rehearsal']:
                 if premiere[0] == r[1]:
