@@ -33,18 +33,18 @@ async def setlistFinder(ctx, date=None):
               
               """
               premiere = cur.execute("""SELECT first_played FROM SONGS WHERE song_url IS NOT DISTINCT FROM %s""", (t[1],)).fetchone()
-              bustout = cur.execute("""SELECT event_url FROM EVENTS WHERE tour LIKE """ + tour_name + """ AND setlist like """ + song + """ ORDER BY event_id ASC LIMIT 1""").fetchone()
+              #bustout = cur.execute("""SELECT event_url FROM EVENTS WHERE tour LIKE """ + tour_name + """ AND setlist like """ + song + """ ORDER BY event_id ASC LIMIT 1""").fetchone()
 
               if premiere and s[5] not in ['Soundcheck', 'Rehearsal']:
                 if premiere[0] == r[1]:
-                  setL.append(t[0] + " **[2]**")
-                else:
-                  setL.append(t[0])
-              elif bustout:
-                if bustout[0] == r[2] and s[5] not in ['Soundcheck', 'Rehearsal']:
                   setL.append(t[0] + " **[1]**")
                 else:
                   setL.append(t[0])
+              # elif bustout:
+              #   if bustout[0] == r[2] and s[5] not in ['Soundcheck', 'Rehearsal']:
+              #     setL.append(t[0] + " **[1]**")
+              #   else:
+              #     setL.append(t[0])
               else:
                 setL.append(t[0])
 
@@ -55,7 +55,8 @@ async def setlistFinder(ctx, date=None):
             else:
               embed.add_field(name=s[5] + ":", value="No Set Details Known", inline=False)
     
-        embed.add_field(name="", value="**[1]** - Tour Debut\n**[2]** - First Known Performance")
+        #embed.add_field(name="", value="**[1]** - Tour Debut\n**[2]** - First Known Performance")
+        embed.add_field(name="", value="**[1]** - First Known Performance")
       else:
         embed.add_field(name="", value="ERROR: Show Not Found", inline=False)
       
