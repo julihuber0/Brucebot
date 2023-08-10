@@ -9,13 +9,12 @@ async def setlistFinder(ctx, date=None):
 
       if cur.execute("""SELECT * FROM EVENTS WHERE event_date LIKE '%""" + date + "%'").fetchall():
         for r in cur.execute("""SELECT * FROM EVENTS WHERE event_date = %s""", (date,)).fetchall():
-          #id, date, event_url, name, location, tour
+          #id, date, event_url, location_url, venue, city, state, country, show, tour, setlist
 
-          embed.add_field(name="", value="[" + r[1] + "](" + mainURL + r[2] + ")\n*" + r[3] + "*", inline=False)
-          embed.set_footer(text=r[5])
-          
+          location = ", ".join(list(filter(None, r[4:9])))
 
-          #SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url = %s ORDER BY setlist_song_id ASC
+          embed.add_field(name="", value="[" + r[1] + "](" + mainURL + r[2] + ")\n*" + location + "*", inline=False)
+          embed.set_footer(text=r[9])
 
           for s in cur.execute("""SELECT * FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url=%s ORDER BY set_type, setlist_song_id ASC) p ORDER BY setlist_song_id ASC""", (r[2],)).fetchall():
             setL = []
@@ -25,7 +24,7 @@ async def setlistFinder(ctx, date=None):
             for t in temp:
               song = "'%" + t[0].replace("'", "''") + "%'"
               #date = "'%" + date + "%'"
-              tour_name = "'%" + r[5].replace("'", "''") + "%'"
+              tour_name = "'%" + r[9].replace("'", "''") + "%'"
 
               """
               premiere: search setlists table for song, make sure set_type is not soundcheck/rehearsal, sort by setlist_song_id
