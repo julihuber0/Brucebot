@@ -24,7 +24,7 @@ async def city_finder(ctx, *city):
 async def state_finder(ctx, state):
     if state:
         if len(state) == 2:
-            events = cur.execute(f"""SELECT event_date, event_url, event_state FROM EVENTS WHERE LOWER(event_state) LIKE '%{state.lower()}%' ORDER BY event_id ASC""").fetchall()
+            events = cur.execute(f"""SELECT event_date, event_url, event_state FROM EVENTS WHERE LOWER(event_state) LIKE '%{state.lower()}%' AND tour != '' ORDER BY event_id ASC""").fetchall()
             last = cur.execute(f"""SELECT event_date, event_url, event_state FROM EVENTS WHERE LOWER(event_state) LIKE '%{state.lower()}%' AND setlist != '' AND tour != '' ORDER BY event_id DESC""").fetchall()
 
             if events:
