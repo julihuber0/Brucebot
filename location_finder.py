@@ -7,7 +7,7 @@ async def city_finder(ctx, *city):
     print()
 
     if city is not None:
-        city_name = " ".join(city.replace("'", "''")).lower()
+        city_name = " ".join(city).replace("'", "''").lower()
         events = cur.execute(f"""SELECT event_date, event_url, event_city FROM EVENTS WHERE LOWER(event_city) LIKE '%{city_name}%' ORDER BY event_id ASC""").fetchall()
 
         if events:
