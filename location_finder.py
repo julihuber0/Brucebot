@@ -1,4 +1,4 @@
-from import_stuff import bot, main_url, cur
+from import_stuff import bot, main_url, cur, states_and_provinces_abbrev
 from create_embed import create_embed
 from error_message import error_message
 
@@ -35,7 +35,8 @@ async def state_finder(ctx, state=None):
             last = cur.execute(f"""SELECT event_date, event_url, event_state FROM EVENTS WHERE LOWER(event_state) LIKE '%{state.lower()}%' AND setlist != '' AND tour != '' ORDER BY event_id DESC""").fetchall()
 
             if events:
-                embed = create_embed(f"Database Results for: {events[0][2]}", "")
+                name = states_and_provinces_abbrev[events[0][2]]
+                embed = create_embed(f"Database Results for: {name}", "")
                 embed.add_field(name="Number of Shows:", value=str(len(events)), inline=True)
                 embed.add_field(name="First Show:", value=f"[{events[0][0]}]({main_url}{events[0][1]})", inline=True)
                 embed.add_field(name="Last Show:", value=f"[{last[0][0]}]({main_url}{last[0][1]})", inline=True)
