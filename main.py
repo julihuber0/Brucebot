@@ -5,7 +5,7 @@ from getCover import covers
 from jungleland import junglelandTorrent, junglelandArt
 from on_this_day import on_this_day
 from songFinder import sFind
-from bootleg import bootlegFind
+from bootleg import bootleg_find
 
 @bot.event
 async def on_ready():
