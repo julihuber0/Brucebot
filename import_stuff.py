@@ -42,7 +42,10 @@ bot = commands.Bot(command_prefix='!', intents=intents, help_command=None)
 
 
 def date_checker(date):
-    if re.search("\d{4}-\d{2}-\d{2}", date):
-        return True
+    if date is not None:
+        if re.search("\d{4}-\d{2}-\d{2}", date):
+            return True
+        else:
+            return False
     else:
         return False
