@@ -3,9 +3,12 @@ from create_embed import create_embed
 from error_message import error_message
 
 def city_name_fixer(city_name):
+    """running list of city names to fix, or shorthand names like 'philly'"""
     match city_name:
         case 'st. paul' | 'st paul':
             return "saint paul"
+        case 'philly':
+            return "philadelphia"
 
 @bot.command(aliases=['city'])
 async def city_finder(ctx, *city):
