@@ -58,7 +58,7 @@ async def bot_info(ctx):
     """Returns information on the bot"""
 
     embed = create_embed("Brucebot: A Bot to get info on Bruce Springsteen's performing history",
-                        "Created by Lilbud (March 2023)")
+                        "Created by Lilbud (March 2023)", ctx)
 
     embed.add_field(name="My Site:",
                     value="https://lilbud.github.io")
