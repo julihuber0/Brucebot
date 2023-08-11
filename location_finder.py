@@ -11,7 +11,7 @@ async def city_finder(ctx, *city):
         events = cur.execute(f"""SELECT event_date, event_url, event_city FROM EVENTS WHERE LOWER(event_city) LIKE '%{city_name}%' ORDER BY event_id ASC""").fetchall()
 
         if events:
-            embed = create_embed(f"Database Results for: {events[0][2]}")
+            embed = create_embed(f"Database Results for: {events[0][2]}", "")
             embed.add_field(name="Number of Shows:", value=str(len(events)), inline=True)
             embed.add_field(name="First Show:", value=events[0][0], inline=True)
             embed.add_field(name="Most Recent Show:", value=events[-1][0], inline=True)
