@@ -16,7 +16,7 @@ async def jungleland_torrent(ctx, date=None):
     if date_checker(date) and date is not None:
         location = cur.execute(f"""SELECT event_venue, event_city, event_state, event_country, show FROM EVENTS WHERE event_date LIKE '%{str(date)}%'""").fetchone()[0]
 
-        title = ", ".join(filter(None, location[0:]))
+        title = ", ".join(filter(None, location))
         embed = create_embed(f"Jungleland Results For: {date}", title[0])
 
         d = date.split("-")
