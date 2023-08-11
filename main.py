@@ -1,10 +1,10 @@
-from importStuff import *
-from botinfo import botInfo, botHelp
-from setlistFinder import setlistFinder
-from getCover import covers
-from jungleland import junglelandTorrent, junglelandArt
+from importStuff import bot
+from botinfo import bot_info, bot_help
+from setlist_finder import setlist_finder
+from get_cover import get_cover
+from jungleland import jungleland_torrent, jungleland_art
 from on_this_day import on_this_day
-from songFinder import sFind
+from song_finder import song_finder
 from bootleg import bootleg_find
 
 @bot.event

@@ -1,38 +1,59 @@
-from importStuff import *
+"""
+jungleland
+gets information from Jungleland.dnsalias and Jungleland.it
+"""
+
+from import_stuff import bot, date_checker, cur, re
+from error_message import error_message
+from create_embed import create_embed
+
 
 @bot.command(aliases=['jl', 'jungleland'])
-async def junglelandTorrent(ctx, date):
+async def jungleland_torrent(ctx, date):
+    """Returns link to Jungleland Torrents for Specified Date"""
 
-  if dateChecker(date):
-    title = cur.execute("""SELECT event_name FROM EVENTS WHERE event_date=%s""", (date,)).fetchone()
-    embed = createEmbed("Jungleland Results For: " + date, title[0])
-  
-    d = date.split("-")
-  
-    URL = "http://jungleland.dnsalias.com/torrents-browse-date.php?year=" + d[0] + "&month=" + re.sub("^0", "", d[1]) + "&day=" + re.sub("^0", "", d[2]) + "&incldead=1"
-  
-    embed.add_field(name="", value="[Jungleland](" + URL + ")", inline=False)
+    if date_checker(date):
+        location = cur.execute(
+            f"""SELECT event_venue, event_city, event_state, event_country, show FROM EVENTS WHERE event_date = {str(date)}""").fetchone()[0]
 
-    await ctx.send(embed=embed)
-  else:
-    await ctx.send(errorMessage("date"))
+        title = ", ".join(filter(None, location[0:]))
+        embed = create_embed(f"Jungleland Results For: {date}", title[0])
+
+        d = date.split("-")
+
+        url = f"http://jungleland.dnsalias.com/torrents-browse-date.php?year={d[0]}&month={re.sub('^0', '', d[1])}&day={re.sub('^0', '', d[-1])}&incldead=1"
+
+        embed.add_field(name="", value=f"[Jungleland]({url})", inline=False)
+
+        await ctx.send(embed=embed)
+    else:
+        await ctx.send(error_message("date"))
+
 
 @bot.command(aliases=['artwork'])
-async def junglelandArt(ctx, date=None):
+async def jungleland_art(ctx, date=None):
+    """Returns list of artwork on Jungleland.it for specified date"""
 
-  if dateChecker(date) and date is not None:
-    title = cur.execute("""SELECT event_name FROM EVENTS WHERE event_date = %s""", (date,)).fetchone()
-    
-    links = cur.execute("""SELECT artwork_url FROM ARTWORK WHERE date = %s""", (date, )).fetchall()
-    embed = createEmbed("Jungleland Artwork Results For: " + date, title[0])
-  
-    if links:
-      for link in links:
-        name = cur.execute("""SELECT artwork_name FROM ARTWORK WHERE artwork_url=%s""", (link[0], )).fetchone()
-        embed.add_field(name="", value="- [" + name[0] + "](" + link[0] + ")", inline=False)
+    if date_checker(date) and date is not None:
+        location = cur.execute(
+            f"""SELECT event_venue, event_city, event_state, event_country, show FROM EVENTS WHERE event_date = {str(date)}""").fetchone()[0]
+
+        title = ", ".join(filter(None, location[0:]))
+        links = cur.execute(
+            f"""SELECT artwork_url FROM ARTWORK WHERE date = {str(date)}""").fetchall()
+        embed = create_embed(
+            f"Jungleland Artwork Results For: {str(date)}", title)
+
+        if links:
+            for link in links:
+                name = cur.execute(
+                    f"""SELECT artwork_name FROM ARTWORK WHERE artwork_url=\"{link[0]}\"""").fetchone()
+                embed.add_field(
+                    name="", value=f"- [{name[0]}]({link[0]})", inline=False)
+        else:
+            embed.add_field(name="", value=error_message(
+                "cover"), inline=False)
+
+        await ctx.send(embed=embed)
     else:
-      embed.add_field(name="", value=errorMessage("cover"), inline=False)
-  
-    await ctx.send(embed=embed)
-  else:
-    await ctx.send(errorMessage("date"))
+        await ctx.send(error_message("date"))
