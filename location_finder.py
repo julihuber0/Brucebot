@@ -37,12 +37,12 @@ async def state_finder(ctx, *state):
 
     if len("".join(state)) == 2:
         for key, value in states_and_provinces_abbrev:
-            if key.lower() == "".join(state.lower()):
+            if str(key).lower() == "".join(state.lower()):
                 state_abbev = key
                 state_name = value
     elif len(" ".join(state)) > 2:
         for key, value in states_and_provinces_abbrev:
-            if value.lower() == " ".join(state.lower()):
+            if str(value).lower() == " ".join(state.lower()):
                 state_abbev = key
                 state_name = value
 
