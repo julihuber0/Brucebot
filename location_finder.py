@@ -9,6 +9,8 @@ def city_name_fixer(city_name):
             return "saint paul"
         case 'philly':
             return "philadelphia"
+        case _:
+            return city_name
 
 @bot.command(aliases=['city'])
 async def city_finder(ctx, *city):
