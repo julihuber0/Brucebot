@@ -6,6 +6,10 @@ from error_message import error_message
 async def city_finder(ctx, *city):
     if len(" ".join(city)) > 1:
         city_name = " ".join(city).replace("'", "''").lower()
+
+        if city_name == "st. paul" or city_name == "st paul":
+            city_name = "saint paul"
+
         events = cur.execute(f"""SELECT event_date, event_url, event_city FROM EVENTS WHERE LOWER(event_city) LIKE '%{city_name}%' AND setlist != '' ORDER BY event_id ASC""").fetchall()
 
         if events:
@@ -15,7 +19,7 @@ async def city_finder(ctx, *city):
             embed.add_field(name="Last Show:", value=f"[{events[-1][0]}]({main_url}{events[-1][1]})", inline=True)
             await ctx.send(embed=embed)
         else:
-            await ctx.send(f"No Results for {city_name}")
+            await ctx.send(f"No Results for {city_name}, type 'Saint Paul' instead of 'St. Paul")
     else:
         await ctx.send(error_message('input'))
 
