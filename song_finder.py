@@ -25,6 +25,8 @@ async def song_finder(ctx, *song):
 
             opener = cur.execute(f"""SELECT COUNT(song_url) FROM SETLISTS WHERE song_url LIKE '%{s[1]}%' AND song_num=1""").fetchone()
             closer = cur.execute(f"""SELECT COUNT(event_url) FROM EVENTS WHERE setlist LIKE '%{song_name}'""").fetchone()
+            total = cur.execute("""SELECT COUNT(*) FROM EVENTS""")
+            frequency = f"{round((s[5] / total[0] * 100), 2)}%"
 
             embed = create_embed(s[2], f"[Brucebase Song Page]({main_url}{s[1]})", ctx)
 
@@ -33,6 +35,7 @@ async def song_finder(ctx, *song):
             embed.add_field(name="Last Played:",value=f"[{s[4]}]({main_url}{l[0]})", inline=True)
             embed.add_field(name="Show Opener:", value=opener[0], inline=True)
             embed.add_field(name="Show Closer:", value=closer[0], inline=True)
+            embed.add_field(name="Frequency:", value=frequency, inline=True)
             await ctx.send(embed=embed)
         else:
             await ctx.send(f"\nNo Results Found For: {' '.join(song)}")
