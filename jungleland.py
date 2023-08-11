@@ -10,7 +10,7 @@ from create_embed import create_embed
 
 
 @bot.command(aliases=['jl', 'jungleland'])
-async def jungleland_torrent(ctx, date):
+async def jungleland_torrent(ctx, date=None):
     """Returns link to Jungleland Torrents for Specified Date"""
 
     if date_checker(date):
