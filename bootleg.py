@@ -3,7 +3,9 @@ Bootleg Finder
 Returns a link to SpringsteenLyrics Bootleg Page for the specified Date
 """
 
-from import_stuff import bot, cur, date_checker, create_embed, error_message
+from import_stuff import bot, cur, date_checker
+from create_embed import create_embed
+from error_message import error_message
 
 @bot.command(aliases=['bootleg'])
 async def bootleg_find(ctx, date=None):
