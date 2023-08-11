@@ -17,7 +17,7 @@ async def bootleg_find(ctx, date=None):
         if event_name:
             location = ", ".join(list(filter(None, event_name[0:])))
             embed = create_embed(f"Bootlegs For: {date}", location)
-            embed.set_author(name=bot.user.name, icon_url=str(bot.user.avatar_url))
+            embed.set_author(name=client.user.name, icon_url=str(client.user.avatar_url))
             url = f"https://www.springsteenlyrics.com/bootlegs.php?filter_date={date}&cmd=list&category=filter_date"
             embed.add_field(name="", value=f"[SpringsteenLyrics]({url})")
             await ctx.send(embed=embed)
