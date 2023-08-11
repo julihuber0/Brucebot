@@ -13,8 +13,8 @@ async def city_finder(ctx, *city):
         if events:
             embed = create_embed(f"Database Results for: {events[0][2]}", "")
             embed.add_field(name="Number of Shows:", value=str(len(events)), inline=True)
-            embed.add_field(name="First Show:", value=f"[{events[0][0]}]({events[0][1]})", inline=True)
-            embed.add_field(name="Last Show:", value=f"[{events[-1][0]}]({events[-1][1]})", inline=True)
+            embed.add_field(name="First Show:", value=f"[{events[0][0]}]({main_url}{events[0][1]})", inline=True)
+            embed.add_field(name="Last Show:", value=f"[{events[-1][0]}]({main_url}{events[-1][1]})", inline=True)
             await ctx.send(embed=embed)
         else:
             await ctx.send(f"No Results for {city_name}")
