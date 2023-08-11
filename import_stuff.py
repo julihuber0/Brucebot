@@ -6,7 +6,7 @@ all of the import statements needed for the bot
 import re
 import os
 import datetime
-#import psycopg
+import psycopg
 import urllib.parse as urlparse
 from zoneinfo import ZoneInfo
 import discord
@@ -74,9 +74,6 @@ states_and_provinces_abbrev = {
     'WY': 'Wyoming',
     'DC': 'District of Columbia',
 }
-
-abbrev_to_us_state = dict(map(reversed, states_and_provinces_abbrev.items()))
-print(abbrev_to_us_state)
 
 cDate = datetime.datetime.now(ZoneInfo('US/Eastern'))
 
