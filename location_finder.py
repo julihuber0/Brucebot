@@ -34,7 +34,6 @@ async def city_finder(ctx, *city):
 
 @bot.command(aliases=['state'])
 async def state_finder(ctx, *state):
-
     if len(" ".join(state)) >= 2:
         for key, value in states_and_provinces_abbrev.items():
             if key.lower() == "".join(state).lower():
@@ -49,8 +48,7 @@ async def state_finder(ctx, *state):
         last = cur.execute(f"""SELECT event_date, event_url, event_state FROM EVENTS WHERE event_state LIKE '%{state_abbev}%' AND setlist != '' AND tour != '' ORDER BY event_id DESC""").fetchall()
 
         if events:
-            name = state_name
-            embed = create_embed(f"Database Results for: {name}", "", ctx)
+            embed = create_embed(f"Database Results for: {state_name}", "", ctx)
             embed.add_field(name="Number of Shows:", value=str(len(events)), inline=True)
             embed.add_field(name="First Show:", value=f"[{events[0][0]}]({main_url}{events[0][1]})", inline=True)
             embed.add_field(name="Last Show:", value=f"[{last[0][0]}]({main_url}{last[0][1]})", inline=True)
