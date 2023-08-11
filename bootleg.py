@@ -10,7 +10,7 @@ async def bootleg_find(ctx, date=None):
     """Returns a link to SpringsteenLyrics Bootleg Page for the specified Date"""
 
     if dateChecker(date) and date is not None:
-        event_name = cur.execute(f"""SELECT event_venue, event_city, event_state, event_country, show FROM EVENTS WHERE event_date={str(date)}""").fetchone()
+        event_name = cur.execute(f"""SELECT event_venue, event_city, event_state, event_country, show FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchone()
 
         if event_name:
             location = ", ".join(list(filter(None, event_name[0:])))
