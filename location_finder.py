@@ -33,23 +33,32 @@ async def city_finder(ctx, *city):
 
 
 @bot.command(aliases=['state'])
-async def state_finder(ctx, state=None):
-    if state:
-        if len(state) == 2:
-            events = cur.execute(f"""SELECT event_date, event_url, event_state FROM EVENTS WHERE LOWER(event_state) LIKE '%{state.lower()}%' AND tour != '' ORDER BY event_id ASC""").fetchall()
-            last = cur.execute(f"""SELECT event_date, event_url, event_state FROM EVENTS WHERE LOWER(event_state) LIKE '%{state.lower()}%' AND setlist != '' AND tour != '' ORDER BY event_id DESC""").fetchall()
+async def state_finder(ctx, *state):
 
-            if events:
-                name = states_and_provinces_abbrev[events[0][2]]
-                embed = create_embed(f"Database Results for: {name}", "", ctx)
-                embed.add_field(name="Number of Shows:", value=str(len(events)), inline=True)
-                embed.add_field(name="First Show:", value=f"[{events[0][0]}]({main_url}{events[0][1]})", inline=True)
-                embed.add_field(name="Last Show:", value=f"[{last[0][0]}]({main_url}{last[0][1]})", inline=True)
-                await ctx.send(embed=embed)
-            else:
-                await ctx.send(f"No Results for {state}")
+    if len("".join(state)) == 2:
+        for key, value in states_and_provinces_abbrev:
+            if key.lower() == "".join(state.lower()):
+                state_abbev = key
+                state_name = value
+    elif len(" ".join(state)) > 2:
+        for key, value in states_and_provinces_abbrev:
+            if value.lower() == " ".join(state.lower()):
+                state_abbev = key
+                state_name = value
+
+    if len(state_abbev) == 2 or len(state_name) > 2:
+        events = cur.execute(f"""SELECT event_date, event_url, event_state FROM EVENTS WHERE event_state LIKE '%{state_abbev}%' AND tour != '' ORDER BY event_id ASC""").fetchall()
+        last = cur.execute(f"""SELECT event_date, event_url, event_state FROM EVENTS WHERE event_state LIKE '%{state_abbev}%' AND setlist != '' AND tour != '' ORDER BY event_id DESC""").fetchall()
+
+        if events:
+            name = state_name
+            embed = create_embed(f"Database Results for: {name}", "", ctx)
+            embed.add_field(name="Number of Shows:", value=str(len(events)), inline=True)
+            embed.add_field(name="First Show:", value=f"[{events[0][0]}]({main_url}{events[0][1]})", inline=True)
+            embed.add_field(name="Last Show:", value=f"[{last[0][0]}]({main_url}{last[0][1]})", inline=True)
+            await ctx.send(embed=embed)
         else:
-            await ctx.send(error_message('input'))
+            await ctx.send(f"No Results for {state_name}")
     else:
         await ctx.send(error_message('input'))
 
