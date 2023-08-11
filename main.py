@@ -1,4 +1,4 @@
-from importStuff import bot
+from import_stuff import bot
 from botinfo import bot_info, bot_help
 from setlist_finder import setlist_finder
 from get_cover import get_cover
