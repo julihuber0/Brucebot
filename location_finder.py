@@ -23,7 +23,7 @@ async def city_finder(ctx, *city):
 @bot.command(aliases=['state'])
 async def state_finder(ctx, state):
     if len(state) == 2:
-        state_name = " ".join(state).replace("'", "''").lower()
+        state_name = state
         events = cur.execute(f"""SELECT event_date, event_url, event_state FROM EVENTS WHERE LOWER(event_state) LIKE '%{state}%' AND setlist != '' ORDER BY event_id ASC""").fetchall()
 
         if events:
@@ -38,7 +38,7 @@ async def state_finder(ctx, state):
         await ctx.send(error_message('input'))
 
 @bot.command(aliases=['country'])
-async def country_finder(ctx, *city):
+async def country_finder(ctx, *country):
     if len(" ".join(country)) > 1:
         country_name = " ".join(country).replace("'", "''").lower()
         events = cur.execute(f"""SELECT event_date, event_url, event_country FROM EVENTS WHERE LOWER(event_country) LIKE '%{country_name}%' AND setlist != '' ORDER BY event_id ASC""").fetchall()
