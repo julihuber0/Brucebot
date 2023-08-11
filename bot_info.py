@@ -45,6 +45,10 @@ async def bot_help(ctx):
     embed.add_field(name="Song Finder:\t`!song [SONG NAME]`",
                     value="Searches Brucebase for the requested song, returns a link as well as number of times it has been played.",
                     inline=False)
+    
+    embed.add_field(name="Location Finder:\t`!city [CITY_NAME] / !state [STATE ABBEV] / !country [COUNTRY_NAME]`",
+                    value="Searches the database for how many shows have been played in a specified city/state/country.",
+                    inline=False)
 
     await ctx.send(embed=embed)
 
