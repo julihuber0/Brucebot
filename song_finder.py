@@ -24,7 +24,7 @@ async def song_finder(ctx, *song):
             l = cur.execute(f"""SELECT event_url FROM EVENTS WHERE event_date LIKE '%{str(s[4])}%'""").fetchone()
 
             opener = cur.execute(f"""SELECT COUNT(song_url) FROM SETLISTS WHERE song_url LIKE '%{s[1]}%' AND song_num=1""").fetchone()
-            closer = cur.execute(f"""SELECT COUNT(event_url) FROM EVENTS WHERE setlist LIKE '%{song_name}""").fetchone()
+            closer = cur.execute(f"""SELECT COUNT(event_url) FROM EVENTS WHERE setlist LIKE '%{song_name}'""").fetchone()
 
             embed = create_embed(s[2], f"[Brucebase Song Page]({main_url}{s[1]})")
 
