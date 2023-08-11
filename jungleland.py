@@ -3,7 +3,8 @@ jungleland
 gets information from Jungleland.dnsalias and Jungleland.it
 """
 
-from import_stuff import bot, date_checker, cur, re
+import re
+from import_stuff import bot, date_checker, cur
 from error_message import error_message
 from create_embed import create_embed
 
