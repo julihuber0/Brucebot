@@ -16,7 +16,7 @@ async def setlist_finder(ctx, date=None):
         date = cur.execute("""SELECT event_date FROM EVENTS WHERE setlist != '' ORDER BY event_id DESC LIMIT 1""").fetchone()[0]
 
     if date_checker(date):
-        embed = create_embed(f"Brucebase Results for: {date}", "")
+        embed = create_embed(f"Brucebase Results for: {date}", "", ctx)
 
         if cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE '%{str(date)}%'""").fetchall():
             for r in cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE '%{str(date)}%'""").fetchall():

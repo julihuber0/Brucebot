@@ -13,7 +13,7 @@ from create_embed import create_embed
 async def bot_help(ctx):
     """Returns a list of bot commands"""
 
-    embed = create_embed("Brucebot Help", "List of Brucebot Commands")
+    embed = create_embed("Brucebot Help", "List of Brucebot Commands", ctx)
 
     embed.add_field(name="Setlist Finder:\t`!sl YYYY-MM-DD`  OR  `!setlist [YYYY-MM-DD]`",
                     value="Returns the setlist of that show from Brucebase",

@@ -21,7 +21,7 @@ async def city_finder(ctx, *city):
         last = cur.execute(f"""SELECT event_date, event_url, event_city FROM EVENTS WHERE LOWER(event_city) LIKE '%{city_name}%' AND setlist != '' AND tour != '' ORDER BY event_id DESC""").fetchall()
 
         if events:
-            embed = create_embed(f"Database Results for: {events[0][2]}", "")
+            embed = create_embed(f"Database Results for: {events[0][2]}", "", ctx)
             embed.add_field(name="Number of Shows:", value=str(len(events)), inline=True)
             embed.add_field(name="First Show:", value=f"[{events[0][0]}]({main_url}{events[0][1]})", inline=True)
             embed.add_field(name="Last Show:", value=f"[{last[0][0]}]({main_url}{last[0][1]})", inline=True)
@@ -41,7 +41,7 @@ async def state_finder(ctx, state=None):
 
             if events:
                 name = states_and_provinces_abbrev[events[0][2]]
-                embed = create_embed(f"Database Results for: {name}", "")
+                embed = create_embed(f"Database Results for: {name}", "", ctx)
                 embed.add_field(name="Number of Shows:", value=str(len(events)), inline=True)
                 embed.add_field(name="First Show:", value=f"[{events[0][0]}]({main_url}{events[0][1]})", inline=True)
                 embed.add_field(name="Last Show:", value=f"[{last[0][0]}]({main_url}{last[0][1]})", inline=True)
@@ -61,7 +61,7 @@ async def country_finder(ctx, *country):
         last = cur.execute(f"""SELECT event_date, event_url, event_country FROM EVENTS WHERE LOWER(event_country) LIKE '%{country_name}%' AND setlist != '' AND tour != '' ORDER BY event_id DESC""").fetchall()
 
         if events:
-            embed = create_embed(f"Database Results for: {events[0][2]}", "")
+            embed = create_embed(f"Database Results for: {events[0][2]}", "", ctx)
             embed.add_field(name="Number of Shows:", value=str(len(events)), inline=True)
             embed.add_field(name="First Show:", value=f"[{events[0][0]}]({main_url}{events[0][1]})", inline=True)
             embed.add_field(name="Last Show:", value=f"[{last[0][0]}]({main_url}{last[0][1]})", inline=True)

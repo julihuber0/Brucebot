@@ -28,7 +28,7 @@ async def on_this_day(ctx, *date):
     if ndate:
         otd_links = cur.execute(f"""SELECT event_date, event_url, event_venue, event_city, event_state, event_country, show FROM EVENTS WHERE event_date LIKE '%{ndate}'""").fetchall()
 
-        embed = create_embed(f"On This Day: {ndate.strip('-')}", f"Number of Shows: {str(len(otd_links))}")
+        embed = create_embed(f"On This Day: {ndate.strip('-')}", f"Number of Shows: {str(len(otd_links))}", ctx)
 
         for i in otd_links:
             location = ", ".join(list(filter(None, i[2:7])))
