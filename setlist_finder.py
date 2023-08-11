@@ -18,8 +18,8 @@ async def setlist_finder(ctx, date=None):
     if date_checker(date):
         embed = create_embed(f"Brucebase Results for: {date}", "")
 
-        if cur.execute(f"""SELECT * FROM EVENTS WHERE event_date = \"{date}\"""").fetchall():
-            for r in cur.execute(f"""SELECT * FROM EVENTS WHERE event_date = \"{date}\"""").fetchall():
+        if cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE \"'{str(date)}'\"""").fetchall():
+            for r in cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE \"'{str(date)}'\"""").fetchall():
                 # id, date, event_url, location_url, venue, city, state, country, show, tour, setlist
 
                 location = ", ".join(list(filter(None, r[4:9])))
