@@ -27,11 +27,11 @@ async def setlist_finder(ctx, date=None):
                 embed.add_field(name="", value=f"[{r[1]}]({main_url}{r[2]})\n*{location}*", inline=False)
                 embed.set_footer(text=r[9])
 
-                for s in cur.execute(f"""SELECT * FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url=\"{r[2]}\" ORDER BY set_type, setlist_song_id ASC) p ORDER BY setlist_song_id ASC""").fetchall():
+                for s in cur.execute(f"""SELECT * FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url LIKE '%{r[2]}%' ORDER BY set_type, setlist_song_id ASC) p ORDER BY setlist_song_id ASC""").fetchall():
                     set_l = []
 
-                    for t in cur.execute(f"""SELECT song_name, song_url FROM SETLISTS WHERE event_url = \"{r[2]}\" AND set_type = {s[5]} ORDER BY song_num ASC""").fetchall():
-                        premiere = cur.execute(f"""SELECT first_played FROM SONGS WHERE song_url = \"{t[1]}\"""").fetchone()
+                    for t in cur.execute(f"""SELECT song_name, song_url FROM SETLISTS WHERE event_url LIKE '%{r[2]}%' AND set_type LIKE '%{s[5]}%' ORDER BY song_num ASC""").fetchall():
+                        premiere = cur.execute(f"""SELECT first_played FROM SONGS WHERE song_url LIKE '%{t[1]}%'""").fetchone()
 
                         if premiere and s[5] not in ['Soundcheck', 'Rehearsal']:
                             if premiere[0] == r[1]:
