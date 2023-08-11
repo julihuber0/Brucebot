@@ -36,20 +36,16 @@ async def jungleland_art(ctx, date=None):
 
     if date_checker(date) and date is not None:
         location = cur.execute(
-            f"""SELECT event_venue, event_city, event_state, event_country, show FROM EVENTS WHERE event_date = {str(date)}""").fetchone()[0]
+            f"""SELECT event_venue, event_city, event_state, event_country, show FROM EVENTS WHERE event_date LIKE '%{str(date)}%'""").fetchone()[0]
 
         title = ", ".join(filter(None, location[0:]))
-        links = cur.execute(
-            f"""SELECT artwork_url FROM ARTWORK WHERE date = {str(date)}""").fetchall()
-        embed = create_embed(
-            f"Jungleland Artwork Results For: {str(date)}", title)
+        links = cur.execute(f"""SELECT artwork_url FROM ARTWORK WHERE date LIKE '%{str(date)}%'""").fetchall()
+        embed = create_embed(f"Jungleland Artwork Results For: {str(date)}", title)
 
         if links:
             for link in links:
-                name = cur.execute(
-                    f"""SELECT artwork_name FROM ARTWORK WHERE artwork_url=\"{link[0]}\"""").fetchone()
-                embed.add_field(
-                    name="", value=f"- [{name[0]}]({link[0]})", inline=False)
+                name = cur.execute(f"""SELECT artwork_name FROM ARTWORK WHERE artwork_url LIKE '%{link[0]}%'""").fetchone()
+                embed.add_field(name="", value=f"- [{name[0]}]({link[0]})", inline=False)
         else:
             embed.add_field(name="", value=error_message(
                 "cover"), inline=False)
