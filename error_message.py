@@ -14,3 +14,5 @@ def error_message(error_type):
             return "ERROR: Show Not Found"
         case "cover":
             return "ERROR: Cover Not Found"
+        case "input":
+            return "ERROR: Invalid Input"
