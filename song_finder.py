@@ -34,11 +34,14 @@ async def song_finder(ctx, *song):
             embed = create_embed(s[2], f"[Brucebase Song Page]({main_url}{s[1]})", ctx)
 
             embed.add_field(name="Performances:", value=s[5], inline=True)
-            embed.add_field(name="First Played:",value=f"[{s[3]}]({main_url}{f[0]})", inline=True)
-            embed.add_field(name="Last Played:",value=f"[{s[4]}]({main_url}{l[0]})", inline=True)
-            embed.add_field(name="Show Opener:", value=opener[0], inline=True)
-            embed.add_field(name="Show Closer:", value=closer[0], inline=True)
-            embed.add_field(name="Frequency:", value=frequency, inline=True)
+
+            if s[5] > 0:
+                embed.add_field(name="First Played:",value=f"[{s[3]}]({main_url}{f[0]})", inline=True)
+                embed.add_field(name="Last Played:",value=f"[{s[4]}]({main_url}{l[0]})", inline=True)
+                embed.add_field(name="Show Opener:", value=opener[0], inline=True)
+                embed.add_field(name="Show Closer:", value=closer[0], inline=True)
+                embed.add_field(name="Frequency:", value=frequency, inline=True)
+
             await ctx.send(embed=embed)
         else:
             await ctx.send(f"\nNo Results Found For: {' '.join(song)}")
