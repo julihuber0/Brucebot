@@ -11,8 +11,7 @@ from error_message import error_message
 async def song_finder(ctx, *song):
     """Gets info on inputted song"""
 
-    # 0,  1,    2,     3,     4,     5
-    # id, url, name, first, last, num_plays
+    #id, url, name, first_played, last_played, num_plays
 
     if len(" ".join(song)) > 1:
         song_name = " ".join(song).replace("'", "''")
@@ -25,9 +24,10 @@ async def song_finder(ctx, *song):
         if s:
             f = cur.execute(f"""SELECT event_url FROM EVENTS WHERE event_date LIKE '%{str(s[3])}%'""").fetchone()
             l = cur.execute(f"""SELECT event_url FROM EVENTS WHERE event_date LIKE '%{str(s[4])}%'""").fetchone()
+            song_name = s[1].replace("'", "''")
 
             opener = cur.execute(f"""SELECT COUNT(song_url) FROM SETLISTS WHERE song_url LIKE '%{s[1]}%' AND song_num=1""").fetchone()
-            closer = cur.execute(f"""SELECT COUNT(event_url) FROM EVENTS WHERE setlist LIKE '%{song_name}'""").fetchone()
+            closer = cur.execute(f"""SELECT COUNT(event_url) FROM EVENTS WHERE setlist LIKE '%, {song_name}'""").fetchone()
             total = cur.execute("""SELECT COUNT(*) FROM EVENTS WHERE event_url LIKE '/gig:%'""").fetchone()
             frequency = f"{round((s[5] / total[0] * 100), 2)}%"
 
