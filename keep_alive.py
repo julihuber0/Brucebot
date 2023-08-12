@@ -18,20 +18,20 @@ log:   logging.Logger = logging.getLogger('werkzeug')
 
 @flask.route('/')
 def index() -> str:
-    """ Method for handling the base route of '/'. """
-    return WEB_SERVER_KEEP_ALIVE_MESSAGE
+	""" Method for handling the base route of '/'. """
+	return WEB_SERVER_KEEP_ALIVE_MESSAGE
 
 def keep_alive() -> None:
-    """ Wraps the web server run() method in a Thread object and starts the web server. """
-    def run() -> None:
-        log.setLevel(logging.ERROR)
-        flask.run(host = '0.0.0.0', port = 8080)
-    thread = Thread(target = run)
-    thread.start()
+	""" Wraps the web server run() method in a Thread object and starts the web server. """
+	def run() -> None:
+		log.setLevel(logging.ERROR)
+		flask.run(host = '0.0.0.0', port = 8080)
+	thread = Thread(target = run)
+	thread.start()
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print(SYNTAX.format(sys.argv[0]), file = sys.stderr)
-    else:
-        keep_alive()
-        subprocess.call(['python', sys.argv[1]])
+	if len(sys.argv) != 2:
+		print(SYNTAX.format(sys.argv[0]), file = sys.stderr)
+	else:
+		keep_alive()
+		subprocess.call(['python', sys.argv[1]])
