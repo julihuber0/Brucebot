@@ -22,12 +22,12 @@ async def song_finder(ctx, *song):
             s = cur.execute(f"""SELECT * FROM SONGS WHERE song_name ILIKE '%{song_name}%'""").fetchone()
 
         if s:
-            f = cur.execute(f"""SELECT event_url FROM EVENTS WHERE event_date LIKE '%{str(s[3])}%'""").fetchone()
-            l = cur.execute(f"""SELECT event_url FROM EVENTS WHERE event_date LIKE '%{str(s[4])}%'""").fetchone()
+            f = cur.execute(f"""SELECT event_url FROM EVENTS WHERE event_date LIKE '{str(s[3])}'""").fetchone()
+            l = cur.execute(f"""SELECT event_url FROM EVENTS WHERE event_date LIKE '{str(s[4])}'""").fetchone()
             song_name = s[1].replace("'", "''")
 
             opener = cur.execute(f"""SELECT COUNT(song_url) FROM SETLISTS WHERE song_url LIKE '%{s[1]}%' AND song_num=1""").fetchone()
-            closer = cur.execute(f"""SELECT COUNT(event_url) FROM EVENTS WHERE setlist LIKE '%{song_name}'""").fetchone()
+            closer = cur.execute(f"""SELECT COUNT(event_url) FROM EVENTS WHERE setlist LIKE '%, {song_name}'""").fetchone()
             total = cur.execute("""SELECT COUNT(*) FROM EVENTS WHERE event_url LIKE '/gig:%'""").fetchone()
             frequency = f"{round((s[5] / total[0] * 100), 2)}%"
 
