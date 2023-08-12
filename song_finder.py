@@ -10,7 +10,6 @@ from error_message import error_message
 @bot.command(aliases=['song'])
 async def song_finder(ctx, *song):
     """Gets info on inputted song"""
-
     #id, url, name, first_played, last_played, num_plays
 
     if len(" ".join(song)) > 1:
