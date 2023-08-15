@@ -109,3 +109,24 @@ def date_checker(date):
             return False
     else:
         return False
+
+def song_name_fix(song):
+    """Fixes some possible incorrect song inputs, and also expands abbreviations"""
+    if song is not none:
+        if re.search("usa", song, re.IGNORECASE):
+            pattern = "usa"
+            replace = "u.s.a."
+        elif re.search("bitusa", song, re.IGNORECASE):
+            pattern = "bitusa"
+            replace = "born in the u.s.a."
+        elif re.search("btr", song, re.IGNORECASE):
+            pattern = "btr"
+            replace = "born to run"
+        elif re.search("rosie", song, re.IGNORECASE):
+            pattern = "rosie"
+            replace = "rosalita"
+
+        if pattern and replace:
+            return re.sub(pattern, replace, song, flags=re.IGNORECASE)
+        else:
+            return song

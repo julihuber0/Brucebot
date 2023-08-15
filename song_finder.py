@@ -3,7 +3,7 @@ song_finder
 gets info in inputted song
 """
 
-from import_stuff import bot, cur, main_url
+from import_stuff import bot, cur, main_url, song_name_fix
 from create_embed import create_embed
 from error_message import error_message
 
@@ -13,7 +13,7 @@ async def song_finder(ctx, *song):
     #id, url, name, first_played, last_played, num_plays
 
     if len(" ".join(song)) > 1:
-        song_name = " ".join(song).replace("'", "''")
+        song_name = song_name_fix(" ".join(song).replace("'", "''"))
 
         if cur.execute(f"""SELECT * FROM SONGS WHERE song_name ILIKE '{song_name}'""").fetchone():
             s = cur.execute(f"""SELECT * FROM SONGS WHERE song_name ILIKE '{song_name}'""").fetchone()
