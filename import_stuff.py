@@ -111,6 +111,7 @@ def date_checker(date):
         return False
 
 def song_name_fix(song):
+    pattern = replace = ""
     """Fixes some possible incorrect song inputs, and also expands abbreviations"""
     if song is not None:
         if re.search(" usa", song, re.IGNORECASE):
