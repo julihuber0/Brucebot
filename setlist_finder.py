@@ -23,7 +23,7 @@ async def setlist_finder(ctx, date=None):
                 # id, date, event_url, location_url, venue, city, state, country, show, tour, setlist
                 location = ""
                 location = ", ".join(list(filter(None, r[4:8])))
-                if r[9] != "":
+                if r[8] != "":
                     location += f" ({r[8]})"
 
                 embed.add_field(name="", value=f"[{r[1]}]({main_url}{r[2]})\n*{location}*", inline=False)
