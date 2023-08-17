@@ -24,7 +24,7 @@ async def setlist_finder(ctx, date=None):
                 location = ""
                 location = ", ".join(list(filter(None, r[4:8])))
                 if r[9] != "":
-                    location += f"({r[9]})"
+                    location += f" ({r[8]})"
 
                 embed.add_field(name="", value=f"[{r[1]}]({main_url}{r[2]})\n*{location}*", inline=False)
                 embed.set_footer(text=r[9])
