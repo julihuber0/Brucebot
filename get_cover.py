@@ -9,33 +9,33 @@ from error_message import error_message
 
 @bot.command(aliases=['cover', 'getcover'])
 async def get_cover(ctx, date=None):
-    """Gets covers from my site based in input date"""
+	"""Gets covers from my site based in input date"""
 
-    if date_checker(date) and date is not None:
-        links = []
-        url = f"https://github.com/lilbud/Bootleg-Covers/raw/main/Bruce_Springsteen/Covers/{date[0:4]}/"
-        r = requests.get(url + f"{date}.jpg", timeout=5)
+	if date_checker(date) and date is not None:
+		links = []
+		url = f"https://github.com/lilbud/Bootleg-Covers/raw/main/Bruce_Springsteen/Covers/{date[0:4]}/"
+		r = requests.get(f"{url}{date}.jpg", timeout=5)
 
-        if r.status_code == 200:
-            links.append((url + f"{date}.jpg"))
-        else:
-            r = requests.get(url + f"{date}.png", timeout=5)
-            if r.status_code == 200:
-                links.append((url + f"{date}.png"))
+		if r.status_code == 200:
+			links.append((f"{url}{date}.jpg"))
+		else:
+			r = requests.get(f"{url}{date}.png", timeout=5)
+			if r.status_code == 200:
+				links.append((f"{url}{date}.png"))
 
-        for i in range(1, 4):
-            r = requests.get(url + f"{date}_{str(i)}.jpg", timeout=5)
+		for i in range(1, 4):
+			r = requests.get(f"{url}{date}_{i}.jpg", timeout=5)
 
-            if r.status_code == 200:
-                links.append((url + f"{date}_{str(i)}.jpg"))
-            else:
-                r = requests.get(url + f"{date}_{str(i)}.png", timeout=5)
-                if r.status_code == 200:
-                    links.append((url + f"{date}_{str(i)}.png"))
+			if r.status_code == 200:
+				links.append((f"{url}{date}_{i}.jpg"))
+			else:
+				r = requests.get(f"{url}{date}_{i}.png", timeout=5)
+				if r.status_code == 200:
+					links.append((f"{url}{date}_{i}.png"))
 
-        if links:
-            await ctx.send("\n".join(links))
-        else:
-            await ctx.send(error_message("cover"))
-    else:
-        await(ctx.send(error_message("date")))
+		if links:
+			await ctx.send("\n".join(links))
+		else:
+			await ctx.send(error_message("cover"))
+	else:
+		await(ctx.send(error_message("date")))
