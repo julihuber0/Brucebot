@@ -34,6 +34,7 @@ async def city_finder(ctx, *city):
 
 @bot.command(aliases=['state'])
 async def state_finder(ctx, *state):
+	state_abbrev = ""
 	if len(" ".join(state)) >= 2:
 		for key, value in states_and_provinces_abbrev.items():
 			if key.lower() == "".join(state).lower():
@@ -42,6 +43,8 @@ async def state_finder(ctx, *state):
 			elif value.lower() == " ".join(state).lower():
 				state_abbev = key
 				state_name = value
+	else:
+		await ctx.send(error_message('input'))
 
 	if len(state_abbev) == 2 or len(state_name) > 2:
 		events = cur.execute(f"""SELECT event_date, event_url, event_state FROM EVENTS WHERE event_state LIKE '%{state_abbev}%' AND tour != '' ORDER BY event_id ASC""").fetchall()
