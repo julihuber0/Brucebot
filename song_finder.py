@@ -15,10 +15,10 @@ async def song_finder(ctx, *song):
 	if len(" ".join(song)) > 1:
 		song_name = song_name_fix(" ".join(song).replace("'", "''"))
 
-		if cur.execute(f"""SELECT * FROM SONGS WHERE song_name ILIKE '{song_name}'""").fetchone():
-			s = cur.execute(f"""SELECT * FROM SONGS WHERE song_name ILIKE '{song_name}'""").fetchone()
+		if cur.execute(f"""SELECT * FROM SONGS WHERE LOWER(song_name) ILIKE '{song_name.lower()}'""").fetchone():
+			s = cur.execute(f"""SELECT * FROM SONGS WHERE LOWER(song_name) ILIKE '{song_name.lower()}'""").fetchone()
 		else:
-			s = cur.execute(f"""SELECT * FROM SONGS WHERE song_name ILIKE '%{song_name}%'""").fetchone()
+			s = cur.execute(f"""SELECT * FROM SONGS WHERE LOWER(song_name) ILIKE '%{song_name.lower()}%'""").fetchone()
 
 		if s:
 			f = cur.execute(f"""SELECT event_url FROM EVENTS WHERE event_date LIKE '{str(s[3])}'""").fetchone()
