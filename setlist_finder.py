@@ -34,7 +34,7 @@ async def setlist_finder(ctx, date=None):
 
 					for t in cur.execute(f"""SELECT song_name, song_url FROM SETLISTS WHERE event_url LIKE '%{r[2]}%' AND set_type LIKE '%{s[5].replace("'", "''")}%' ORDER BY song_num ASC""").fetchall():
 						premiere = cur.execute(f"""SELECT first_played FROM SONGS WHERE song_url LIKE '%{t[1]}%'""").fetchone()
-						bustout = cur.execute(f"""SELECT event_date FROM EVENTS WHERE tour LIKE '{r[9].replace("'", "''")}' AND setlist LIKE '%{t[1]}%' ORDER BY event_id LIMIT 1""").fetchone()
+						bustout = cur.execute(f"""SELECT event_date FROM EVENTS WHERE tour LIKE '{r[9].replace("'", "''")}' AND setlist LIKE '%{t[1]}%' AND event_date LIKE '{r[1]}' ORDER BY event_id LIMIT 1""").fetchone()
 
 						#check setlist table for song url and tour, order by id ascending, if date equals r[1] (date) and tour = r[9], then bustout
 
@@ -44,10 +44,7 @@ async def setlist_finder(ctx, date=None):
 							else:
 								set_l.append(t[0])
 						elif bustout and s[5] not in ['Soundcheck', 'Rehearsal']:
-							if bustout[0] == r[1]:
-								set_l.append(f"{t[0]} **[2]**")
-							else:
-								set_l.append(t[0])
+							set_l.append(f"{t[0]} **[2]**")
 						else:
 							set_l.append(t[0])
 
