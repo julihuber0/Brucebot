@@ -31,6 +31,7 @@ async def song_finder(ctx, *song):
 
 			embed = create_embed(s[2], f"[Brucebase Song Page]({main_url}{s[1]})", ctx)
 
+			embed.add_field(name="", value=f"[Lyrics]({s[1].replace('/song:', '/lyrics:')})")
 			embed.add_field(name="Performances:", value=s[5], inline=True)
 
 			if s[5] > 0:
