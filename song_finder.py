@@ -24,8 +24,8 @@ async def song_finder(ctx, *song):
 			f = cur.execute(f"""SELECT event_url FROM EVENTS WHERE event_date LIKE '{str(s[3])}'""").fetchone()
 			l = cur.execute(f"""SELECT event_url FROM EVENTS WHERE event_date LIKE '{str(s[4])}'""").fetchone()
 
-			opener = cur.execute(f"""SELECT COUNT('song_url') FROM SETLISTS WHERE song_url LIKE '%{s[1]}%' AND song_num=1 AND set_type NOT IN ('Soundcheck', 'Rehearsal')""").fetchone()
-			closer = cur.execute(f"""SELECT COUNT('event_url') FROM EVENTS WHERE setlist LIKE '%, {song_name}'""").fetchone()
+			opener = cur.execute(f"""SELECT COUNT(song_url) FROM SETLISTS WHERE song_url LIKE '%{s[1]}%' AND song_num=1 AND set_type NOT IN ('Soundcheck', 'Rehearsal')""").fetchone()
+			closer = cur.execute(f"""SELECT COUNT(event_url) FROM EVENTS WHERE setlist LIKE '%, {s[2]}'""").fetchone()
 			total = cur.execute("""SELECT COUNT(*) FROM EVENTS WHERE event_url LIKE '/gig:%'""").fetchone()
 			frequency = f"{round((s[5] / total[0] * 100), 2)}%"
 
@@ -37,8 +37,8 @@ async def song_finder(ctx, *song):
 			if s[5] > 0:
 				embed.add_field(name="First Played:",value=f"[{s[3]}]({main_url}{f[0]})", inline=True)
 				embed.add_field(name="Last Played:",value=f"[{s[4]}]({main_url}{l[0]})", inline=True)
-				embed.add_field(name="Show Opener:", value=opener, inline=True)
-				embed.add_field(name="Show Closer:", value=closer, inline=True)
+				embed.add_field(name="Show Opener:", value=opener[0], inline=True)
+				embed.add_field(name="Show Closer:", value=closer[0], inline=True)
 				embed.add_field(name="Frequency:", value=frequency, inline=True)
 
 			await ctx.send(embed=embed)
