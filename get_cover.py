@@ -14,22 +14,22 @@ async def get_cover(ctx, date=None):
 	if date_checker(date) and date is not None:
 		links = []
 		url = f"https://github.com/lilbud/Bootleg-Covers/raw/main/Bruce_Springsteen/Covers/{date[0:4]}/"
-		r = requests.get(f"{url}{date}.jpg", timeout=5)
+		r = requests.get(f"{url}{date}.jpg")
 
 		if r.status_code == 200:
 			links.append((f"{url}{date}.jpg"))
 		else:
-			r = requests.get(f"{url}{date}.png", timeout=5)
+			r = requests.get(f"{url}{date}.png")
 			if r.status_code == 200:
 				links.append((f"{url}{date}.png"))
 
 		for i in range(1, 4):
-			r = requests.get(f"{url}{date}_{i}.jpg", timeout=5)
+			r = requests.get(f"{url}{date}_{i}.jpg")
 
 			if r.status_code == 200:
 				links.append((f"{url}{date}_{i}.jpg"))
 			else:
-				r = requests.get(f"{url}{date}_{i}.png", timeout=5)
+				r = requests.get(f"{url}{date}_{i}.png")
 				if r.status_code == 200:
 					links.append((f"{url}{date}_{i}.png"))
 
