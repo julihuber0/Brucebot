@@ -13,7 +13,7 @@ async def get_cover(ctx, date=None):
 
 	if date_checker(date) and date is not None:
 		links = []
-		url = f"https://github.com/lilbud/Bootleg_Covers/raw/main/Bruce_Springsteen/Covers/{date[0:4]}/"
+		url = f"https://github.com/lilbud/Bootleg_Covers/raw/main/Bruce_Springsteen/covers/{date[0:4]}/"
 		r = requests.get(f"{url}{date}.jpg")
 
 		if r.status_code == 200:
