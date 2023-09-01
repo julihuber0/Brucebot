@@ -24,24 +24,6 @@ async def get_cover(ctx, date=None):
 			if date_string in s:
 				for m in re.findall(f'{date}.*[^"]', s):
 					links.append(f"{url}{m}")
-		# r = requests.get(f"{url}{date}.jpg")
-
-		# if r.status_code == 200:
-		# 	links.append((f"{url}{date}.jpg"))
-		# else:
-		# 	r = requests.get(f"{url}{date}.png")
-		# 	if r.status_code == 200:
-		# 		links.append((f"{url}{date}.png"))
-
-		# for i in range(1, 4):
-		# 	r = requests.get(f"{url}{date}_{i}.jpg")
-
-		# 	if r.status_code == 200:
-		# 		links.append((f"{url}{date}_{i}.jpg"))
-		# 	else:
-		# 		r = requests.get(f"{url}{date}_{i}.png")
-		# 		if r.status_code == 200:
-		# 			links.append((f"{url}{date}_{i}.png"))
 
 		if links:
 			await ctx.send("\n".join(links))

@@ -11,6 +11,7 @@ Its not a 1:1 exact copy of their embed, but enough to where I feel I should pro
 
 ## Changelog (as best as I can):
 
+- 2023-08-31: improved speed of 'get_cover'. First method broke a bit ago (web scraping), then I switched to passing a request to my covers Github repo for "images with this date in the name + _NUM + .jpg/.png". This was slow. Was able to find a new way to web scrape the repo, much faster.
 - 2023-08-30: Fixed show closer not showing correct value, was using the wrong variable this whole time.
 - 2023-08-29: Added link to song lyrics when available.
 - 2023-08-15: Added song abbreviation checking again. Was removed when migrating from Repl -> Heroku, but reimplemented recently. Can be added to as more abbreviations/input corrections are needed.
