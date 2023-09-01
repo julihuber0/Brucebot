@@ -3,7 +3,7 @@ get_cover
 returns covers from my site
 """
 
-import requests
+import requests, re
 from import_stuff import bot, date_checker
 from error_message import error_message
 from bs4 import BeautifulSoup as bs4
@@ -14,6 +14,7 @@ async def get_cover(ctx, date=None):
 
 	if date_checker(date) and date is not None:
 		links = []
+		date_string = '{"name":"' + date
 		url = f"https://github.com/lilbud/Bootleg_Covers/raw/main/Bruce_Springsteen/covers/{date[0:4]}/"
 
 		r = requests.get(url).text
