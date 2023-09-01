@@ -6,6 +6,7 @@ returns covers from my site
 import requests
 from import_stuff import bot, date_checker
 from error_message import error_message
+from bs4 import BeautifulSoup
 
 @bot.command(aliases=['cover', 'getcover'])
 async def get_cover(ctx, date=None):
@@ -16,7 +17,7 @@ async def get_cover(ctx, date=None):
 		url = f"https://github.com/lilbud/Bootleg_Covers/raw/main/Bruce_Springsteen/covers/{date[0:4]}/"
 
 		r = requests.get(url).text
-		soup = BeautifulSoup(r, 'lxml')
+		soup = bs4(r, 'lxml')
 
 		for s in soup.text.split(","):
 			if date_string in s:
