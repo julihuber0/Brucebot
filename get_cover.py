@@ -6,7 +6,7 @@ returns covers from my site
 import requests
 from import_stuff import bot, date_checker
 from error_message import error_message
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup as bs4
 
 @bot.command(aliases=['cover', 'getcover'])
 async def get_cover(ctx, date=None):
