@@ -1,4 +1,5 @@
 # Brucebot
+
 Discord Bot that works with the Databruce project
 
 This repo is the code behind the Discord bot, the code is hosted on Heroku.
@@ -9,7 +10,7 @@ While the bot is largely my own code (plus bits from various online forums/posts
 
 Its not a 1:1 exact copy of their embed, but enough to where I feel I should probably mention it.
 
-## Changelog (as best as I can):
+## Changelog (as best as I can)
 
 - 2023-08-31: improved speed of 'get_cover'. First method broke a bit ago (web scraping), then I switched to passing a request to my covers Github repo for "images with this date in the name + _NUM + .jpg/.png". This was slow. Was able to find a new way to web scrape the repo, much faster.
 - 2023-08-30: Fixed show closer not showing correct value, was using the wrong variable this whole time.
