@@ -13,7 +13,7 @@ async def song_finder(ctx, *song):
 	#id, url, name, first_played, last_played, num_plays
 
 	if len(" ".join(song)) > 1:
-		song_name = song_name_fix(" ".join(song).replace("'", "''"))
+		song_name = song_name_fix(" ".join(song).replace("'", "''").replace("\"", "''"))
 
 		if cur.execute(f"""SELECT * FROM SONGS WHERE LOWER(song_name) ILIKE '{song_name.lower()}'""").fetchone():
 			s = cur.execute(f"""SELECT * FROM SONGS WHERE LOWER(song_name) ILIKE '{song_name.lower()}'""").fetchone()
@@ -25,7 +25,7 @@ async def song_finder(ctx, *song):
 			l = cur.execute(f"""SELECT event_url FROM EVENTS WHERE event_date LIKE '{str(s[4])}'""").fetchone()
 
 			opener = cur.execute(f"""SELECT COUNT(song_url) FROM SETLISTS WHERE song_url LIKE '%{s[1]}%' AND song_num=1 AND set_type NOT IN ('Soundcheck', 'Rehearsal')""").fetchone()
-			closer = cur.execute(f"""SELECT COUNT(event_url) FROM EVENTS WHERE setlist LIKE '%, {s[2]}'""").fetchone()
+			closer = cur.execute(f"""SELECT COUNT(event_url) FROM EVENTS WHERE setlist LIKE '%, {s[2].replace("'", "''")}'""").fetchone()
 			total = cur.execute("""SELECT COUNT(*) FROM EVENTS WHERE event_url LIKE '/gig:%'""").fetchone()
 			frequency = f"{round((s[5] / total[0] * 100), 2)}%"
 
