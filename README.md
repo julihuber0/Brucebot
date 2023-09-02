@@ -12,6 +12,7 @@ Its not a 1:1 exact copy of their embed, but enough to where I feel I should pro
 
 ## Changelog (as best as I can)
 
+- 2023-09-01: reimplemented showing of tour debuts in the setlist finder embed. This was a baffling bug, as this feature worked no problem on repl, but stopped working on heroku. Even considering that the databases are technically different (SQLite vs PostgreSQL), they have the same data. And the queries are mostly identical, and the rest work no problem, except tour debuts. No matter what, I couldn't get this query to work in the bot. I could get it to work locally in SQLite, and even on WSL (Win. Subsystem for Linux, the SQLite -> PGSQL converter is only on Linux natively.) The query would work, even testing on Heroku through their "dataclips" option (an SQL interpreter for the database). Finally got it to work by condensing down the branching if statement to determine premiere/bustout/none.
 - 2023-08-31: improved speed of 'get_cover'. First method broke a bit ago (web scraping), then I switched to passing a request to my covers Github repo for "images with this date in the name + _NUM + .jpg/.png". This was slow. Was able to find a new way to web scrape the repo, much faster.
 - 2023-08-30: Fixed show closer not showing correct value, was using the wrong variable this whole time.
 - 2023-08-29: Added link to song lyrics when available.
