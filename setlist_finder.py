@@ -40,12 +40,12 @@ async def setlist_finder(ctx, date=None):
 						# bustout doesn't work
 						
 						if bustout or premiere and s[5] not in ['Soundcheck', 'Rehearsal']:
-							if bustout[0] == r[1]:
+							if bustout[0] == r[1] and premiere[0] != r[1]:
 								set_l.append(f"{t[0]} **[2]**")
-							elif premiere[0] == r[1]:
+							elif premiere[0] == r[1] and bustout[0] != r[1]:
 								set_l.append(f"{t[0]} **[1]**")
-							elif bustout[0] != r[1] or premiere[0] != r[1]:
-								set_l.append(f"{t[0]}")
+							else:
+								set_l.append(t[0])
 						else:
 							set_l.append(t[0])
 
