@@ -7,6 +7,7 @@ from jungleland import jungleland_torrent, jungleland_art
 from on_this_day import on_this_day
 from song_finder import song_finder
 from bootleg import bootleg_find
+from tour_finder import tour_stats
 from location_finder import city_finder, state_finder, country_finder
 
 @bot.event

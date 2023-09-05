@@ -12,6 +12,8 @@ def error_message(error_type):
 			return "ERROR: Song Missing from Input"
 		case "show":
 			return "ERROR: Show Not Found"
+		case "tour":
+			return "ERROR: Tour Not Found"
 		case "cover":
 			return "ERROR: Cover Not Found"
 		case "input":
