@@ -27,6 +27,6 @@ async def tour_stats(ctx, *tour):
 
             await ctx.send(embed=embed)
         else:
-            await ctx.send(error_message("tour"))
+            await ctx.send(error_message("show"))
     else:
         await ctx.send(error_message("tour"))
