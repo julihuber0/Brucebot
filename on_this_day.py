@@ -32,7 +32,7 @@ async def on_this_day(ctx, *date):
 
 		for i in otd_links:
 			location = ", ".join(list(filter(None, i[2:7])))
-			embed.add_field(name=i[0][0:4], value=f"[{location}]({main_url}{i[1]})")
+			embed.add_field(name=f"{i[0][0:4]}:", value=f"[{location}]({main_url}{i[1]})")
 
 		await ctx.send(embed=embed)
 	else:

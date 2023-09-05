@@ -20,10 +20,10 @@ async def tour_stats(ctx, *tour):
             embed = create_embed(f"Tour: {stats[2]}", f"[Tour Stats]({main_url}{stats[1]}) | [Tour Songs]({main_url}{stats[1].replace('shows', 'songs')})", ctx)
 
             #first show, last show, num shows, num songs
-            embed.add_field(name="", value=f"**Number of Shows**: {stats[3]}", inline=False)
-            embed.add_field(name="First Show", value=f"[{first_last[0]}]({main_url}{first_link})", inline=False)
-            embed.add_field(name="Last Show", value=f"[{first_last[1]}]({main_url}{last_link})", inline=False)
-            embed.add_field(name="Number of Songs", value=f"{stats[4]}", inline=False)
+            embed.add_field(name="Number of Shows:", value=f"{stats[3]}", inline=False)
+            embed.add_field(name="First Show:", value=f"[{first_last[0]}]({main_url}{first_link})", inline=False)
+            embed.add_field(name="Last Show:", value=f"[{first_last[1]}]({main_url}{last_link})", inline=False)
+            embed.add_field(name="Number of Songs:", value=f"{stats[4]}", inline=False)
 
             await ctx.send(embed=embed)
         else:
