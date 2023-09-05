@@ -17,10 +17,10 @@ async def tour_stats(ctx, *tour):
             first_link = cur.execute(f"""SELECT event_url FROM EVENTS WHERE event_date LIKE '{first_last[0]}'""").fetchone()[0]
             last_link = cur.execute(f"""SELECT event_url FROM EVENTS WHERE event_date LIKE '{first_last[1]}'""").fetchone()[0]
 
-            embed = create_embed(f"Tour: {stats[2]}", f"[Tour Stats]({main_url}{stats[1]})\n[Tour Songs]({main_url}{stats[1].replace('shows', 'songs')})", ctx)
+            embed = create_embed(f"Tour: {stats[2]}", f"[Tour Stats]({main_url}{stats[1]}) | [Tour Songs]({main_url}{stats[1].replace('shows', 'songs')})", ctx)
 
             #first show, last show, num shows, num songs
-            embed.add_field(name="Number of Shows", value=f"{stats[3]}", inline=True)
+            embed.add_field(name="Number of Shows", value=f"{stats[3]}", inline=False)
             embed.add_field(name="First Show", value=f"[{first_last[0]}]({main_url}{first_link})", inline=True)
             embed.add_field(name="Last Show", value=f"[{first_last[1]}]({main_url}{last_link})", inline=True)
             embed.add_field(name="Number of Songs", value=f"{stats[4]}", inline=True)
