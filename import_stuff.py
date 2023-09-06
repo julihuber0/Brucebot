@@ -131,3 +131,21 @@ def song_name_fix(song):
 			return re.sub(pattern, replace, song, flags=re.IGNORECASE)
 		else:
 			return song
+
+def tour_name_fix(tour):
+	#btr, river, bitusa, tol, other band, human touch, lucky town
+	if tour is not None:
+		if tour == "btr":
+			tour = "born to run"
+		elif tour == "river":
+			tour = "the river tour"
+		elif tour == "bitusa":
+			tour = "born in the u.s.a. tour"
+		elif re.search("usa", tour, re.IGNORECASE):
+			tour.replace("usa", "u.s.a.")
+		elif re.search("(92|93)", tour, re.IGNORECASE):
+			tour = "world tour 1992-93"
+		elif re.search("(16|2016)"):
+			tour = "the river tour \'16"
+
+		return tour

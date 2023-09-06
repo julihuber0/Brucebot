@@ -1,5 +1,5 @@
 import re
-from import_stuff import bot, cur, main_url
+from import_stuff import bot, cur, main_url, tour_name_fix
 from create_embed import create_embed
 from error_message import error_message
 
@@ -9,7 +9,11 @@ async def tour_stats(ctx, *tour):
 
     if len(" ".join(tour)) > 1:
         tour_name = " ".join(tour).replace("'", "''")
-        stats = cur.execute(f"""SELECT * FROM TOURS WHERE tour_name ILIKE '%{tour_name}%'""").fetchall()[0]
+
+        if cur.execute(f"""SELECT * FROM TOURS WHERE tour_name ILIKE '{tour_name}'""").fetchall()[0]:
+            stats = cur.execute(f"""SELECT * FROM TOURS WHERE tour_name ILIKE '{tour_name}'""").fetchall()[0]
+        else:
+            stats = cur.execute(f"""SELECT * FROM TOURS WHERE tour_name ILIKE '%{tour_name}%'""").fetchall()[0]
 
         if stats:
             first_last = cur.execute(f"""SELECT MIN(event_date), MAX(event_date) FROM EVENTS WHERE tour LIKE '{stats[2].replace("'", "''")}' AND event_url LIKE '/gig:%'""").fetchall()[0]
@@ -27,6 +31,6 @@ async def tour_stats(ctx, *tour):
 
             await ctx.send(embed=embed)
         else:
-            await ctx.send(error_message("show"))
+            await ctx.send(error_message("tour"))
     else:
         await ctx.send(error_message("tour"))
