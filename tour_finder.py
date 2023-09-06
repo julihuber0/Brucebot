@@ -12,7 +12,7 @@ async def tour_stats(ctx, *tour):
 
         if cur.execute(f"""SELECT * FROM TOURS WHERE tour_name ILIKE '{tour_name.replace("'", "''")}'""").fetchall():
             stats = cur.execute(f"""SELECT * FROM TOURS WHERE tour_name ILIKE '{tour_name.replace("'", "''")}'""").fetchall()[0]
-        else:
+        elif cur.execute(f"""SELECT * FROM TOURS WHERE tour_name ILIKE '%{tour_name.replace("'", "''")}%'""").fetchall():
             stats = cur.execute(f"""SELECT * FROM TOURS WHERE tour_name ILIKE '%{tour_name.replace("'", "''")}%'""").fetchall()[0]
 
         if stats:
