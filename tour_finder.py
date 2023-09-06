@@ -8,9 +8,9 @@ async def tour_stats(ctx, *tour):
     #id, url, name, num_shows, num_songs
 
     if len(" ".join(tour)) > 1:
-        tour_name = tour_name_fix(" ".join(tour).replace("'", "''"))
+        tour_name = tour_name_fix(" ".join(tour))
 
-        if cur.execute(f"""SELECT * FROM TOURS WHERE tour_name ILIKE '{tour_name}'""").fetchall():
+        if cur.execute(f"""SELECT * FROM TOURS WHERE tour_name ILIKE '{tour_name.replace("'", "''")}'""").fetchall():
             stats = cur.execute(f"""SELECT * FROM TOURS WHERE tour_name ILIKE '{tour_name}'""").fetchall()[0]
         else:
             stats = cur.execute(f"""SELECT * FROM TOURS WHERE tour_name ILIKE '%{tour_name}%'""").fetchall()[0]

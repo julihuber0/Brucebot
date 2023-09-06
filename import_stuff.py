@@ -148,6 +148,6 @@ def tour_name_fix(tour):
 		elif re.search("(92|93)", tour, re.IGNORECASE):
 			return "world tour 1992-93"
 		elif re.search("(16|2016)", tour, re.IGNORECASE):
-			return "the river tour \'16"
+			return "the river tour '16"
 		else:
 			return tour
