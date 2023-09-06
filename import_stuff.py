@@ -141,11 +141,13 @@ def tour_name_fix(tour):
 			return "the river tour"
 		elif tour == "bitusa":
 			return "born in the u.s.a. tour"
+		elif re.search("(tunnel|tol)", tour, re.IGNORECASE):
+			return "tunnel of love"
 		elif re.search("usa", tour, re.IGNORECASE):
 			return tour.replace("usa", "u.s.a.")
 		elif re.search("(92|93)", tour, re.IGNORECASE):
 			return "world tour 1992-93"
-		elif re.search("(16|2016)"):
+		elif re.search("(16|2016)", tour, re.IGNORECASE):
 			return "the river tour \'16"
 		else:
 			return tour
