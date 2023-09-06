@@ -9,13 +9,14 @@ async def tour_stats(ctx, *tour):
 
     if len(" ".join(tour)) > 1:
         tour_name = tour_name_fix(" ".join(tour))
+        stats = ""
 
         if cur.execute(f"""SELECT * FROM TOURS WHERE tour_name ILIKE '{tour_name.replace("'", "''")}'""").fetchall():
             stats = cur.execute(f"""SELECT * FROM TOURS WHERE tour_name ILIKE '{tour_name.replace("'", "''")}'""").fetchall()[0]
         elif cur.execute(f"""SELECT * FROM TOURS WHERE tour_name ILIKE '%{tour_name.replace("'", "''")}%'""").fetchall():
             stats = cur.execute(f"""SELECT * FROM TOURS WHERE tour_name ILIKE '%{tour_name.replace("'", "''")}%'""").fetchall()[0]
 
-        if stats:
+        if stats != "":
             first_last = cur.execute(f"""SELECT MIN(event_date), MAX(event_date) FROM EVENTS WHERE tour LIKE '{stats[2].replace("'", "''")}' AND event_url LIKE '/gig:%'""").fetchall()[0]
             
             first_link = cur.execute(f"""SELECT event_url FROM EVENTS WHERE event_date LIKE '{first_last[0]}'""").fetchone()[0]
