@@ -7,7 +7,7 @@ def error_message(error_type):
 	"""Returns an error message based on value"""
 	match(error_type):
 		case "date":
-			return "ERROR: Date Not Specified or Incorrect Format"
+			return "ERROR: Date Not Specified or Incorrect Format (Date should be in YYYY-MM-DD Format)"
 		case "song":
 			return "ERROR: Song Missing from Input"
 		case "show":
