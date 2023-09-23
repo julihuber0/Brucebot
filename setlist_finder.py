@@ -37,14 +37,12 @@ async def setlist_finder(ctx, date=None):
 						bustout = cur.execute(f"""SELECT MIN(event_date) FROM EVENTS WHERE setlist LIKE '%{t[0].replace("'", "''")}%' AND tour = '{r[9].replace("'", "''")}'""").fetchone()
 
 						#check setlist table for song url and tour, order by id ascending, if date equals r[1] (date) and tour = r[9], then bustout
-						# bustout doesn't work
 
 						if premiere[0] == r[1] and s[5] not in ['Soundcheck', 'Rehearsal']:
 							if t[2]:
 								set_l.append(f"{t[0]} **[1]** > ")
 							else:
 								set_l.append(f"{t[0]} **[1]**")
-
 						elif bustout[0] == r[1] and s[5] not in ['Soundcheck', 'Rehearsal']:
 							if t[2]:
 								set_l.append(f"{t[0]} **[2]** > ")
