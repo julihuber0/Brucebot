@@ -41,22 +41,22 @@ async def setlist_finder(ctx, date=None):
 
 						if premiere[0] == r[1] and s[5] not in ['Soundcheck', 'Rehearsal']:
 							if t[2]:
-								set_l.append(f"{t[0]} **[1]** >")
+								set_l.append(f"{t[0]} **[1]** > ")
 							else:
-								set_l.append(f"{t[0]} **[1]**, ")
+								set_l.append(f"{t[0]} **[1]**")
 
 						elif bustout[0] == r[1] and s[5] not in ['Soundcheck', 'Rehearsal']:
 							if t[2]:
-								set_l.append(f"{t[0]} **[2]** >")
+								set_l.append(f"{t[0]} **[2]** > ")
 							else:
-								set_l.append(f"{t[0]} **[2]**, ")
+								set_l.append(f"{t[0]} **[2]**")
 						else:
 							if t[2]:
 								set_l.append(f"{t[0]} >")
 							else:
-								set_l.append(f"{t[0]}, ")
+								set_l.append(f"{t[0]}")
 
-					setlist = "".join(set_l)
+					setlist = (", ".join(set_l)).replace(">,", ">")
 
 					if setlist:
 						embed.add_field(name=f"{s[5]}:", value=setlist, inline=False)
