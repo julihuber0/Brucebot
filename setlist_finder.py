@@ -48,7 +48,7 @@ async def setlist_finder(ctx, date=None):
 								set_l.append(f"{t[0]} **[1]** > ")
 							else:
 								set_l.append(f"{t[0]} **[1]**")
-						elif bustout_date == event_date[0] and s[4] not in ['Soundcheck', 'Rehearsal']:
+						elif bustout_date[0] == event_date[0] and s[4] not in ['Soundcheck', 'Rehearsal']:
 							if t[2]:
 								set_l.append(f"{t[0]} **[2]** > ")
 							else:
