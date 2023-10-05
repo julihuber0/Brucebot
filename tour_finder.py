@@ -37,7 +37,7 @@ async def tour_stats(ctx, *tour):
             stats = cur.execute(f"""SELECT * FROM TOURS WHERE tour_name ILIKE '%{tour_name.replace("'", "''")}%'""").fetchall()[0]
 
         if stats != "":
-            first_last = cur.execute(f"""SELECT MIN(event_url), MAX(event_url) FROM EVENTS WHERE tour LIKE '{stats[2].replace("'", "''")}' AND event_url LIKE '/gig:%'""").fetchall()[0]
+            first_last = cur.execute(f"""SELECT MIN(event_url), MAX(event_url) FROM EVENTS WHERE tour LIKE '{stats[2].replace("'", "''")}' AND event_url LIKE '/gig:%'""").fetchall()
             
             # first_link = cur.execute(f"""SELECT MIN(event_url) FROM EVENTS WHERE event_url LIKE '%{first_last[0]}%'""").fetchone()[0]
             # last_link = cur.execute(f"""SELECT MAX(event_url) FROM EVENTS WHERE event_url LIKE '%{first_last[1]}%'""").fetchone()[0]
@@ -49,8 +49,8 @@ async def tour_stats(ctx, *tour):
 
             #first show, last show, num shows, num songs
             embed.add_field(name="Number of Shows:", value=f"{stats[3]}", inline=False)
-            embed.add_field(name="First Show:", value=f"[{first_date[0]}]({main_url}{first_last})", inline=False)
-            embed.add_field(name="Last Show:", value=f"[{last_date[1]}]({main_url}{first_last})", inline=False)
+            embed.add_field(name="First Show:", value=f"[{first_date[0]}]({main_url}{first_last[0]})", inline=False)
+            embed.add_field(name="Last Show:", value=f"[{last_date[1]}]({main_url}{first_last[1]})", inline=False)
             embed.add_field(name="Number of Songs:", value=f"{stats[4]}", inline=False)
 
             await ctx.send(embed=embed)
