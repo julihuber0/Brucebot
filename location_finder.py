@@ -22,13 +22,13 @@ async def city_finder(ctx, *city):
 		# last_event = cur.execute(f"""SELECT event_url FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE LOWER(venue_city) LIKE '{city_name}') AND setlist != '' AND tour != '' ORDER BY event_id DESC""").fetchone()
 
 		if first_last:
-			first_date = re.findall("\d{4}-d{2}-d{2}", first_last[0])
-			last_date = re.findall("\d{4}-d{2}-d{2}", first_last[1])
+			first_date = re.findall("\d{4}-d{2}-d{2}", first_last[0])[0]
+			last_date = re.findall("\d{4}-d{2}-d{2}", first_last[1])[0]
 
 			embed = create_embed(f"Database Results for: {city_name}", "", ctx)
 			embed.add_field(name="Number of Shows:", value=str(len(first_last)), inline=True)
-			embed.add_field(name="First Show:", value=f"[{first_date[0]}]({main_url}{first_last[0]})", inline=True)
-			embed.add_field(name="Last Show:", value=f"[{last_date[0]}]({main_url}{first_last[1]})", inline=True)
+			embed.add_field(name="First Show:", value=f"[{first_date}]({main_url}{first_last})", inline=True)
+			embed.add_field(name="Last Show:", value=f"[{last_date}]({main_url}{first_last})", inline=True)
 			await ctx.send(embed=embed)
 		else:
 			await ctx.send(f"No Results for {city_name}")
