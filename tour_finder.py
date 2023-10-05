@@ -47,7 +47,7 @@ async def tour_stats(ctx, *tour):
             #first show, last show, num shows, num songs
             embed.add_field(name="Number of Shows:", value=f"{stats[3]}", inline=False)
             embed.add_field(name="First Show:", value=f"[{first_date[0]}]({main_url}{first_last[0]})", inline=False)
-            embed.add_field(name="Last Show:", value=f"[{last_date[1]}]({main_url}{first_last[0]})", inline=False)
+            # embed.add_field(name="Last Show:", value=f"[{last_date[1]}]({main_url}{first_last[1]})", inline=False)
             embed.add_field(name="Number of Songs:", value=f"{stats[4]}", inline=False)
 
             await ctx.send(embed=embed)
