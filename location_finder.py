@@ -1,6 +1,7 @@
 from import_stuff import bot, main_url, cur, states_and_provinces_abbrev
 from create_embed import create_embed
 from error_message import error_message
+import re
 
 def city_name_fixer(city_name):
 	"""running list of city names to fix, or shorthand names like 'philly'"""

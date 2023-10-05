@@ -6,6 +6,7 @@ gets info in inputted song
 from import_stuff import bot, cur, main_url
 from create_embed import create_embed
 from error_message import error_message
+import re
 
 def song_name_fix(song):
 	pattern = replace = ""
