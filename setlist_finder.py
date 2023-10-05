@@ -14,7 +14,7 @@ async def setlist_finder(ctx, date=None):
 
 	if date is None:
 		d = cur.execute("""SELECT event_url FROM EVENTS WHERE setlist != '' ORDER BY event_id DESC LIMIT 1""").fetchone()[0]
-		date = re.findall("\d{4}-\d{2}-\d{2}", d[0])[0]
+		date = re.findall("\d{4}-\d{2}-\d{2}", d)[0]
 
 	if date_checker(date):
 		embed = create_embed(f"Brucebase Results for: {date}", "", ctx)
