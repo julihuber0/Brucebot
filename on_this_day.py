@@ -5,7 +5,7 @@ or the current day if none specified
 """
 
 import re
-from import_stuff import bot, cur, main_url, cDate
+from import_stuff import bot, cur, main_url, cDate, location_name_get
 from create_embed import create_embed
 from error_message import error_message
 
@@ -26,12 +26,18 @@ async def on_this_day(ctx, *date):
 			ndate = f"-{str(date[0])}"
 
 	if ndate:
-		otd_links = cur.execute(f"""SELECT event_date, event_url, event_venue, event_city, event_state, event_country, show FROM EVENTS WHERE event_date LIKE '%{ndate}' ORDER BY event_id ASC""").fetchall()
+		otd_links = cur.execute(f"""SELECT event_date, location_url, show FROM EVENTS WHERE event_date LIKE '%{ndate}' ORDER BY event_id ASC""").fetchall()
 
 		embed = create_embed(f"On This Day: {ndate.strip('-')}", f"Number of Shows: {str(len(otd_links))}", ctx)
 
 		for i in otd_links:
-			location = ", ".join(list(filter(None, i[2:7])))
+			# location = ", ".join(list(filter(None, i[2:7])))
+			
+			location = location_name_get(i[1])
+
+			if i[2] != "":
+				location += f" ({i[2]})"
+
 			embed.add_field(name=f"{i[0][0:4]}:", value=f"[{location}]({main_url}{i[1]})")
 
 		await ctx.send(embed=embed)

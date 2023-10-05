@@ -3,7 +3,7 @@ setlist_finder
 gets setlist based on inputted date
 """
 
-from import_stuff import date_checker, cur, bot, main_url
+from import_stuff import date_checker, cur, bot, main_url, location_name_get
 from create_embed import create_embed
 from error_message import error_message
 
@@ -22,7 +22,8 @@ async def setlist_finder(ctx, date=None):
 			for r in cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE '%{str(date)}%'""").fetchall():
 				# id, date, event_url, location_url, venue, city, state, country, show, tour, setlist
 				location = ""
-				location = ", ".join(list(filter(None, r[4:8])))
+				# location = ", ".join(list(filter(None, r[4:8])))
+				location = location_name_get(r[3])
 				if r[8] != "":
 					location += f" ({r[8]})"
 

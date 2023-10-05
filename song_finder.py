@@ -3,9 +3,31 @@ song_finder
 gets info in inputted song
 """
 
-from import_stuff import bot, cur, main_url, song_name_fix
+from import_stuff import bot, cur, main_url
 from create_embed import create_embed
 from error_message import error_message
+
+def song_name_fix(song):
+	pattern = replace = ""
+	"""Fixes some possible incorrect song inputs, and also expands abbreviations"""
+	if song is not None:
+		if re.search(" usa", song, re.IGNORECASE):
+			pattern = "usa"
+			replace = "u.s.a."
+		elif re.search("bitusa", song, re.IGNORECASE):
+			pattern = "bitusa"
+			replace = "born in the u.s.a."
+		elif re.search("btr", song, re.IGNORECASE):
+			pattern = "btr"
+			replace = "born to run"
+		elif re.search("rosie", song, re.IGNORECASE):
+			pattern = "rosie"
+			replace = "rosalita"
+
+		if pattern and replace:
+			return re.sub(pattern, replace, song, flags=re.IGNORECASE)
+		else:
+			return song
 
 @bot.command(aliases=['song'])
 async def song_finder(ctx, *song):

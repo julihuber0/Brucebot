@@ -4,7 +4,7 @@ gets information from Jungleland.dnsalias and Jungleland.it
 """
 
 import re
-from import_stuff import bot, date_checker, cur
+from import_stuff import bot, date_checker, cur, location_name_get
 from error_message import error_message
 from create_embed import create_embed
 
@@ -34,9 +34,14 @@ async def jungleland_torrent(ctx, date=None):
 async def jungleland_art(ctx, date=None):
 	"""Returns list of artwork on Jungleland.it for specified date"""
 	if date_checker(date) and date is not None:
-		location = cur.execute(f"""SELECT event_venue, event_city, event_state, event_country, show FROM EVENTS WHERE event_date LIKE '%{str(date)}%'""").fetchone()
+		location = cur.execute(f"""SELECT location_url, show FROM EVENTS WHERE event_date LIKE '%{str(date)}%'""").fetchone()
 
-		title = ", ".join(filter(None, location))
+		title = location_name_get(location[0])
+
+		if location[1] != "":
+			title += f" ({location[1]})"
+
+		# title = ", ".join(filter(None, location))
 		links = cur.execute(f"""SELECT artwork_url FROM ARTWORK WHERE date LIKE '%{str(date)}%'""").fetchall()
 		embed = create_embed(f"Jungleland Artwork Results For: {str(date)}", title, ctx)
 

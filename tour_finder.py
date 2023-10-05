@@ -1,7 +1,27 @@
 import re
-from import_stuff import bot, cur, main_url, tour_name_fix
+from import_stuff import bot, cur, main_url
 from create_embed import create_embed
 from error_message import error_message
+
+def tour_name_fix(tour):
+	#btr, river, bitusa, tol, other band, human touch, lucky town
+	if tour is not None:
+		if tour == "btr":
+			return "born to run"
+		elif tour == "river":
+			return "the river tour"
+		elif tour == "bitusa":
+			return "born in the u.s.a. tour"
+		elif re.search("(tunnel|tol)", tour, re.IGNORECASE):
+			return "tunnel of love"
+		elif re.search("usa", tour, re.IGNORECASE):
+			return tour.replace("usa", "u.s.a.")
+		elif re.search("(92|93)", tour, re.IGNORECASE):
+			return "world tour 1992-93"
+		elif re.search("(16|2016)", tour, re.IGNORECASE):
+			return "the river tour '16"
+		else:
+			return tour
 
 @bot.command(aliases=['tour'])
 async def tour_stats(ctx, *tour):

@@ -110,44 +110,6 @@ def date_checker(date):
 	else:
 		return False
 
-def song_name_fix(song):
-	pattern = replace = ""
-	"""Fixes some possible incorrect song inputs, and also expands abbreviations"""
-	if song is not None:
-		if re.search(" usa", song, re.IGNORECASE):
-			pattern = "usa"
-			replace = "u.s.a."
-		elif re.search("bitusa", song, re.IGNORECASE):
-			pattern = "bitusa"
-			replace = "born in the u.s.a."
-		elif re.search("btr", song, re.IGNORECASE):
-			pattern = "btr"
-			replace = "born to run"
-		elif re.search("rosie", song, re.IGNORECASE):
-			pattern = "rosie"
-			replace = "rosalita"
-
-		if pattern and replace:
-			return re.sub(pattern, replace, song, flags=re.IGNORECASE)
-		else:
-			return song
-
-def tour_name_fix(tour):
-	#btr, river, bitusa, tol, other band, human touch, lucky town
-	if tour is not None:
-		if tour == "btr":
-			return "born to run"
-		elif tour == "river":
-			return "the river tour"
-		elif tour == "bitusa":
-			return "born in the u.s.a. tour"
-		elif re.search("(tunnel|tol)", tour, re.IGNORECASE):
-			return "tunnel of love"
-		elif re.search("usa", tour, re.IGNORECASE):
-			return tour.replace("usa", "u.s.a.")
-		elif re.search("(92|93)", tour, re.IGNORECASE):
-			return "world tour 1992-93"
-		elif re.search("(16|2016)", tour, re.IGNORECASE):
-			return "the river tour '16"
-		else:
-			return tour
+def location_name_get(location_url):
+	location = cur.execute(f"""SELECT venue_name, venue_city, venue_state, venue_country FROM VENUES WHERE venue_url LIKE '{location_url}'""").fetchone()
+	return f"{', '.join(list(filter(None, location[0:])))}"
