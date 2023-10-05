@@ -26,7 +26,7 @@ async def city_finder(ctx, *city):
 			last_date = re.findall("\d{4}-d{2}-d{2}", first_last[1])
 
 			embed = create_embed(f"Database Results for: {city_name}", "", ctx)
-			embed.add_field(name="Number of Shows:", value=str(len(events)), inline=True)
+			embed.add_field(name="Number of Shows:", value=str(len(first_last)), inline=True)
 			embed.add_field(name="First Show:", value=f"[{first_date[0]}]({main_url}{first_last[0]})", inline=True)
 			embed.add_field(name="Last Show:", value=f"[{last_date[0]}]({main_url}{first_last[1]})", inline=True)
 			await ctx.send(embed=embed)
@@ -63,7 +63,7 @@ async def state_finder(ctx, *state):
 			last_date = re.findall("\d{4}-d{2}-d{2}", first_last[1])
 
 			embed = create_embed(f"Database Results for: {state_name.title()}", "", ctx)
-			embed.add_field(name="Number of Shows:", value=str(len(events)), inline=True)
+			embed.add_field(name="Number of Shows:", value=str(len(first_last)), inline=True)
 			embed.add_field(name="First Show:", value=f"[{first_date[0][0]}]({main_url}{first_last[0]})", inline=True)
 			embed.add_field(name="Last Show:", value=f"[{last_date[0][0]}]({main_url}{first_last[1]})", inline=True)
 			await ctx.send(embed=embed)
@@ -87,7 +87,7 @@ async def country_finder(ctx, *country):
 			last_date = re.findall("\d{4}-d{2}-d{2}", first_last[1])
 
 			embed = create_embed(f"Database Results for: {country_name.title()}", "", ctx)
-			embed.add_field(name="Number of Shows:", value=str(len(events)), inline=True)
+			embed.add_field(name="Number of Shows:", value=str(len(first_last)), inline=True)
 			embed.add_field(name="First Show:", value=f"[{first_date[0][0]}]({main_url}{first_last[0]})", inline=True)
 			embed.add_field(name="Last Show:", value=f"[{last_date[0][0]}]({main_url}{first_last[1]})", inline=True)
 			await ctx.send(embed=embed)
