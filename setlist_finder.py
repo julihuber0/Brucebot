@@ -25,7 +25,7 @@ async def setlist_finder(ctx, date=None):
 				location = ""
 				# location = ", ".join(list(filter(None, r[4:8])))
 				location = location_name_get(r[2])
-				if r[8] != "":
+				if r[3] != "":
 					location += f" ({r[3]})"
 
 				event_date = re.findall("\d{4}-\d{2}-\d{2}", r[1])
