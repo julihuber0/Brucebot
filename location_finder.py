@@ -17,14 +17,17 @@ async def city_finder(ctx, *city):
 	if len(" ".join(city)) > 1:
 		city_name = city_name_fixer(" ".join(city).replace("'", "''").lower())
 
-		events = cur.execute(f"""SELECT event_date, event_url FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE LOWER(venue_city) LIKE '{city_name}') AND tour != '' ORDER BY event_id ASC""").fetchall()
-		last = cur.execute(f"""SELECT event_date, event_url FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE LOWER(venue_city) LIKE '{city_name}') AND setlist != '' AND tour != '' ORDER BY event_id DESC""").fetchall()
+		first_last = cur.execute(f"""SELECT MIN(event_url), MAX(event_url) FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE LOWER(venue_city) LIKE '{city_name}') AND tour != ''""").fetchone()
+		# last_event = cur.execute(f"""SELECT event_url FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE LOWER(venue_city) LIKE '{city_name}') AND setlist != '' AND tour != '' ORDER BY event_id DESC""").fetchone()
 
-		if events:
+		if first_last:
+			first_date = re.findall("\d{4}-d{2}-d{2}", first_last[0])
+			last_date = re.findall("\d{4}-d{2}-d{2}", first_last[1])
+
 			embed = create_embed(f"Database Results for: {city_name}", "", ctx)
 			embed.add_field(name="Number of Shows:", value=str(len(events)), inline=True)
-			embed.add_field(name="First Show:", value=f"[{events[0][0]}]({main_url}{events[0][1]})", inline=True)
-			embed.add_field(name="Last Show:", value=f"[{last[0][0]}]({main_url}{last[0][1]})", inline=True)
+			embed.add_field(name="First Show:", value=f"[{first_date[0]}]({main_url}{first_last[0]})", inline=True)
+			embed.add_field(name="Last Show:", value=f"[{last_date[0]}]({main_url}{first_last[1]})", inline=True)
 			await ctx.send(embed=embed)
 		else:
 			await ctx.send(f"No Results for {city_name}")
@@ -48,17 +51,23 @@ async def state_finder(ctx, *state):
 
 	if len(state_abbev) == 2 or len(state_name) > 2:
 
-		first = cur.execute(f"""SELECT event_date, event_url FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE venue_state LIKE '{state_abbev}') AND tour != '' GROUP BY event_url ORDER_BY event_id ASC""").fetchall()
-		last = cur.execute(f"""SELECT event_date, event_url FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE venue_state LIKE '{state_abbev}') AND tour != '' GROUP BY event_url ORDER BY event_id DESC""").fetchall()
+		# first = cur.execute(f"""SELECT event_date, event_url FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE venue_state LIKE '{state_abbev}') AND tour != '' GROUP BY event_url ORDER_BY event_id ASC""").fetchall()
+		# last = cur.execute(f"""SELECT event_date, event_url FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE venue_state LIKE '{state_abbev}') AND tour != '' GROUP BY event_url ORDER BY event_id DESC""").fetchall()
 
-		if first and last:
-			embed = create_embed(f"Database Results for: {state_name}", "", ctx)
+		first_last = cur.execute(f"""SELECT MIN(event_url), MAX(event_url) FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE LOWER(venue_state) LIKE '{state_abbrev}') AND tour != ''""").fetchone()
+
+		if first_last:
+
+			first_date = re.findall("\d{4}-d{2}-d{2}", first_last[0])
+			last_date = re.findall("\d{4}-d{2}-d{2}", first_last[1])
+
+			embed = create_embed(f"Database Results for: {state_name.title()}", "", ctx)
 			embed.add_field(name="Number of Shows:", value=str(len(events)), inline=True)
-			embed.add_field(name="First Show:", value=f"[{first[0][0]}]({main_url}{first[0][1]})", inline=True)
-			embed.add_field(name="Last Show:", value=f"[{last[0][0]}]({main_url}{last[0][1]})", inline=True)
+			embed.add_field(name="First Show:", value=f"[{first_date[0][0]}]({main_url}{first_last[0]})", inline=True)
+			embed.add_field(name="Last Show:", value=f"[{last_date[0][0]}]({main_url}{first_last[1]})", inline=True)
 			await ctx.send(embed=embed)
 		else:
-			await ctx.send(f"No Results for {state_name}")
+			await ctx.send(f"No Results for {state_name.title()}")
 	else:
 		await ctx.send(error_message('input'))
 
@@ -66,16 +75,22 @@ async def state_finder(ctx, *state):
 async def country_finder(ctx, *country):
 	if len(" ".join(country)) > 1:
 		country_name = " ".join(country).replace("'", "''").lower()
-		events = cur.execute(f"""SELECT event_date, event_url FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE LOWER(venue_country) LIKE '{country_name}') AND tour != '' ORDER BY event_id ASC""").fetchall()
-		last = cur.execute(f"""SELECT event_date, event_url FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE LOWER(venue_country) LIKE '{country_name}') AND setlist != '' AND tour != '' ORDER BY event_id DESC""").fetchall()
+		# events = cur.execute(f"""SELECT event_date, event_url FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE LOWER(venue_country) LIKE '{country_name}') AND tour != '' ORDER BY event_id ASC""").fetchall()
+		# last = cur.execute(f"""SELECT event_date, event_url FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE LOWER(venue_country) LIKE '{country_name}') AND setlist != '' AND tour != '' ORDER BY event_id DESC""").fetchall()
 
-		if events:
-			embed = create_embed(f"Database Results for: {country_name}", "", ctx)
+		first_last = cur.execute(f"""SELECT MIN(event_url), MAX(event_url) FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE LOWER(venue_country) LIKE '{country_name}') AND tour != ''""").fetchone()
+
+		if first_last:
+
+			first_date = re.findall("\d{4}-d{2}-d{2}", first_last[0])
+			last_date = re.findall("\d{4}-d{2}-d{2}", first_last[1])
+
+			embed = create_embed(f"Database Results for: {country_name.title()}", "", ctx)
 			embed.add_field(name="Number of Shows:", value=str(len(events)), inline=True)
-			embed.add_field(name="First Show:", value=f"[{events[0][0]}]({main_url}{events[0][1]})", inline=True)
-			embed.add_field(name="Last Show:", value=f"[{last[0][0]}]({main_url}{last[0][1]})", inline=True)
+			embed.add_field(name="First Show:", value=f"[{first_date[0][0]}]({main_url}{first_last[0]})", inline=True)
+			embed.add_field(name="Last Show:", value=f"[{last_date[0][0]}]({main_url}{first_last[1]})", inline=True)
 			await ctx.send(embed=embed)
 		else:
-			await ctx.send(f"No Results for {country_name}")
+			await ctx.send(f"No Results for {country_name.title()}")
 	else:
 		await ctx.send(error_message('input'))

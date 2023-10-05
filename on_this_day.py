@@ -26,7 +26,7 @@ async def on_this_day(ctx, *date):
 			ndate = f"-{str(date[0])}"
 
 	if ndate:
-		otd_links = cur.execute(f"""SELECT event_date, location_url, show FROM EVENTS WHERE event_date LIKE '%{ndate}' ORDER BY event_id ASC""").fetchall()
+		otd_links = cur.execute(f"""SELECT event_url, location_url, show FROM EVENTS WHERE event_date LIKE '%{ndate}' ORDER BY event_id ASC""").fetchall()
 
 		embed = create_embed(f"On This Day: {ndate.strip('-')}", f"Number of Shows: {str(len(otd_links))}", ctx)
 
@@ -38,7 +38,8 @@ async def on_this_day(ctx, *date):
 			if i[2] != "":
 				location += f" ({i[2]})"
 
-			embed.add_field(name=f"{i[0][0:4]}:", value=f"[{location}]({main_url}{i[1]})")
+			event_date = re.findall("\d{4}-\d{2}-\d{2}", i[0])
+			embed.add_field(name=f"{event_date[0][0:4]}:", value=f"[{location}]({main_url}{i[1]})")
 
 		await ctx.send(embed=embed)
 	else:

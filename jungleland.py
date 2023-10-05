@@ -34,7 +34,7 @@ async def jungleland_torrent(ctx, date=None):
 async def jungleland_art(ctx, date=None):
 	"""Returns list of artwork on Jungleland.it for specified date"""
 	if date_checker(date) and date is not None:
-		location = cur.execute(f"""SELECT location_url, show FROM EVENTS WHERE event_date LIKE '%{str(date)}%'""").fetchone()
+		location = cur.execute(f"""SELECT location_url, show FROM EVENTS WHERE event_url LIKE '%{str(date)}%'""").fetchone()
 
 		title = location_name_get(location[0])
 

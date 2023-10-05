@@ -18,8 +18,8 @@ async def setlist_finder(ctx, date=None):
 	if date_checker(date):
 		embed = create_embed(f"Brucebase Results for: {date}", "", ctx)
 
-		if cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE '%{str(date)}%'""").fetchall():
-			for r in cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE '%{str(date)}%'""").fetchall():
+		if cur.execute(f"""SELECT * FROM EVENTS WHERE event_url LIKE '%{str(date)}%'""").fetchall():
+			for r in cur.execute(f"""SELECT * FROM EVENTS WHERE event_url LIKE '%{str(date)}%'""").fetchall():
 				# id, date, event_url, location_url, venue, city, state, country, show, tour, setlist
 				location = ""
 				# location = ", ".join(list(filter(None, r[4:8])))
@@ -35,16 +35,17 @@ async def setlist_finder(ctx, date=None):
 
 					for t in cur.execute(f"""SELECT song_name, song_url, segue FROM SETLISTS WHERE event_url LIKE '%{r[2]}%' AND set_type LIKE '%{s[5].replace("'", "''")}%' ORDER BY song_num ASC""").fetchall():
 						premiere = cur.execute(f"""SELECT first_played FROM SONGS WHERE song_url LIKE '%{t[1]}%'""").fetchone()
-						bustout = cur.execute(f"""SELECT MIN(event_date) FROM EVENTS WHERE setlist LIKE '%{t[0].replace("'", "''")}%' AND tour = '{r[9].replace("'", "''")}'""").fetchone()
+						bustout = cur.execute(f"""SELECT MIN(event_url) FROM EVENTS WHERE setlist LIKE '%{t[0].replace("'", "''")}%' AND tour = '{r[9].replace("'", "''")}'""").fetchone()
 
 						#check setlist table for song url and tour, order by id ascending, if date equals r[1] (date) and tour = r[9], then bustout
+						bustout_date = re.findall("\d{4}-\d{2}-\d{2}", bustout[0])
 
 						if premiere[0] == r[1] and s[5] not in ['Soundcheck', 'Rehearsal']:
 							if t[2]:
 								set_l.append(f"{t[0]} **[1]** > ")
 							else:
 								set_l.append(f"{t[0]} **[1]**")
-						elif bustout[0] == r[1] and s[5] not in ['Soundcheck', 'Rehearsal']:
+						elif bustout_date == r[1] and s[5] not in ['Soundcheck', 'Rehearsal']:
 							if t[2]:
 								set_l.append(f"{t[0]} **[2]** > ")
 							else:
