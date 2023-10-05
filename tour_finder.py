@@ -42,15 +42,15 @@ async def tour_stats(ctx, *tour):
             # first_link = cur.execute(f"""SELECT MIN(event_url) FROM EVENTS WHERE event_url LIKE '%{first_last[0]}%'""").fetchone()[0]
             # last_link = cur.execute(f"""SELECT MAX(event_url) FROM EVENTS WHERE event_url LIKE '%{first_last[1]}%'""").fetchone()[0]
 
-            first_date = re.findall("\d{4}-d{2}-d{2}", first_last[0])
-            last_date = re.findall("\d{4}-d{2}-d{2}", first_last[1])
+            first_date = re.findall("\d{4}-d{2}-d{2}", first_last[0][0])
+            last_date = re.findall("\d{4}-d{2}-d{2}", first_last[0][1])
 
             embed = create_embed(f"Tour: {stats[2]}", f"[Tour Stats]({main_url}{stats[1]}) | [Tour Songs]({main_url}{stats[1].replace('shows', 'songs')})", ctx)
 
             #first show, last show, num shows, num songs
             embed.add_field(name="Number of Shows:", value=f"{stats[3]}", inline=False)
-            embed.add_field(name="First Show:", value=f"[{first_date[0]}]({main_url}{first_last[0]})", inline=False)
-            embed.add_field(name="Last Show:", value=f"[{last_date[1]}]({main_url}{first_last[1]})", inline=False)
+            embed.add_field(name="First Show:", value=f"[{first_date[0]}]({main_url}{first_last[0][0]})", inline=False)
+            embed.add_field(name="Last Show:", value=f"[{last_date[1]}]({main_url}{first_last[0][1]})", inline=False)
             embed.add_field(name="Number of Songs:", value=f"{stats[4]}", inline=False)
 
             await ctx.send(embed=embed)
