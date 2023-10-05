@@ -22,8 +22,8 @@ async def city_finder(ctx, *city):
 		# last_event = cur.execute(f"""SELECT event_url FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE LOWER(venue_city) LIKE '{city_name}') AND setlist != '' AND tour != '' ORDER BY event_id DESC""").fetchone()
 
 		if first_last:
-			first_date = re.findall("\d{4}-d{2}-d{2}", first_last[0])
-			last_date = re.findall("\d{4}-d{2}-d{2}", first_last[1])
+			first_date = re.findall("\d{4}-\d{2}-\d{2}", first_last[0])
+			last_date = re.findall("\d{4}-\d{2}-\d{2}", first_last[1])
 
 			embed = create_embed(f"Database Results for: {city_name}", "", ctx)
 			embed.add_field(name="Number of Shows:", value=str(len(first_last)), inline=True)
@@ -59,8 +59,8 @@ async def state_finder(ctx, *state):
 
 		if first_last:
 
-			first_date = re.findall("\d{4}-d{2}-d{2}", first_last[0])
-			last_date = re.findall("\d{4}-d{2}-d{2}", first_last[1])
+			first_date = re.findall("\d{4}-\d{2}-\d{2}", first_last[0])
+			last_date = re.findall("\d{4}-\d{2}-\d{2}", first_last[1])
 
 			embed = create_embed(f"Database Results for: {state_name.title()}", "", ctx)
 			embed.add_field(name="Number of Shows:", value=str(len(first_last)), inline=True)
@@ -83,8 +83,8 @@ async def country_finder(ctx, *country):
 
 		if first_last:
 
-			first_date = re.findall("\d{4}-d{2}-d{2}", first_last[0])
-			last_date = re.findall("\d{4}-d{2}-d{2}", first_last[1])
+			first_date = re.findall("\d{4}-\d{2}-\d{2}", first_last[0])
+			last_date = re.findall("\d{4}-\d{2}-\d{2}", first_last[1])
 
 			embed = create_embed(f"Database Results for: {country_name.title()}", "", ctx)
 			embed.add_field(name="Number of Shows:", value=str(len(first_last)), inline=True)
