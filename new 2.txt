@@ -1,0 +1,8 @@
+db notes
+	add frequency to songs table - DONE
+	add first/last date to tours table - DONE
+	bootleg AND official live downloads in events - DONE
+	
+	add field for opener/closer for songs - DONE
+	add premiere/debut for setlists
+	
