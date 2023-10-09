@@ -10,7 +10,7 @@ import re
 
 @bot.command(aliases=['sl', 'setlist', 'show'])
 async def setlist_finder(ctx, date=None):
-	"""Gets setlist based on inputted date"""
+	"""Gets setlist based on input date"""
 
 	if date is None:
 		date = cur.execute("""SELECT event_date FROM EVENTS WHERE setlist != '' ORDER BY event_id DESC LIMIT 1""").fetchone()[0]
