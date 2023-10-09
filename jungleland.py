@@ -14,7 +14,7 @@ async def jungleland_torrent(ctx, date=None):
 	"""Returns link to Jungleland Torrents for Specified Date"""
 
 	if date_checker(date) and date is not None:
-		location = cur.execute(f"""SELECT location_url, show FROM EVENTS WHERE event_url LIKE '%{str(date)}%'""").fetchone()
+		location = cur.execute(f"""SELECT location_url, show FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchone()
 
 		title = location_name_get(location[0])
 
@@ -39,7 +39,7 @@ async def jungleland_torrent(ctx, date=None):
 async def jungleland_art(ctx, date=None):
 	"""Returns list of artwork on Jungleland.it for specified date"""
 	if date_checker(date) and date is not None:
-		location = cur.execute(f"""SELECT location_url, show FROM EVENTS WHERE event_url LIKE '%{str(date)}%'""").fetchone()
+		location = cur.execute(f"""SELECT location_url, show FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchone()
 
 		title = location_name_get(location[0])
 
@@ -47,7 +47,7 @@ async def jungleland_art(ctx, date=None):
 			title += f" ({location[1]})"
 
 		# title = ", ".join(filter(None, location))
-		links = cur.execute(f"""SELECT artwork_url FROM ARTWORK WHERE date LIKE '%{str(date)}%'""").fetchall()
+		links = cur.execute(f"""SELECT artwork_url FROM ARTWORK WHERE date LIKE '{str(date)}'""").fetchall()
 		embed = create_embed(f"Jungleland Artwork Results For: {str(date)}", title, ctx)
 
 		if links:

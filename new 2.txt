@@ -5,4 +5,5 @@ db notes
 	
 	add field for opener/closer for songs - DONE
 	add premiere/debut for setlists
+	change date reference in songs/tours (first/last played and first/last show) to event_url instead of date
 	
