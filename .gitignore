@@ -1,2 +1,4 @@
 __pycache__/
 keep_alive.py
+*.ps1
+_old/

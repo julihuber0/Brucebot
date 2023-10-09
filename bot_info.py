@@ -53,6 +53,18 @@ async def bot_help(ctx):
 	embed.add_field(name="Tour Stats:\t`!tour [TOUR_NAME]`",
 					value="Searches the database for the specified tour, and returns stats for it",
 					inline=False)
+	
+	embed.add_field(name="Album Stats:\t`!album [ALBUM] / !a [ALBUM]`",
+					value="Searches the database for the specified album, and returns stats for it",
+					inline=False)
+	
+	embed.add_field(name="Person Finder:\t`!person [NAME] / !p [NAME]`",
+					value="Searches the database for the specified person, and returns stats about them",
+					inline=False)
+	
+	embed.add_field(name="Band Finder:\t`!band [NAME] / !b [NAME]`",
+					value="Searches the database for the specified band, and returns stats about them",
+					inline=False)
 
 	await ctx.send(embed=embed)
 

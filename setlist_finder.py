@@ -10,67 +10,83 @@ import re
 
 @bot.command(aliases=['sl', 'setlist', 'show'])
 async def setlist_finder(ctx, date=None):
-	"""Gets setlist based on inputted date"""
+	"""Gets setlist based on input date"""
 
 	if date is None:
-		d = cur.execute("""SELECT event_url FROM EVENTS WHERE setlist != '' ORDER BY event_id DESC LIMIT 1""").fetchone()[0]
-		date = re.findall("\d{4}-\d{2}-\d{2}", d)[0]
+		date = cur.execute("""SELECT event_date FROM EVENTS WHERE setlist != '' ORDER BY event_id DESC LIMIT 1""").fetchone()[0]
 
 	if date_checker(date):
-		embed = create_embed(f"Brucebase Results for: {date}", "", ctx)
+		embed = create_embed(f"Brucebase Results For: {date}", "", ctx)
+		get_events = cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchall()
+		invalid_sets = []
+		
+		for i in cur.execute(f"""SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE set_type SIMILAR TO '%(Soundcheck|Rehearsal|Pre-)%') p""").fetchall():
+			invalid_sets.append(i[0])
 
-		if cur.execute(f"""SELECT * FROM EVENTS WHERE event_url LIKE '%{str(date)}%'""").fetchall():
-			for r in cur.execute(f"""SELECT * FROM EVENTS WHERE event_url LIKE '%{str(date)}%'""").fetchall():
-				# id, event_url, location_url, show, tour, setlist
-				location = ""
-				# location = ", ".join(list(filter(None, r[4:8])))
-				location = location_name_get(r[2])
-				if r[3] != "":
-					location += f" ({r[3]})"
+		if get_events:
+			for r in get_events:
+				tags = []
+				# id, date, event_url, location_url, show, tour, setlist, bootleg, livedl
 
-				event_date = re.findall("\d{4}-\d{2}-\d{2}", r[1])
-				embed.add_field(name="", value=f"[{event_date[0]}]({main_url}{r[1]})\n*{location}*", inline=False)
-				embed.set_footer(text=r[4])
+				if r[7]:
+					tags.append('Bootleg')
+				
+				if r[8]:
+					tags.append('Official Release')
+				
+				if not r[7] and not r[8]:
+					tags.append("Uncirculating")
 
-				#id, event_url, song_url, song_name, set_type, song_in_set, song_num, segue
-				for s in cur.execute(f"""SELECT * FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url LIKE '%{r[1]}%' ORDER BY set_type, setlist_song_id ASC) p ORDER BY setlist_song_id ASC""").fetchall():
-					set_l = []
+				location = location_name_get(r[3], r[4])
+				releases = f"**Releases:** {', '.join(tags)}"
 
-					for t in cur.execute(f"""SELECT song_name, song_url, segue FROM SETLISTS WHERE event_url LIKE '%{r[1]}%' AND set_type LIKE '%{s[4].replace("'", "''")}%' ORDER BY song_num ASC""").fetchall():
-						premiere = cur.execute(f"""SELECT first_played FROM SONGS WHERE song_url LIKE '%{t[1]}%'""").fetchone()
-						bustout = cur.execute(f"""SELECT MIN(event_url) FROM EVENTS WHERE setlist LIKE '%{t[0].replace("'", "''")}%' AND tour = '{r[4].replace("'", "''")}'""").fetchone()
+				embed.add_field(name="", value=f"[{r[1]} - {location}]({main_url}{r[2]})\n{releases}", inline=False)
+				embed.set_footer(text=r[5])
 
-						#check setlist table for song url and tour, order by id ascending, if date equals r[1] (date) and tour = r[9], then bustout
-						bustout_date = re.findall("\d{4}-\d{2}-\d{2}", bustout[0])
+				has_setlist = cur.execute(f"""SELECT EXISTS(SELECT 1 FROM SETLISTS WHERE event_url LIKE '{r[2]}')""").fetchone()
 
-						if premiere[0] == event_date[0] and s[4] not in ['Soundcheck', 'Rehearsal']:
-							if t[2]:
-								set_l.append(f"{t[0]} **[1]** > ")
-							else:
-								set_l.append(f"{t[0]} **[1]**")
-						elif bustout_date[0] == event_date[0] and s[4] not in ['Soundcheck', 'Rehearsal']:
-							if t[2]:
-								set_l.append(f"{t[0]} **[2]** > ")
-							else:
-								set_l.append(f"{t[0]} **[2]**")
-						else:
-							if t[2]:
-								set_l.append(f"{t[0]} >")
-							else:
-								set_l.append(f"{t[0]}")
+				if has_setlist[0] != 0:
+					location = setlist = indicator = ""
 
-					setlist = (", ".join(set_l)).replace(">,", ">")
+					#id, event_url, song_url, song_name, set_type, song_in_set, song_num, segue
+					for s in cur.execute(f"""SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url LIKE '{r[2]}') p ORDER BY setlist_song_id ASC""").fetchall():
+						set_l = []
+					
+						set_songs = cur.execute(f"""SELECT song_name, song_url, segue FROM SETLISTS WHERE event_url LIKE '{r[2]}' AND set_type LIKE '%{s[0].replace("'", "''")}%' ORDER BY setlist_song_id ASC""").fetchall()
 
-					if setlist:
-						embed.add_field(name=f"{s[4]}:", value=setlist, inline=False)
-					else:
-						embed.add_field(name=f"{s[4]}:", value="No Set Details Known", inline=False)
+						for song in set_songs:
+							indicator = note = segue = ""
+							premiere = cur.execute(f"""SELECT EXISTS(SELECT 1 FROM SONGS WHERE song_url LIKE '{song[1]}' AND first_played LIKE '{r[2]}')""").fetchone()
+							bustout = cur.execute(f"""SELECT MIN(event_url) FROM EVENTS WHERE setlist LIKE '%{s[0].replace("'", "''")}%' AND tour = '{r[5].replace("'", "''")}' AND event_url LIKE '{r[2]}'""").fetchone()
 
-			#embed.add_field(name="", value="**[1]** - First Known Performance")
+							# indicator is [1] or [2]
+							if s[0] not in invalid_sets:
+								if premiere[0] != 0:
+									indicator = "**[1]**"
+								if bustout[0] == r[2]:
+									indicator = "**[2]**"
+									
+							if song[2]:
+								segue = ">"
+								# set_l.append(f"{song[0]} {indicator} >")
+							# else:
+							# 	set_l.append(f"{song[0]} {indicator} {segue}")
+							
+							set_l.append(f"{song[0]} {indicator} {segue}")
+
+						setlist = ", ".join(set_l).replace(">,", ">")
+
+						if not r[7] and not r[8]:
+							note = "(Setlist May Be Incomplete)"
+
+						embed.add_field(name=f"{s[0]} {note}:", value=setlist, inline=False)
+				else: # end "if has_setlist"
+					embed.add_field(name="", value=error_message("no-setlist"), inline=False)
+
 			embed.add_field(name="", value="**[1]** - First Known Performance\n**[2]** - Tour Debut")
-		else:
-			embed.add_field(name="", value="ERROR: Show Not Found", inline=False)
+		else: # end "if get_events"
+			embed.add_field(name="", value=error_message("show"), inline=False)
 
 		await ctx.send(embed=embed)
 	else:
-		await ctx.send(error_message("date"))
+		await ctx.send(f"{error_message('date')} - {date}")
