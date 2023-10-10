@@ -62,7 +62,7 @@ async def song_finder(ctx, *song):
 				embed.add_field(name="Last Played:",value=f"[{s[4]}]({main_url}{l[0]})", inline=True)
 				embed.add_field(name="Show Opener:", value=s[6], inline=True)
 				embed.add_field(name="Show Closer:", value=s[7], inline=True)
-				embed.add_field(name="Frequency:", value=s[8], inline=True)
+				embed.add_field(name="Frequency:", value=f"{s[8]}%", inline=True)
 
 			await ctx.send(embed=embed)
 		else:
