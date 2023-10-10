@@ -29,7 +29,7 @@ async def setlist_finder(ctx, date=None):
 					location += f" ({r[4]})"
 
 				# event_date = re.findall("\d{4}-\d{2}-\d{2}", r[1])
-				embed.add_field(name="", value=f"[{r[1]}]({main_url}{r[2]})\n*[{location}]({r[3]})*", inline=False)
+				embed.add_field(name="", value=f"[{r[1]}]({main_url}{r[2]})\n*[{location}]({main_url}{r[3]})*", inline=False)
 				embed.set_footer(text=r[5])
 
 				#id, event_url, song_url, song_name, set_type, song_in_set, song_num, segue
