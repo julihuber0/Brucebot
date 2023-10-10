@@ -17,7 +17,7 @@ async def setlist_finder(ctx, date=None):
 		# date = re.findall("\d{4}-\d{2}-\d{2}", d)[0]
 
 	if date_checker(date):
-		embed = create_embed(f"Brucebase Results For: {date}", "", ctx)
+		embed = create_embed(f"Brucebase Results for: {date}", "", ctx)
 
 		if cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchall():
 			for r in cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchall():
