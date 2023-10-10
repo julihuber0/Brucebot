@@ -34,10 +34,10 @@ async def setlist_finder(ctx, date=None):
 				embed.set_footer(text=r[5])
 
 				#id, event_url, song_url, song_name, set_type, song_in_set, song_num, segue
-				for s in cur.execute(f"""SELECT * FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url LIKE '%{r[1]}%' ORDER BY set_type, setlist_song_id ASC) p ORDER BY setlist_song_id ASC""").fetchall():
+				for s in cur.execute(f"""SELECT * FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url LIKE '{r[1]}' ORDER BY set_type, setlist_song_id ASC) p ORDER BY setlist_song_id ASC""").fetchall():
 					set_l = []
 
-					for t in cur.execute(f"""SELECT song_name, song_url, segue FROM SETLISTS WHERE event_url LIKE '%{r[1]}%' AND set_type LIKE '%{s[4].replace("'", "''")}%' ORDER BY song_num ASC""").fetchall():
+					for t in cur.execute(f"""SELECT song_name, song_url, segue FROM SETLISTS WHERE event_url LIKE '%{r[1]}%' AND set_type LIKE '%{s[4].replace("'", "''")}%' ORDER BY setlist_song_id ASC""").fetchall():
 						premiere = cur.execute(f"""SELECT first_played FROM SONGS WHERE song_url LIKE '%{t[1]}%'""").fetchone()
 						bustout = cur.execute(f"""SELECT MIN(event_date) FROM EVENTS WHERE setlist LIKE '%{t[0].replace("'", "''")}%' AND tour = '{r[4].replace("'", "''")}'""").fetchone()
 
