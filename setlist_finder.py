@@ -62,6 +62,7 @@ async def setlist_finder(ctx, date=None):
 					setlist = (", ".join(set_l)).replace(">,", ">")
 
 					if setlist:
+						bootleg = official = "No"
 						embed.add_field(name=f"{s[4]}:", value=setlist, inline=False)
 						embed.add_field(name="", value="**[1]** - First Known Performance\n**[2]** - Tour Debut")
 
