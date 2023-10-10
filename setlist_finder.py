@@ -21,15 +21,15 @@ async def setlist_finder(ctx, date=None):
 
 		if cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchall():
 			for r in cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchall():
-				# id, event_url, location_url, show, tour, setlist
+				# id, date, event_url, location_url, show, tour, setlist, bootleg, livedl
 				location = ""
 				# location = ", ".join(list(filter(None, r[4:8])))
-				location = location_name_get(r[2])
-				if r[3] != "":
-					location += f" ({r[3]})"
+				location = location_name_get(r[3])
+				if r[4] != "":
+					location += f" ({r[4]})"
 
-				event_date = re.findall("\d{4}-\d{2}-\d{2}", r[1])
-				embed.add_field(name="", value=f"[{event_date[0]}]({main_url}{r[1]})\n*{location}*", inline=False)
+				# event_date = re.findall("\d{4}-\d{2}-\d{2}", r[1])
+				embed.add_field(name="", value=f"[{r[1]}]({main_url}{r[2]})\n*{location}*", inline=False)
 				embed.set_footer(text=r[4])
 
 				#id, event_url, song_url, song_name, set_type, song_in_set, song_num, segue
