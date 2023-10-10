@@ -43,12 +43,12 @@ async def setlist_finder(ctx, date=None):
 						#check setlist table for song url and tour, order by id ascending, if date equals r[1] (date) and tour = r[9], then bustout
 						#bustout_date = re.findall("\d{4}-\d{2}-\d{2}", bustout[0])
 
-						if premiere[0] == event_date[0] and s[4] not in ['Soundcheck', 'Rehearsal']:
+						if premiere[0] == r[1] and s[4] not in ['Soundcheck', 'Rehearsal']:
 							if t[2]:
 								set_l.append(f"{t[0]} **[1]** > ")
 							else:
 								set_l.append(f"{t[0]} **[1]**")
-						elif bustout[0] == event_date[0] and s[4] not in ['Soundcheck', 'Rehearsal']:
+						elif bustout[0] == r[1] and s[4] not in ['Soundcheck', 'Rehearsal']:
 							if t[2]:
 								set_l.append(f"{t[0]} **[2]** > ")
 							else:
