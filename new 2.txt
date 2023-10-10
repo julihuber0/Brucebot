@@ -7,3 +7,12 @@ db notes
 	add premiere/debut for setlists
 	change date reference in songs/tours (first/last played and first/last show) to event_url instead of date
 	
+---
+1978-05-23
+Shea's Buffalo, Buffalo, NY, USA
+E Street Band
+
+[SETLIST]
+
+Bootleg: yes
+Official Recording: yes

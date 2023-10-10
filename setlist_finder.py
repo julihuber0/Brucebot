@@ -30,7 +30,7 @@ async def setlist_finder(ctx, date=None):
 
 				# event_date = re.findall("\d{4}-\d{2}-\d{2}", r[1])
 				embed.add_field(name="", value=f"[{r[1]}]({main_url}{r[2]})\n*{location}*", inline=False)
-				embed.set_footer(text=r[4])
+				embed.set_footer(text=r[5])
 
 				#id, event_url, song_url, song_name, set_type, song_in_set, song_num, segue
 				for s in cur.execute(f"""SELECT * FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url LIKE '%{r[1]}%' ORDER BY set_type, setlist_song_id ASC) p ORDER BY setlist_song_id ASC""").fetchall():
@@ -63,11 +63,23 @@ async def setlist_finder(ctx, date=None):
 
 					if setlist:
 						embed.add_field(name=f"{s[4]}:", value=setlist, inline=False)
+						embed.add_field(name="", value="**[1]** - First Known Performance\n**[2]** - Tour Debut")
+
+						if r[7]:
+							bootleg = "Yes"
+						elif r[8]:
+							official = "Yes"
+						else:
+							bootleg = "No"
+							official = "No"
+
+						embed.add_field(name="Bootleg:", value=f"{bootleg}")
+						embed.add_field(name="Official Release:", value=f"{official}")
 					else:
 						embed.add_field(name=f"{s[4]}:", value="No Set Details Known", inline=False)
 
 			#embed.add_field(name="", value="**[1]** - First Known Performance")
-			embed.add_field(name="", value="**[1]** - First Known Performance\n**[2]** - Tour Debut")
+			
 		else:
 			embed.add_field(name="", value="ERROR: Show Not Found", inline=False)
 
