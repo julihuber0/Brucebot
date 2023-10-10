@@ -22,7 +22,8 @@ async def setlist_finder(ctx, date=None):
 		if cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchall():
 			for r in cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchall():
 				# id, date, event_url, location_url, show, tour, setlist, bootleg, livedl
-				location = ""
+				location = setlist = ""
+				set_l = []
 				# location = ", ".join(list(filter(None, r[4:8])))
 				location = location_name_get(r[3])
 				if r[4] != "":
