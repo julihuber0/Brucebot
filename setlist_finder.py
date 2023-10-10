@@ -29,7 +29,7 @@ async def setlist_finder(ctx, date=None):
 					location += f" ({r[4]})"
 
 				# event_date = re.findall("\d{4}-\d{2}-\d{2}", r[1])
-				embed.add_field(name="", value=f"[{r[1]}]({main_url}{r[2]})\n*{location}*", inline=False)
+				embed.add_field(name="", value=f"[{r[1]}]({main_url}{r[2]})\n*[{location}]({r[3]})*", inline=False)
 				embed.set_footer(text=r[5])
 
 				#id, event_url, song_url, song_name, set_type, song_in_set, song_num, segue
@@ -71,8 +71,8 @@ async def setlist_finder(ctx, date=None):
 					else:
 						embed.add_field(name=f"{s[4]}:", value="No Set Details Known", inline=False)
 				
-				embed.add_field(name="Bootleg:", value=f"{bootleg}", inline=False)
-				embed.add_field(name="Official Release:", value=f"{official}", inline=False)
+				embed.add_field(name="", value=f"**Bootleg:** {bootleg}", inline=False)
+				embed.add_field(name="", value=f"**Official Release:** {official}", inline=False)
 
 			#embed.add_field(name="", value="**[1]** - First Known Performance")
 			embed.add_field(name="", value="**[1]** - First Known Performance\n**[2]** - Tour Debut")
