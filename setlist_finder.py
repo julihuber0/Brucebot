@@ -23,7 +23,7 @@ async def setlist_finder(ctx, date=None):
 			for r in cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchall():
 				# id, date, event_url, location_url, show, tour, setlist, bootleg, livedl
 				location = ""
-				set_l = []
+				bootleg = official = "No"
 				# location = ", ".join(list(filter(None, r[4:8])))
 				location = location_name_get(r[3])
 				if r[4] != "":
@@ -63,7 +63,6 @@ async def setlist_finder(ctx, date=None):
 					setlist = (", ".join(set_l)).replace(">,", ">")
 
 					if setlist:
-						bootleg = official = "No"
 						embed.add_field(name=f"{s[4]}:", value=setlist, inline=False)
 						if r[7]:
 							bootleg = "Yes"
