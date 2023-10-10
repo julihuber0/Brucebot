@@ -21,7 +21,7 @@ async def city_finder(ctx, *city):
 		first_last = cur.execute(f"""SELECT MIN(event_url), MAX(event_url), COUNT(event_url) FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE LOWER(venue_city) LIKE '{city_name}') AND tour != ''""").fetchall()[0]
 		# last_event = cur.execute(f"""SELECT event_url FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE LOWER(venue_city) LIKE '{city_name}') AND setlist != '' AND tour != '' ORDER BY event_id DESC""").fetchone()
 
-		if first_last:
+		if first_last and first_last[2] > 0:
 			first_date = re.findall("\d{4}-\d{2}-\d{2}", first_last[0])
 			last_date = re.findall("\d{4}-\d{2}-\d{2}", first_last[1])
 
@@ -57,8 +57,7 @@ async def state_finder(ctx, *state):
 
 		first_last = cur.execute(f"""SELECT MIN(event_url), MAX(event_url), COUNT(event_url) FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE LOWER(venue_state) LIKE '{state_abbrev}') AND tour != ''""").fetchall()[0]
 
-		if first_last:
-
+		if first_last and first_last[2] > 0:
 			first_date = re.findall("\d{4}-\d{2}-\d{2}", first_last[0])
 			last_date = re.findall("\d{4}-\d{2}-\d{2}", first_last[1])
 
@@ -81,8 +80,7 @@ async def country_finder(ctx, *country):
 
 		first_last = cur.execute(f"""SELECT MIN(event_url), MAX(event_url), COUNT(event_url) FROM EVENTS WHERE location_url IN (SELECT venue_url FROM VENUES WHERE LOWER(venue_country) LIKE '{country_name}') AND tour != ''""").fetchall()[0]
 
-		if first_last:
-
+		if first_last and first_last[2] > 0:
 			first_date = re.findall("\d{4}-\d{2}-\d{2}", first_last[0])
 			last_date = re.findall("\d{4}-\d{2}-\d{2}", first_last[1])
 
