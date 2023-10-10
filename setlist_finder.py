@@ -68,11 +68,8 @@ async def setlist_finder(ctx, date=None):
 
 						if r[7]:
 							bootleg = "Yes"
-						elif r[8]:
+						if r[8]:
 							official = "Yes"
-						else:
-							bootleg = "No"
-							official = "No"
 
 						embed.add_field(name="Bootleg:", value=f"{bootleg}", inline=False)
 						embed.add_field(name="Official Release:", value=f"{official}", inline=False)
