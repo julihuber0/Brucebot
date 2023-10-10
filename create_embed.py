@@ -13,6 +13,6 @@ def create_embed(title, description, ctx):
 
 	eDate = re.findall("\d{4}", title)
 
-	embed.set_thumbnail(url=f"https://raw.githubusercontent.com/lilbud/lilbud.github.io/main/assets/img/graphics/bootleg-covers/features/bruce/{eDate[0]}.jpg")
+	# embed.set_thumbnail(url=f"https://raw.githubusercontent.com/lilbud/lilbud.github.io/main/assets/img/graphics/bootleg-covers/features/bruce/{eDate[0]}.jpg")
 
 	return embed
