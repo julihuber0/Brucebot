@@ -57,7 +57,7 @@ async def song_finder(ctx, *song):
 			embed.add_field(name="", value=f"[Lyrics]({main_url}{s[1].replace('/song:', '/lyrics:')})", inline=False)
 			embed.add_field(name="Performances:", value=s[5], inline=True)
 
-			if s[5] > 0:
+			if int(s[5]) > 0:
 				embed.add_field(name="First Played:",value=f"[{f[0]}]({main_url}{s[3]})", inline=True)
 				embed.add_field(name="Last Played:",value=f"[{l[0]}]({main_url}{s[4]})", inline=True)
 				embed.add_field(name="Show Opener:", value=s[6], inline=True)
