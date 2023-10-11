@@ -25,7 +25,7 @@ def tour_name_fix(tour):
 
 @bot.command(aliases=['tour'])
 async def tour_stats(ctx, *tour):
-    #id, url, name, first_show, last_show, num_shows, num_songs
+    #id, url, name, first_show_url, last_show_url, num_shows, num_songs
 
     if len(" ".join(tour)) > 1:
         tour_name = tour_name_fix(" ".join(tour))
@@ -41,15 +41,15 @@ async def tour_stats(ctx, *tour):
 
             # first_date = re.findall("\d{4}-\d{2}-\d{2}", first_last[0])
             # last_date = re.findall("\d{4}-\d{2}-\d{2}", first_last[1])
-            first_show = cur.execute(f"""SELECT event_url FROM EVENTS WHERE tour LIKE '{stats[2].replace("'", "''")}' AND event_date LIKE '{str(stats[3])}' AND event_url LIKE '/gig:%'""").fetchall()[0]
-            last_show = cur.execute(f"""SELECT event_url FROM EVENTS WHERE tour LIKE '{stats[2].replace("'", "''")}' AND event_date LIKE '{str(stats[4])}' AND event_url LIKE '/gig:%'""").fetchall()[0]
+            first_show = cur.execute(f"""SELECT event_date FROM EVENTS WHERE tour LIKE '{stats[2].replace("'", "''")}' AND event_url LIKE '{str(stats[3])}' AND event_url LIKE '/gig:%'""").fetchall()[0]
+            last_show = cur.execute(f"""SELECT event_date FROM EVENTS WHERE tour LIKE '{stats[2].replace("'", "''")}' AND event_url LIKE '{str(stats[4])}' AND event_url LIKE '/gig:%'""").fetchall()[0]
 
             embed = create_embed(f"Tour: {stats[2]}", f"[Tour Stats]({main_url}{stats[1]}) | [Tour Songs]({main_url}{stats[1].replace('shows', 'songs')})", ctx)
 
             #first show, last show, num shows, num songs
             embed.add_field(name="Number of Shows:", value=f"{stats[5]}", inline=False)
-            embed.add_field(name="First Show:", value=f"[{str(stats[3])}]({main_url}{first_show[0]})", inline=False)
-            embed.add_field(name="Last Show:", value=f"[{str(stats[4])}]({main_url}{last_show[0]})", inline=False)
+            embed.add_field(name="First Show:", value=f"[{first_show[0]}]({main_url}{str(stats[3])})", inline=False)
+            embed.add_field(name="Last Show:", value=f"[{last_show[0]}]({main_url}{str(stats[4])})", inline=False)
             embed.add_field(name="Number of Songs:", value=f"{stats[6]}", inline=False)
 
             await ctx.send(embed=embed)

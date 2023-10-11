@@ -36,7 +36,7 @@ async def song_finder(ctx, *song):
 	
 	if len(" ".join(song)) > 1:
 		song_name = song_name_fix(" ".join(song).replace("'", "''").replace("\"", "''"))
-		#id, url, name, first_played, last_played, num_plays, opener, closer, freq
+		#id, url, name, first_played_url, last_played_url, num_plays, opener, closer, freq
 
 		if cur.execute(f"""SELECT * FROM SONGS WHERE LOWER(song_name) LIKE '{song_name.lower()}'""").fetchone():
 			s = cur.execute(f"""SELECT * FROM SONGS WHERE LOWER(song_name) LIKE '{song_name.lower()}'""").fetchone()
@@ -44,8 +44,8 @@ async def song_finder(ctx, *song):
 			s = cur.execute(f"""SELECT * FROM SONGS WHERE LOWER(song_name) LIKE '%{song_name.lower()}%'""").fetchone()
 
 		if s:
-			f = cur.execute(f"""SELECT event_url FROM EVENTS WHERE event_date LIKE '{str(s[3])}'""").fetchone()
-			l = cur.execute(f"""SELECT event_url FROM EVENTS WHERE event_date LIKE '{str(s[4])}'""").fetchone()
+			f = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{str(s[3])}'""").fetchone()
+			l = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{str(s[4])}'""").fetchone()
 
 			# opener = cur.execute(f"""SELECT COUNT(song_url) FROM SETLISTS WHERE song_url LIKE '%{s[1]}%' AND song_num=1 AND set_type NOT IN ('Soundcheck', 'Rehearsal')""").fetchone()
 			# closer = cur.execute(f"""SELECT COUNT(event_url) FROM EVENTS WHERE setlist LIKE '%, {s[2].replace("'", "''")}'""").fetchone()
@@ -58,8 +58,8 @@ async def song_finder(ctx, *song):
 			embed.add_field(name="Performances:", value=s[5], inline=True)
 
 			if s[5] > 0:
-				embed.add_field(name="First Played:",value=f"[{s[3]}]({main_url}{f[0]})", inline=True)
-				embed.add_field(name="Last Played:",value=f"[{s[4]}]({main_url}{l[0]})", inline=True)
+				embed.add_field(name="First Played:",value=f"[{f[0]}]({main_url}{s[3]})", inline=True)
+				embed.add_field(name="Last Played:",value=f"[{l[0]}]({main_url}{s[4]})", inline=True)
 				embed.add_field(name="Show Opener:", value=s[6], inline=True)
 				embed.add_field(name="Show Closer:", value=s[7], inline=True)
 				embed.add_field(name="Frequency:", value=f"{s[8]}%", inline=True)
