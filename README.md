@@ -12,6 +12,7 @@ Its not a 1:1 exact copy of their embed, but enough to where I feel I should pro
 
 ## Changelog (as best as I can)
 
+- 2023-10-11: modified the database to only count song opener/closer if the known setlist is more than a single song. As it's unknown exactly where in the set it falls.
 - 2023-10-11: on the database, SONGS and TOURS originally just pointed to an event date, which is now changed to the event url. Reason being it's more accurate if there are multiple events on a single date, and the code would just return the first date match which might not be accurate.
 - 2023-10-09: while back updated the database and accidentally removed the date column from events (when meaning to from setlist). Ended up modifying the code to work without it as I deemed it unnecessary, then I found out. Added it back, and redid all the code.
 - 2023-10-05: added many of the bot functions to the plain database, stuff like song frequency, tour first/last, num times song opened/closed show, and also added a check if the show circulates as a bootleg or has an official release (thanks to the list on brucebase)
