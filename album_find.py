@@ -17,7 +17,7 @@ def album_name_fix(album):
     # album name: [list of shorthand/abbreviations]
     for key, value in albums.items():
         for v in value:
-            if v.lower() in album.lower():
+            if v.lower() == album.lower():
                 album_name = key
     
     if album_name:
@@ -31,7 +31,7 @@ async def album_finder(ctx, *album):
     songs = []
 
     album_to_find = album_name_fix(" ".join(album).replace("'", "''")).lower()
-    album_info = cur.execute(f"""SELECT album_name, album_year, song_url FROM ALBUMS WHERE LOWER(album_name) LIKE '%{album_to_find}%' ORDER BY song_num ASC""").fetchall()
+    album_info = cur.execute(f"""SELECT album_name, album_year, song_url FROM ALBUMS WHERE LOWER(album_name) LIKE '%{album_to_find}%' AND album_type LIKE 'studio' ORDER BY song_num ASC""").fetchall()
 
     if album_info:
         embed = create_embed(album_info[0][0], f"Year: {album_info[0][1]}", ctx)
