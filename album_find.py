@@ -63,13 +63,14 @@ async def album_finder(ctx, *album):
     # album name
     # year
     # songs
-    # most played/least played
-    # first/last premiered
-
-    album_info = cur.execute(f"""SELECT album_name, album_year, song_url FROM ALBUMS WHERE LOWER(album_name) LIKE '%{" ".join(album).replace("'", "''")}%' ORDER BY song_num ASC""").fetchall()
+    # most played/least played: born to run (1765) / night (543)
+    # first/last premiered: 
+    album_to_find = album_name_fix(" ".join(album).replace("'", "''"))
+    album_info = cur.execute(f"""SELECT album_name, album_year, song_url FROM ALBUMS WHERE LOWER(album_name) LIKE '%{album_to_find}%' ORDER BY song_num ASC""").fetchall()[0]
 
     if album_info:
-        embed = create_embed(album_info[0][0], f"Year: {album_info[1]}", ctx)
+        embed = create_embed(album_info[0], f"Year: {album_info[1]}", ctx)
+        plays = cur.execute(f"""select song_name, num_plays FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE '%{album_to_find}%') ORDER BY CAST(num_plays AS integer) ASC""").fetchone()
 
         for s in album_info:
             find_song = cur.execute(f"""SELECT song_name FROM SONGS WHERE song_url LIKE '{s[2]}'""").fetchone()
@@ -77,6 +78,7 @@ async def album_finder(ctx, *album):
         
         song_list = ", ".join(songs)
         embed.add_field(name="Songs:", value=f"{song_list}", inline=False)
+        embed.add_field(name="Most/Least Played:", value=f"{plays[0]} / {plays[-1]}", inline=False)
 
         await ctx.send(embed=embed)
     else:
