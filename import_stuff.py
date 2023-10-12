@@ -80,22 +80,24 @@ albums = {"Greetings From Asbury Park, N.J.": ["greetings"],
 "Born To Run": ["btr"],
 "The River": ["theriver"],
 "Born In The U.S.A.": ["bitusa"," usa"],
+"Live 1975–85": ["7585",""],
 "Tunnel Of Love": ["tol"],
 "Human Touch": ["ht"],
 "Lucky Town": ["lt"],
+"Greatest Hits": ["greatesthits",""],
 "The Ghost Of Tom Joad": ["gotj"],
+"Live In New York City": ["livenyc",""],
 "The Rising": ["therising"],
 "We Shall Overcome": ["seeger","sessions"],
 "Working On A Dream": ["woad"],
 "Wrecking Ball": ["wb","wreckingball"],
 "High Hopes": ["hh","highhopes"],
 "Western Stars": ["ws","westernstars"],
-"Letter To You": ["lettertoyou","lty"],
+"Letter To You": ["lty","lettertoyou"],
 "Only The Strong Survive": ["otss"],
-"Greatest Hits": ["greatesthits"],
-"Blood Brothers EP": ["bloodbrothers","bb"],
 "The Promise": ["thepromise"],
-"The Ties That Bind": ["tttb"]}
+"The Ties That Bind": ["tttb"],
+"The Legendary 1979 No Nukes Concerts": ["nonukes",""]}
 
 cDate = datetime.datetime.now(ZoneInfo('US/Eastern'))
 
