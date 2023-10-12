@@ -50,7 +50,7 @@ async def album_finder(ctx, *album):
             song_list = ", ".join(songs)
             embed.add_field(name="Songs (Bold = Not Played):", value=f"{song_list}", inline=False)
 
-            if plays[-1][1] and plays[0][1]:
+            if plays[-1] and plays[0]:
                 embed.add_field(name="Most/Least Played:", value=f"{plays[-1][0]} ({plays[-1][1]}) / {plays[0][0]} ({plays[0][1]})", inline=False)
 
             first_date = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[0][1]}'""").fetchone()
