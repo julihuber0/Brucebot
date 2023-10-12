@@ -66,7 +66,7 @@ async def album_finder(ctx, *album):
     # most played/least played: born to run (1765) / night (543)
     # first/last premiered: 
     album_to_find = album_name_fix(" ".join(album).replace("'", "''")).lower()
-    album_info = cur.execute(f"""SELECT album_name, album_year, song_url FROM ALBUMS WHERE LOWER(album_name) LIKE '%{album_to_find}%' ORDER BY song_num ASC""").fetchall()
+    album_info = cur.execute(f"""SELECT album_name, album_year, song_url FROM ALBUMS WHERE LOWER(album_name) LIKE '%{album_to_find}%' AND album_type LIKE 'studio' ORDER BY song_num ASC""").fetchall()
 
     if album_info:
         embed = create_embed(album_info[0][0], f"Year: {album_info[0][1]}", ctx)
@@ -79,7 +79,7 @@ async def album_finder(ctx, *album):
         
         song_list = ", ".join(songs)
         embed.add_field(name="Songs:", value=f"{song_list}", inline=False)
-        embed.add_field(name="Most/Least Played:", value=f"{plays[0][0]} ({plays[0][1]}) / {plays[-1][0]} ({plays[-1][1]})", inline=False)
+        embed.add_field(name="Most/Least Played:", value=f"{plays[-1][0]} ({plays[-1][1]}) / {plays[0][0]} ({plays[0][1]})", inline=False)
 
         first_date = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[0][1]}'""").fetchone()
         last_date = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[-1][1]}'""").fetchone()
