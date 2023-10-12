@@ -68,7 +68,7 @@ async def album_finder(ctx, *album):
 
     if album_info:
         embed = create_embed(album_info[0][0], f"Year: {album_info[0][1]}", ctx)
-        plays = cur.execute(f"""select song_name, num_plays FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE '{album_info[0][0]}' AND album_type LIKE 'studio') ORDER BY num_plays ASC""").fetchall()
+        plays = cur.execute(f"""select song_name, num_plays FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE '{album_info[0][0]}' AND album_type LIKE 'studio') ORDER BY (num_plays as integer) ASC""").fetchall()
         premiere = cur.execute(f"""select song_name, first_played FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE '{album_info[0][0]}' AND album_type LIKE 'studio') ORDER BY first_played ASC""").fetchall()
 
         for s in album_info:
@@ -78,13 +78,14 @@ async def album_finder(ctx, *album):
         song_list = ", ".join(songs)
         embed.add_field(name="Songs:", value=f"{song_list}", inline=False)
 
-        if plays:
+        if plays[0] and plays[-1]:
             embed.add_field(name="Most/Least Played:", value=f"{plays[-1][0]} ({plays[-1][1]}) / {plays[0][0]} ({plays[0][1]})", inline=False)
 
-        first_date = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[0][1]}'""").fetchone()
-        last_date = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[-1][1]}'""").fetchone()
+        if premiere[0] and premiere[-1]:
+            first_date = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[0][1]}'""").fetchone()
+            last_date = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[-1][1]}'""").fetchone()
 
-        embed.add_field(name="First/Last Premiered:", value=f"{premiere[0][0]} ([{first_date[0]}]({main_url}{premiere[0][1]})) / {premiere[-1][0]} ([{last_date[0]}]({main_url}{premiere[-1][1]}))", inline=False)
+            embed.add_field(name="First/Last Premiered:", value=f"{premiere[0][0]} ([{first_date[0]}]({main_url}{premiere[0][1]})) / {premiere[-1][0]} ([{last_date[0]}]({main_url}{premiere[-1][1]}))", inline=False)
 
         await ctx.send(embed=embed)
     else:
