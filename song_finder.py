@@ -36,7 +36,7 @@ async def song_finder(ctx, *song):
 	
 	if len(" ".join(song)) > 1:
 		song_name = song_name_fix(" ".join(song).replace("'", "''").replace("\"", "''"))
-		#id, url, name, first_played_url, last_played_url, num_plays, opener, closer, freq
+		#id, url, name, first_played_url, last_played_url, num_plays, opener, closer, frequency
 
 		if cur.execute(f"""SELECT * FROM SONGS WHERE LOWER(song_name) LIKE '{song_name.lower()}'""").fetchone():
 			s = cur.execute(f"""SELECT * FROM SONGS WHERE LOWER(song_name) LIKE '{song_name.lower()}'""").fetchone()
