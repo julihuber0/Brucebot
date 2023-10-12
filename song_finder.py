@@ -55,14 +55,16 @@ async def song_finder(ctx, *song):
 			embed = create_embed(s[2], f"[Brucebase Song Page]({main_url}{s[1]})", ctx)
 
 			embed.add_field(name="", value=f"[Lyrics]({main_url}{s[1].replace('/song:', '/lyrics:')})", inline=False)
-			embed.add_field(name="Performances:", value=s[5], inline=True)
 
 			if s[5] != "" and int(s[5]) > 0:
+				embed.add_field(name="Performances:", value=s[5], inline=True)
 				embed.add_field(name="First Played:",value=f"[{f[0]}]({main_url}{s[3]})", inline=True)
 				embed.add_field(name="Last Played:",value=f"[{l[0]}]({main_url}{s[4]})", inline=True)
 				embed.add_field(name="Show Opener:", value=s[6], inline=True)
 				embed.add_field(name="Show Closer:", value=s[7], inline=True)
 				embed.add_field(name="Frequency:", value=f"{s[8]}%", inline=True)
+			else:
+				embed.add_field(name="Performances:", value="0", inline=True)
 
 			await ctx.send(embed=embed)
 		else:
