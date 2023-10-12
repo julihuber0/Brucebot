@@ -75,6 +75,28 @@ states_and_provinces_abbrev = {
 	'DC': 'District of Columbia',
 }
 
+albums = {"Greetings From Asbury Park, N.J.": ["greetings"],
+"The Wild, The Innocent & The E Street Shuffle": ["wiess"],
+"Born To Run": ["btr"],
+"The River": ["theriver"],
+"Born In The U.S.A.": ["bitusa"," usa"],
+"Tunnel Of Love": ["tol"],
+"Human Touch": ["ht"],
+"Lucky Town": ["lt"],
+"The Ghost Of Tom Joad": ["gotj"],
+"The Rising": ["therising"],
+"We Shall Overcome": ["seeger","sessions"],
+"Working On A Dream": ["woad"],
+"Wrecking Ball": ["wb","wreckingball"],
+"High Hopes": ["hh","highhopes"],
+"Western Stars": ["ws","westernstars"],
+"Letter To You": ["lettertoyou","lty"],
+"Only The Strong Survive": ["otss"],
+"Greatest Hits": ["greatesthits"],
+"Blood Brothers EP": ["bloodbrothers","bb"],
+"The Promise": ["thepromise"],
+"The Ties That Bind": ["tttb"]}
+
 cDate = datetime.datetime.now(ZoneInfo('US/Eastern'))
 
 main_url = "http://brucebase.wikidot.com"

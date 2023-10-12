@@ -30,15 +30,12 @@ async def on_this_day(ctx, *date):
 
 		embed = create_embed(f"On This Day: {ndate.strip('-')}", f"Number of Shows: {str(len(otd_links))}", ctx)
 
-		for i in otd_links:
-			# location = ", ".join(list(filter(None, i[2:7])))
-			
+		for i in otd_links:		
 			location = location_name_get(i[1])
 
 			if i[2] != "":
 				location += f" ({i[2]})"
 
-			# event_date = re.findall("\d{4}-\d{2}-\d{2}", i[0])
 			embed.add_field(name=f"{i[3][0:4]}:", value=f"[{location}]({main_url}{i[0]})")
 
 		await ctx.send(embed=embed)

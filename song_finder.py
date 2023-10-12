@@ -47,11 +47,6 @@ async def song_finder(ctx, *song):
 			f = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{str(s[3])}'""").fetchone()
 			l = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{str(s[4])}'""").fetchone()
 
-			# opener = cur.execute(f"""SELECT COUNT(song_url) FROM SETLISTS WHERE song_url LIKE '%{s[1]}%' AND song_num=1 AND set_type NOT IN ('Soundcheck', 'Rehearsal')""").fetchone()
-			# closer = cur.execute(f"""SELECT COUNT(event_url) FROM EVENTS WHERE setlist LIKE '%, {s[2].replace("'", "''")}'""").fetchone()
-			# total = cur.execute("""SELECT COUNT(event_id) FROM EVENTS WHERE event_url LIKE '/gig:%'""").fetchone()
-			# frequency = f"{round((s[5] / total[0] * 100), 2)}%"
-
 			embed = create_embed(s[2], f"[Brucebase Song Page]({main_url}{s[1]})", ctx)
 
 			embed.add_field(name="", value=f"[Lyrics]({main_url}{s[1].replace('/song:', '/lyrics:')})", inline=False)

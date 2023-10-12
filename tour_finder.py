@@ -37,10 +37,6 @@ async def tour_stats(ctx, *tour):
             stats = cur.execute(f"""SELECT * FROM TOURS WHERE tour_name ILIKE '%{tour_name.replace("'", "''")}%'""").fetchall()[0]
 
         if stats != "":
-            # first_last = cur.execute(f"""SELECT MIN(event_url), MAX(event_url) FROM EVENTS WHERE tour LIKE '{stats[2].replace("'", "''")}' AND event_url LIKE '/gig:%'""").fetchall()[0]
-
-            # first_date = re.findall("\d{4}-\d{2}-\d{2}", first_last[0])
-            # last_date = re.findall("\d{4}-\d{2}-\d{2}", first_last[1])
             first_show = cur.execute(f"""SELECT event_date FROM EVENTS WHERE tour LIKE '{stats[2].replace("'", "''")}' AND event_url LIKE '{str(stats[3])}' AND event_url LIKE '/gig:%'""").fetchall()[0]
             last_show = cur.execute(f"""SELECT event_date FROM EVENTS WHERE tour LIKE '{stats[2].replace("'", "''")}' AND event_url LIKE '{str(stats[4])}' AND event_url LIKE '/gig:%'""").fetchall()[0]
 

@@ -14,7 +14,6 @@ async def setlist_finder(ctx, date=None):
 
 	if date is None:
 		date = cur.execute("""SELECT event_date FROM EVENTS WHERE setlist != '' ORDER BY event_id DESC LIMIT 1""").fetchone()[0]
-		# date = re.findall("\d{4}-\d{2}-\d{2}", d)[0]
 
 	if date_checker(date):
 		embed = create_embed(f"Brucebase Results For: {date}", "", ctx)
@@ -24,12 +23,11 @@ async def setlist_finder(ctx, date=None):
 				# id, date, event_url, location_url, show, tour, setlist, bootleg, livedl
 				location = setlist = ""
 				set_l = []
-				# location = ", ".join(list(filter(None, r[4:8])))
+
 				location = location_name_get(r[3])
 				if r[4] != "":
 					location += f" ({r[4]})"
 
-				# event_date = re.findall("\d{4}-\d{2}-\d{2}", r[1])
 				embed.add_field(name="", value=f"[{r[1]} - {location}]({main_url}{r[2]})", inline=False)
 				embed.set_footer(text=r[5])
 
@@ -75,7 +73,6 @@ async def setlist_finder(ctx, date=None):
 				embed.add_field(name="", value=f"**Bootleg:** {bootleg}", inline=False)
 				embed.add_field(name="", value=f"**Official Release:** {official}", inline=False)
 
-			#embed.add_field(name="", value="**[1]** - First Known Performance")
 			embed.add_field(name="", value="**[1]** - First Known Performance\n**[2]** - Tour Debut")
 		else:
 			embed.add_field(name="", value="ERROR: Show Not Found", inline=False)

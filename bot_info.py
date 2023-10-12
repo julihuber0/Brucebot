@@ -53,6 +53,10 @@ async def bot_help(ctx):
 	embed.add_field(name="Tour Stats:\t`!tour [TOUR_NAME]`",
 					value="Searches the database for the specified tour, and returns stats for it",
 					inline=False)
+	
+	embed.add_field(name="Album Stats:\t`!album [ALBUM] / !a [ALBUM]`",
+					value="Searches the database for the specified album, and returns stats for it, can also use album emotes",
+					inline=False)
 
 	await ctx.send(embed=embed)
 
