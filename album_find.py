@@ -72,11 +72,15 @@ async def album_finder(ctx, *album):
         premiere = cur.execute(f"""select song_name, first_played FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE '{album_info[0][0]}' AND album_type LIKE 'studio') AND first_played != '' ORDER BY first_played ASC""").fetchall()
 
         for s in album_info:
-            find_song = cur.execute(f"""SELECT song_name FROM SONGS WHERE song_url LIKE '{s[2]}'""").fetchone()
-            songs.append(find_song[0])
+            find_song = cur.execute(f"""SELECT song_name, num_plays FROM SONGS WHERE song_url LIKE '{s[2]}'""").fetchone()
+
+            if find_song[1] == "":
+                songs.append(f"**{find_song[0]}**")
+            else:
+                songs.append(find_song[0])
         
         song_list = ", ".join(songs)
-        embed.add_field(name="Songs:", value=f"{song_list}", inline=False)
+        embed.add_field(name="Songs (Bold = Not Played):", value=f"{song_list}", inline=False)
 
         if plays[0] and plays[-1]:
             embed.add_field(name="Most/Least Played:", value=f"{plays[-1][0]} ({plays[-1][1]}) / {plays[0][0]} ({plays[0][1]})", inline=False)
