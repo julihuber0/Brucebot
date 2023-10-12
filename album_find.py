@@ -70,8 +70,8 @@ async def album_finder(ctx, *album):
 
     if album_info:
         embed = create_embed(album_info[0][0], f"Year: {album_info[0][1]}", ctx)
-        plays = cur.execute(f"""select song_name, num_plays FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE LOWER(album_name) LIKE '%{album_to_find}%') ORDER BY CAST(num_plays as integer) ASC""").fetchall()
-        premiere = cur.execute(f"""select song_name, first_played FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE LOWER(album_name) LIKE '%{album_to_find}%') ORDER BY first_played ASC""").fetchall()
+        plays = cur.execute(f"""select song_name, num_plays FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE '{album_info[0][0]}' AND album_type LIKE 'studio') ORDER BY CAST(num_plays as integer) ASC""").fetchall()
+        premiere = cur.execute(f"""select song_name, first_played FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE '{album_info[0][0]}' AND album_type LIKE 'studio') ORDER BY first_played ASC""").fetchall()
 
         for s in album_info:
             find_song = cur.execute(f"""SELECT song_name FROM SONGS WHERE song_url LIKE '{s[2]}'""").fetchone()
