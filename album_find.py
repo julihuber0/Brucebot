@@ -70,7 +70,7 @@ async def album_finder(ctx, *album):
     # most played/least played
     # first/last premiered
 
-    album_info = cur.execute(f"""SELECT album_name, year, song_url FROM ALBUMS WHERE album_name LIKE '{album_to_find.replace("'", "''")}' ORDER BY song_num ASC""").fetchall()
+    album_info = cur.execute(f"""SELECT album_name, album_year, song_url FROM ALBUMS WHERE album_name LIKE '{album_to_find.replace("'", "''")}' ORDER BY song_num ASC""").fetchall()
 
     if album_info:
         embed = create_embed(album_info[0][0], f"Year: {album_info[1]}", ctx)
