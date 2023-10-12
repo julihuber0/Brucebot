@@ -78,7 +78,7 @@ async def album_finder(ctx, *album):
         
         song_list = ", ".join(songs)
         embed.add_field(name="Songs:", value=f"{song_list}", inline=False)
-        embed.add_field(name="Most/Least Played:", value=f"{plays[0][0]} / {plays[0][-1]}", inline=False)
+        embed.add_field(name="Most/Least Played:", value=f"{plays[0][0]} / {plays[-1][0]}", inline=False)
 
         await ctx.send(embed=embed)
     else:
