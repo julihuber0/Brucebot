@@ -73,8 +73,8 @@ async def album_finder(ctx, *album):
         plays = cur.execute(f"""select song_name, num_plays FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE '%{album_to_find}%') ORDER BY CAST(num_plays AS integer) ASC""").fetchone()
 
         for s in album_info:
-            find_song = cur.execute(f"""SELECT song_name FROM SONGS WHERE song_url LIKE '{s[2]}'""").fetchone()
-            songs.append(find_song)
+            # find_song = cur.execute(f"""SELECT song_name FROM SONGS WHERE song_url LIKE '{s[2]}'""").fetchone()
+            songs.append(s)
         
         song_list = ", ".join(songs)
         embed.add_field(name="Songs:", value=f"{song_list}", inline=False)
