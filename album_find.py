@@ -36,13 +36,11 @@ def album_name_fix(album): # wiess, btr, bitusa, tol, ht, lt, joad, woad, wb, hh
     elif re.search("lty", album, re.IGNORECASE):
         return "letter to you"
     elif re.search("otss", album, re.IGNORECASE):
-        return "strong survive"
+        return "only the strong survive"
     elif re.search("nonukes", album, re.IGNORECASE):
         return "no nukes"
     elif re.search("seeger", album, re.IGNORECASE):
         return "we shall overcome"
-    elif re.search("7585", album, re.IGNORECASE):
-        return "75-85"
     elif re.search("tttb", album, re.IGNORECASE):
         return "the ties that bind"
     else:
