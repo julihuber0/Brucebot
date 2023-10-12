@@ -18,3 +18,5 @@ def error_message(error_type):
 			return "ERROR: Cover Not Found"
 		case "input":
 			return "ERROR: Invalid Input"
+		case "album":
+			return "ERROR: Album Not Found"
