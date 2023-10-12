@@ -71,6 +71,7 @@ async def album_finder(ctx, *album):
     if album_info:
         embed = create_embed(album_info[0][0], f"Year: {album_info[0][1]}", ctx)
         plays = cur.execute(f"""select song_name, num_plays FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE LOWER(album_name) LIKE '%{album_to_find}%') ORDER BY CAST(num_plays AS integer) ASC""").fetchall()
+        premiere = cur.execute(f"""select song_name, first_played FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE LOWER(album_name) LIKE '%{album_to_find}%') ORDER BY first_played ASC""").fetchall()
 
         for s in album_info:
             find_song = cur.execute(f"""SELECT song_name FROM SONGS WHERE song_url LIKE '{s[2]}'""").fetchone()
@@ -78,7 +79,8 @@ async def album_finder(ctx, *album):
         
         song_list = ", ".join(songs)
         embed.add_field(name="Songs:", value=f"{song_list}", inline=False)
-        embed.add_field(name="Most/Least Played:", value=f"{plays[0]} / {plays[-1]}", inline=False)
+        embed.add_field(name="Most/Least Played:", value=f"{plays[0][0]} ({plays[0][1]}) / {plays[-1][0]} ({plays[-1][0]})", inline=False)
+        embed.add_field(name="First/Last Premiered:", value=f"{premiere[0][0]} ({premiere[0][1]}) / {premiere[-1][0]} ({premiere[-1][0]})", inline=False)
 
         await ctx.send(embed=embed)
     else:
