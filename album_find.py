@@ -59,7 +59,7 @@ async def album_finder(ctx, *album):
     songs = []
 
     for a in cur.execute(f"""SELECT DISTINCT(album_name) FROM ALBUMS""").fetchall():
-        if a[0].lower() == "".join(album.strip(":").lower()):
+        if a[0].lower() == "".join(album).strip(":").lower():
             album_to_find = a[0]
         else:
             album_to_find = album_name_fix(" ".join(album))
