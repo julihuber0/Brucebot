@@ -47,7 +47,7 @@ def album_name_fix(album): # wiess, btr, bitusa, tol, ht, lt, joad, woad, wb, hh
         return album
     
 
-@bot.command(aliases=['album'])
+@bot.command(aliases=['album', 'a'])
 async def album_finder(ctx, *album):
     """Gets info on album"""
     songs = []
