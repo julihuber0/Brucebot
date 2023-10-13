@@ -17,7 +17,7 @@ def album_name_fix(album):
     # album name: [list of shorthand/abbreviations]
     for key, value in albums.items():
         for v in value:
-            if v.lower() == album.lower():
+            if v.lower() in album.lower():
                 album_name = key
     
     if album_name:
