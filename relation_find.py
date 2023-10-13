@@ -23,7 +23,7 @@ async def relation_finder(ctx, *name):
         performances = relationFind[2]
         relation_type = relationFind[3]
 
-        embed = create_embed(f"{name} ({relation_type.title()})", f"[Brucebase Page]({main_url}{url.strip("/")})", ctx)
+        embed = create_embed(f"{name} ({relation_type.title()})", f"[Brucebase Page]({main_url}{url.strip('/')})", ctx)
 
         if int(performances) > 0:
             first_last = cur.execute(f"""SELECT MIN(event_url), MAX(event_url) FROM ON_STAGE WHERE relation_url LIKE '{url}' AND event_url LIKE '/gig:%'""").fetchone()
@@ -32,8 +32,8 @@ async def relation_finder(ctx, *name):
             last_date = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{first_last[1]}'""").fetchall()[0]
 
             embed.add_field(name="Performances:", value=f"{performances}", inline=True)
-            embed.add_field(name="First Performance:", value=f"[{first_date[0]}]({main_url}{first_last[0].strip("/")})", inline=True)
-            embed.add_field(name="Last Performance:", value=f"[{last_date[0]}]({main_url}{first_last[1].strip("/")})", inline=True)
+            embed.add_field(name="First Performance:", value=f"[{first_date[0]}]({main_url}{first_last[0].strip('/')})", inline=True)
+            embed.add_field(name="Last Performance:", value=f"[{last_date[0]}]({main_url}{first_last[1].strip('/')})", inline=True)
         else:
             embed.add_field(name="Performances:", value=f"0", inline=True)
         
