@@ -14,11 +14,16 @@ import re
 def album_name_fix(album):
     album_name = ""
 
+
     # album name: [list of shorthand/abbreviations]
     for key, value in albums.items():
         for v in value:
-            if v.lower() in album.lower():
+            if v.lower() == album.lower():
                 album_name = key
+            elif "<:" in album.lower():
+                t = re.findall(":.*:", album.lower())[0]
+                if v.lower() in t:
+                    album_name = key
     
     if album_name:
         return album_name
