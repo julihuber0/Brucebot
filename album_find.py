@@ -35,7 +35,7 @@ async def album_finder(ctx, *album):
     """Gets info on album"""
     songs = []
 
-    album_to_find = album_name_fix(" ".join(album).replace("'", "''").replace(":", "")).lower()
+    album_to_find = album_name_fix(" ".join(album).replace("'", "''")).lower()
     album_info = cur.execute(f"""SELECT album_name, album_year, song_url FROM ALBUMS WHERE LOWER(album_name) LIKE '%{album_to_find}%' ORDER BY song_num ASC""").fetchall()
 
     if album_info and album_info[0][0] != "Tracks":
@@ -63,4 +63,4 @@ async def album_finder(ctx, *album):
 
         await ctx.send(embed=embed)
     else:
-        await ctx.send(f"{error_message('album')}, No results for {album_to_find}")
+        await ctx.send(f"{error_message('album')}, No results for: {album_to_find}")
