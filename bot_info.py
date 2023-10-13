@@ -55,7 +55,7 @@ async def bot_help(ctx):
 					inline=False)
 	
 	embed.add_field(name="Album Stats:\t`!album [ALBUM] / !a [ALBUM]`",
-					value="Searches the database for the specified album, and returns stats for it, can also use album emotes",
+					value="Searches the database for the specified album, and returns stats for it",
 					inline=False)
 	
 	embed.add_field(name="Person Finder:\t`!person [NAME] / !p [NAME]`",

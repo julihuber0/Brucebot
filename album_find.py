@@ -20,10 +20,6 @@ def album_name_fix(album):
         for v in value:
             if v.lower() == album.lower():
                 album_name = key
-            elif "<:" in album.lower():
-                t = re.findall(":.*:", album.lower())[0]
-                if v.lower() in t:
-                    album_name = key
     
     if album_name:
         return album_name
