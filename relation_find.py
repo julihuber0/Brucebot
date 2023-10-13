@@ -13,10 +13,15 @@ def relation_name_fix(name):
 async def relation_finder(ctx, *name):
     """gets info on bands/people that have played with bruce"""
 
-    nameToFind = relation_name_fix(" ".join(name))
+    nameToFind = relation_name_fix(" ".join(name)).lower().replace("'", "''")
 
     if len(nameToFind) > 0:
-        relationFind = cur.execute(f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '%{nameToFind.lower().replace("'", "''")}%' AND appearances != '0'""").fetchone()
+
+        if cur.execute(f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '{nameToFind}' AND appearances != '0'""").fetchone():
+            relationFind = cur.execute(f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '{nameToFind}' AND appearances != '0'""").fetchone()
+        else:
+            relationFind = cur.execute(f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '%{nameToFind}%' AND appearances != '0'""").fetchone()
+
 
         if relationFind:
             name = relationFind[0]
