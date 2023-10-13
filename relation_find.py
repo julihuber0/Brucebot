@@ -9,18 +9,27 @@ def relation_name_fix(name):
     else:
         return name
 
-@bot.command(aliases=['relation', 'r'])
+@bot.command(aliases=['band', 'b', 'person', 'p'])
 async def relation_finder(ctx, *name):
     """gets info on bands/people that have played with bruce"""
+
+    rType = ctx.invoked_with()
+
+    if rType == 'p':
+        typeFind = "person"
+    elif rType == 'b':
+        typeFind = "band"
+    else:
+        typeFind = rType
 
     nameToFind = relation_name_fix(" ".join(name)).lower().replace("'", "''")
 
     if len(nameToFind) > 0:
 
-        if cur.execute(f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '{nameToFind}' AND appearances != '0'""").fetchone():
-            relationFind = cur.execute(f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '{nameToFind}' AND appearances != '0'""").fetchone()
+        if cur.execute(f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '{nameToFind}' AND appearances != '0' AND relation_type LIKE '{rType}'""").fetchone():
+            relationFind = cur.execute(f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '{nameToFind}' AND appearances != '0' AND relation_type LIKE '{rType}'""").fetchone()
         else:
-            relationFind = cur.execute(f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '%{nameToFind}%' AND appearances != '0'""").fetchone()
+            relationFind = cur.execute(f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '%{nameToFind}%' AND appearances != '0' AND relation_type LIKE '{rType}'""").fetchone()
 
 
         if relationFind:

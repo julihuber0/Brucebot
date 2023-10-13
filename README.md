@@ -12,6 +12,8 @@ Its not a 1:1 exact copy of their embed, but enough to where I feel I should pro
 
 ## Changelog (as best as I can)
 
+- 2023-10-13: added "relation finder", which will return info on a specified person or band
+- 2023-10-13: added "album find", returns stats on an album (song list, most/least played, first/last premiered)
 - 2023-10-11: modified the database to only count song opener/closer if the known setlist is more than a single song. As it's unknown exactly where in the set it falls.
 - 2023-10-11: on the database, SONGS and TOURS originally just pointed to an event date, which is now changed to the event url. Reason being it's more accurate if there are multiple events on a single date, and the code would just return the first date match which might not be accurate.
 - 2023-10-09: while back updated the database and accidentally removed the date column from events (when meaning to from setlist). Ended up modifying the code to work without it as I deemed it unnecessary, then I found out. Added it back, and redid all the code.

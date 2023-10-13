@@ -6,7 +6,6 @@ db notes
 	add field for opener/closer for songs - DONE
 	add premiere/debut for setlists
 	add "get relation" - returns list of band/person and num performances - DONE
-	add "album find" stats to ALBUMS table (most/least played)
 	change date reference in songs/tours (first/last played and first/last show) to event_url instead of date - DONE
 	
 ---
