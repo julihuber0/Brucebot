@@ -41,3 +41,5 @@ async def relation_finder(ctx, *name):
             await ctx.send(embed=embed)
         else:
             await ctx.send(error_message("relation"))
+    else:
+        await ctx.send(error_message("relation"))
