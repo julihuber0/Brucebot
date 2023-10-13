@@ -13,7 +13,7 @@ def relation_name_fix(name):
 async def relation_finder(ctx, *name):
     """gets info on bands/people that have played with bruce"""
 
-    rType = ctx.invoked_with()
+    rType = ctx.invoked_with
 
     if rType == 'p':
         typeFind = "person"
