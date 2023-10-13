@@ -9,6 +9,7 @@ from song_finder import song_finder
 from bootleg import bootleg_find
 from tour_finder import tour_stats
 from album_find import album_finder
+from relation_find import relation_finder
 from location_finder import city_finder, state_finder, country_finder
 
 @bot.event

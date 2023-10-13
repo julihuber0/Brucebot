@@ -20,3 +20,5 @@ def error_message(error_type):
 			return "ERROR: Invalid Input"
 		case "album":
 			return "ERROR: Album Not Found"
+		case "relation":
+			return "ERROR: Relation Not Found"
