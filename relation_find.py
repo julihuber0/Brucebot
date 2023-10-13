@@ -15,8 +15,8 @@ async def relation_finder(ctx, *name):
 
     nameToFind = relation_name_fix(" ".join(name))
 
-    if len(nameToFind) > 1:
-        relationFind = cur.execute(f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '%{nameToFind.lower().replace("'", "''")}%' AND appearances != '0'"").fetchone()
+    if len(nameToFind) > 0:
+        relationFind = cur.execute(f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '%{nameToFind.lower().replace("'", "''")}%' AND appearances != '0'""").fetchone()
 
         if relationFind:
             name = relationFind[0]
