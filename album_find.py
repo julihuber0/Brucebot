@@ -58,4 +58,4 @@ async def album_finder(ctx, *album):
 
         await ctx.send(embed=embed)
     else:
-        await ctx.send(error_message("album"))
+        await ctx.send(f"{error_message('album')}, No results for {album_to_find}")
