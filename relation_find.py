@@ -26,10 +26,10 @@ async def relation_finder(ctx, *name):
 
     if len(nameToFind) > 0:
 
-        if cur.execute(f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '{nameToFind}' AND appearances != '0' AND relation_type LIKE '{rType}'""").fetchone():
-            relationFind = cur.execute(f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '{nameToFind}' AND appearances != '0' AND relation_type LIKE '{rType}'""").fetchone()
+        if cur.execute(f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '{nameToFind}' AND appearances != '0' AND relation_type LIKE '{typeFind}'""").fetchone():
+            relationFind = cur.execute(f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '{nameToFind}' AND appearances != '0' AND relation_type LIKE '{typeFind}'""").fetchone()
         else:
-            relationFind = cur.execute(f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '%{nameToFind}%' AND appearances != '0' AND relation_type LIKE '{rType}'""").fetchone()
+            relationFind = cur.execute(f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '%{nameToFind}%' AND appearances != '0' AND relation_type LIKE '{typeFind}'""").fetchone()
 
 
         if relationFind:
