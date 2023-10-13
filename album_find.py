@@ -58,4 +58,4 @@ async def album_finder(ctx, *album):
 
         await ctx.send(embed=embed)
     else:
-        await ctx.send(f"{error_message("album")} (Tracks has too many songs for max embed length)")
+        await ctx.send(error_message("album"))

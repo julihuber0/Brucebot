@@ -19,6 +19,6 @@ def error_message(error_type):
 		case "input":
 			return "ERROR: Invalid Input"
 		case "album":
-			return "ERROR: Album Not Found"
+			return "ERROR: Album Not Found, or Tracks (which is too long for an embed)"
 		case "relation":
 			return "ERROR: Relation Not Found"
