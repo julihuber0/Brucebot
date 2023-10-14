@@ -35,47 +35,52 @@ async def setlist_finder(ctx, date=None):
 				for s in cur.execute(f"""SELECT * FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url LIKE '%{r[2]}%' ORDER BY set_type, setlist_song_id ASC) p ORDER BY setlist_song_id ASC""").fetchall():
 					set_l = []
 
-					for t in cur.execute(f"""SELECT song_name, song_url, segue FROM SETLISTS WHERE event_url LIKE '%{r[2]}%' AND set_type LIKE '%{s[4].replace("'", "''")}%' ORDER BY setlist_song_id ASC""").fetchall():
-						premiere = cur.execute(f"""SELECT first_played FROM SONGS WHERE song_url LIKE '%{t[1]}%'""").fetchone()
-						bustout = cur.execute(f"""SELECT MIN(event_date) FROM EVENTS WHERE setlist LIKE '%{t[0].replace("'", "''")}%' AND tour = '{r[4].replace("'", "''")}'""").fetchone()
+					songs_played = cur.execute(f"""SELECT song_name, song_url, segue FROM SETLISTS WHERE event_url LIKE '%{r[2]}%' AND set_type LIKE '%{s[4].replace("'", "''")}%' ORDER BY setlist_song_id ASC""").fetchall()
+					
+					if len(songs_played) > 0:
+						for t in songs_played:
+							premiere = cur.execute(f"""SELECT first_played FROM SONGS WHERE song_url LIKE '%{t[1]}%'""").fetchone()
+							bustout = cur.execute(f"""SELECT MIN(event_date) FROM EVENTS WHERE setlist LIKE '%{t[0].replace("'", "''")}%' AND tour = '{r[4].replace("'", "''")}'""").fetchone()
 
-						#check setlist table for song url and tour, order by id ascending, if date equals r[1] (date) and tour = r[9], then bustout
-						#bustout_date = re.findall("\d{4}-\d{2}-\d{2}", bustout[0])
+							#check setlist table for song url and tour, order by id ascending, if date equals r[1] (date) and tour = r[9], then bustout
+							#bustout_date = re.findall("\d{4}-\d{2}-\d{2}", bustout[0])
 
-						if premiere[0] == r[1] and s[4] not in ['Soundcheck', 'Rehearsal']:
-							if t[2]:
-								set_l.append(f"{t[0]} **[1]** > ")
+							if premiere[0] == r[1] and s[4] not in ['Soundcheck', 'Rehearsal']:
+								if t[2]:
+									set_l.append(f"{t[0]} **[1]** > ")
+								else:
+									set_l.append(f"{t[0]} **[1]**")
+							elif bustout[0] == r[1] and s[4] not in ['Soundcheck', 'Rehearsal']:
+								if t[2]:
+									set_l.append(f"{t[0]} **[2]** > ")
+								else:
+									set_l.append(f"{t[0]} **[2]**")
 							else:
-								set_l.append(f"{t[0]} **[1]**")
-						elif bustout[0] == r[1] and s[4] not in ['Soundcheck', 'Rehearsal']:
-							if t[2]:
-								set_l.append(f"{t[0]} **[2]** > ")
-							else:
-								set_l.append(f"{t[0]} **[2]**")
+								if t[2]:
+									set_l.append(f"{t[0]} >")
+								else:
+									set_l.append(f"{t[0]}")
+
+						setlist = (", ".join(set_l)).replace(">,", ">")
+
+						if setlist != "":
+							bootleg = official = "No"
+							embed.add_field(name=f"{s[4]}:", value=setlist, inline=False)
+							
+							if r[7]:
+								bootleg = "Yes"
+							if r[8]:
+								official = "Yes"
 						else:
-							if t[2]:
-								set_l.append(f"{t[0]} >")
-							else:
-								set_l.append(f"{t[0]}")
+							bootleg = official = "No"
+							embed.add_field(name=f"{s[4]}:", value="No Set Details Known", inline=False)
+					
+					embed.add_field(name="", value=f"**Bootleg:** {bootleg}", inline=False)
+					embed.add_field(name="", value=f"**Official Release:** {official}", inline=False)
+				else:
+					embed.add_field(name=f"{s[4]}:", value="No Set Details Known", inline=False)
 
-					setlist = (", ".join(set_l)).replace(">,", ">")
-
-					if setlist != "":
-						bootleg = official = "No"
-						embed.add_field(name=f"{s[4]}:", value=setlist, inline=False)
-						
-						if r[7]:
-							bootleg = "Yes"
-						if r[8]:
-							official = "Yes"
-					else:
-						bootleg = official = "No"
-						embed.add_field(name=f"{s[4]}:", value=setlist, inline=False)
-				
-			embed.add_field(name="", value=f"**Bootleg:** {bootleg}", inline=False)
-			embed.add_field(name="", value=f"**Official Release:** {official}", inline=False)
-
-			embed.add_field(name="", value="**[1]** - First Known Performance\n**[2]** - Tour Debut")
+				embed.add_field(name="", value="**[1]** - First Known Performance\n**[2]** - Tour Debut")
 		else:
 			embed.add_field(name="", value="ERROR: Show Not Found", inline=False)
 
