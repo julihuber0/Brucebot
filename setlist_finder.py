@@ -49,6 +49,7 @@ async def setlist_finder(ctx, date=most_recent):
 						set_songs = cur.execute(f"""SELECT song_name, song_url, segue FROM SETLISTS WHERE event_url LIKE '{r[2]}' AND set_type LIKE '%{s[0].replace("'", "''")}%' ORDER BY setlist_song_id ASC""").fetchall()
 
 						for song in set_songs:
+							indicator = ""
 							premiere = cur.execute(f"""SELECT EXISTS(SELECT 1 FROM SONGS WHERE song_url LIKE '{song[1]}' AND first_played LIKE '{r[2]}')""")
 							bustout = cur.execute(f"""SELECT MIN(event_date) FROM EVENTS WHERE setlist LIKE '%{s[0].replace("'", "''")}%' AND tour = '{r[4].replace("'", "''")}'""")
 
