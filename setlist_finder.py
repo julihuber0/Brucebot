@@ -85,4 +85,4 @@ async def setlist_finder(ctx, date=None):
 
 		await ctx.send(embed=embed)
 	else:
-		await ctx.send(f"{error_message("date")} - {date}")
+		await ctx.send(f"{error_message('date')} - {date}")
