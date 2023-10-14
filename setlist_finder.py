@@ -24,7 +24,7 @@ async def setlist_finder(ctx, date=most_recent):
 
 				has_setlist = cur.execute(f"""SELECT EXISTS(SELECT 1 FROM SETLISTS WHERE event_url LIKE '{r[2]}')""").fetchone()
 
-				if has_setlist:
+				if has_setlist[0] != 0:
 					location = setlist = indicator = ""
 					set_l = tags = []
 					invalid_sets = cur.execute(f"""SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE set_type SIMILAR TO '%(Soundcheck|Rehearsal|Pre-)%') p""").fetchall()
@@ -57,9 +57,10 @@ async def setlist_finder(ctx, date=most_recent):
 
 							# indicator is [1] or [2]
 							if s[0] not in invalid_sets:
+								indicator = ""
 								if premiere:
 									indicator = "**[1]**"
-								elif bustout:
+								if bustout:
 									indicator = "**[2]**"
 
 							if song[2]:
@@ -68,12 +69,12 @@ async def setlist_finder(ctx, date=most_recent):
 								set_l.append(f"{song[0]} {indicator}")
 
 						setlist = ", ".join(set_l).replace(">,", ">")
-
+						note = ""
 						if not r[7] and not r[8]:
 							note = "(Setlist May Be Incomplete)"
 
 						embed.add_field(name=f"{s[0]} {note}:", value=setlist, inline=False)
-				else:
+				else: # end "if has_setlist"
 					embed.add_field(name="", value=error_message("no-setlist"), inline=False)
 
 			embed.add_field(name="", value="**[1]** - First Known Performance\n**[2]** - Tour Debut")
