@@ -128,7 +128,7 @@ bot = commands.Bot(command_prefix='!', intents=intents, help_command=None)
 def date_checker(date):
 	if date is not None:
 		try:
-			print(datetime.date.fromisoformat(date))
+			return datetime.date.fromisoformat(date)
 		except:
 			return False
 	else:
