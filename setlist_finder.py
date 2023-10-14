@@ -20,6 +20,7 @@ async def setlist_finder(ctx, date=most_recent):
 
 		if get_events:
 			for r in get_events:
+				tags = []
 				# id, date, event_url, location_url, show, tour, setlist, bootleg, livedl
 
 				if r[7]:
@@ -41,7 +42,7 @@ async def setlist_finder(ctx, date=most_recent):
 
 				if has_setlist[0] != 0:
 					location = setlist = indicator = ""
-					set_l = tags = []
+					set_l = []
 					invalid_sets = cur.execute(f"""SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE set_type SIMILAR TO '%(Soundcheck|Rehearsal|Pre-)%') p""").fetchall()
 
 					#id, event_url, song_url, song_name, set_type, song_in_set, song_num, segue
