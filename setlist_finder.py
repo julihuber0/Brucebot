@@ -78,9 +78,9 @@ async def setlist_finder(ctx, date=None):
 					embed.add_field(name="", value=f"**Bootleg:** {bootleg}", inline=False)
 					embed.add_field(name="", value=f"**Official Release:** {official}", inline=False)
 				else:
-					embed.add_field(name=f"{s[4]}:", value="No Set Details Known", inline=False)
+					embed.add_field(name=f"{s[4]}:", value=f"No Set Details Known for {r[2]}", inline=False)
 
-				embed.add_field(name="", value="**[1]** - First Known Performance\n**[2]** - Tour Debut")
+			embed.add_field(name="", value="**[1]** - First Known Performance\n**[2]** - Tour Debut")
 		else:
 			embed.add_field(name="", value="ERROR: Show Not Found", inline=False)
 
