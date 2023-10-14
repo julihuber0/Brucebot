@@ -22,27 +22,27 @@ async def setlist_finder(ctx, date=most_recent):
 			for r in get_events:
 				# id, date, event_url, location_url, show, tour, setlist, bootleg, livedl
 
+				if r[7]:
+					tags.append('Bootleg')
+				
+				if r[8]:
+					tags.append('Official Release')
+				
+				if not r[7] and not r[8]:
+					tags.append("Uncirculating")
+
+				location = location_name_get(r[3], r[4])
+				releases = f"**Releases:** {', '.join(tags)}"
+
+				embed.add_field(name="", value=f"[{r[1]} - {location}]({main_url}{r[2]})\n{releases}", inline=False)
+				embed.set_footer(text=r[5])
+
 				has_setlist = cur.execute(f"""SELECT EXISTS(SELECT 1 FROM SETLISTS WHERE event_url LIKE '{r[2]}')""").fetchone()
 
 				if has_setlist[0] != 0:
 					location = setlist = indicator = ""
 					set_l = tags = []
 					invalid_sets = cur.execute(f"""SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE set_type SIMILAR TO '%(Soundcheck|Rehearsal|Pre-)%') p""").fetchall()
-
-					if r[7]:
-						tags.append('Bootleg')
-					
-					if r[8]:
-						tags.append('Official Release')
-					
-					if not r[7] and not r[8]:
-						tags.append("Uncirculating")
-
-					location = location_name_get(r[3], r[4])
-					releases = f"**Releases:** {', '.join(tags)}"
-
-					embed.add_field(name="", value=f"[{r[1]} - {location}]({main_url}{r[2]})\n{releases}", inline=False)
-					embed.set_footer(text=r[5])
 
 					#id, event_url, song_url, song_name, set_type, song_in_set, song_num, segue
 					for s in cur.execute(f"""SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url LIKE '{r[2]}') p ORDER BY setlist_song_id ASC""").fetchall():
