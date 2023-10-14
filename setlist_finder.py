@@ -9,8 +9,11 @@ from error_message import error_message
 import re
 
 @bot.command(aliases=['sl', 'setlist', 'show'])
-async def setlist_finder(ctx, date=cur.execute("""SELECT event_date FROM EVENTS WHERE setlist != '' ORDER BY event_id DESC LIMIT 1""").fetchone()[0]):
+async def setlist_finder(ctx, date=None):
 	"""Gets setlist based on input date"""
+
+	if date is None:
+		date = cur.execute("""SELECT event_date FROM EVENTS WHERE setlist != '' ORDER BY event_id DESC LIMIT 1""").fetchone()[0]
 
 	if date_checker(date):
 		embed = create_embed(f"Brucebase Results For: {date}", "", ctx)
