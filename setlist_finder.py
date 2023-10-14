@@ -18,6 +18,10 @@ async def setlist_finder(ctx, date=None):
 	if date_checker(date):
 		embed = create_embed(f"Brucebase Results For: {date}", "", ctx)
 		get_events = cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchall()
+		invalid_sets = []
+		
+		for i in cur.execute(f"""SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE set_type SIMILAR TO '%(Soundcheck|Rehearsal|Pre-)%') p""").fetchall():
+			invalid_sets.append(i[0])
 
 		if get_events:
 			for r in get_events:
@@ -44,7 +48,6 @@ async def setlist_finder(ctx, date=None):
 				if has_setlist[0] != 0:
 					location = setlist = indicator = ""
 					set_l = []
-					invalid_sets = cur.execute(f"""SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE set_type SIMILAR TO '%(Soundcheck|Rehearsal|Pre-)%') p""").fetchall()
 
 					#id, event_url, song_url, song_name, set_type, song_in_set, song_num, segue
 					for s in cur.execute(f"""SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url LIKE '{r[2]}') p ORDER BY setlist_song_id ASC""").fetchall():
