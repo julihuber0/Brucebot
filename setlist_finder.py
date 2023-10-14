@@ -60,14 +60,14 @@ async def setlist_finder(ctx, date=most_recent):
 							if s[0] not in invalid_sets:
 								indicator = ""
 								if premiere[0] != 0:
-									indicator = "**[1]**"
+									indicator = " **[1]**"
 								if bustout[0] == r[2]:
-									indicator = "**[2]**"
+									indicator = " **[2]**"
 									
 							if song[2]:
-								set_l.append(f"{song[0]} {indicator} >")
+								set_l.append(f"{song[0]}{indicator} >")
 							else:
-								set_l.append(f"{song[0]} {indicator}")
+								set_l.append(f"{song[0]}{indicator}")
 
 						setlist = ", ".join(set_l).replace(">,", ">")
 						note = ""
