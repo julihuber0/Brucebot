@@ -31,9 +31,11 @@ async def setlist_finder(ctx, date=most_recent):
 
 					if r[7]:
 						tags.append('Bootleg')
-					elif r[8]:
+					
+					if r[8]:
 						tags.append('Official Release')
-					else:
+					
+					if not r[7] and not r[8]:
 						tags.append("Uncirculating")
 
 					location = location_name_get(r[3], r[4])
@@ -49,7 +51,7 @@ async def setlist_finder(ctx, date=most_recent):
 						set_songs = cur.execute(f"""SELECT song_name, song_url, segue FROM SETLISTS WHERE event_url LIKE '{r[2]}' AND set_type LIKE '%{s[0].replace("'", "''")}%' ORDER BY setlist_song_id ASC""").fetchall()
 
 						for song in set_songs:
-							indicator = ""
+							indicator = note = ""
 							premiere = cur.execute(f"""SELECT EXISTS(SELECT 1 FROM SONGS WHERE song_url LIKE '{song[1]}' AND first_played LIKE '{r[2]}')""")
 							bustout = cur.execute(f"""SELECT MIN(event_date) FROM EVENTS WHERE setlist LIKE '%{s[0].replace("'", "''")}%' AND tour = '{r[4].replace("'", "''")}'""")
 
@@ -67,7 +69,10 @@ async def setlist_finder(ctx, date=most_recent):
 
 						setlist = ", ".join(set_l).replace(">,", ">")
 
-						embed.add_field(name=f"{s[0]}:", value=setlist, inline=False)
+						if not r[7] and not r[8]:
+							note = "(Setlist May Be Incomplete)"
+
+						embed.add_field(name=f"{s[0]} {note}:", value=setlist, inline=False)
 				else:
 					embed.add_field(name="", value=error_message("no-setlist"), inline=False)
 
