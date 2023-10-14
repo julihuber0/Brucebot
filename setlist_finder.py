@@ -74,7 +74,7 @@ async def setlist_finder(ctx, date=None):
 								set_l.append(f"{song[0]}{indicator}")
 
 						setlist = ", ".join(set_l).replace(">,", ">")
-						note = ""
+
 						if not r[7] and not r[8]:
 							note = "(Setlist May Be Incomplete)"
 
