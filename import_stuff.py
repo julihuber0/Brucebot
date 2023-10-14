@@ -127,13 +127,17 @@ bot = commands.Bot(command_prefix='!', intents=intents, help_command=None)
 
 def date_checker(date):
 	if date is not None:
-		if re.search("\d{4}-\d{2}-\d{2}", date):
+		if datetime.date.fromisoformat(date): # checks for YYYY-MM-DD
 			return True
 		else:
 			return False
 	else:
 		return False
 
-def location_name_get(location_url):
+def location_name_get(location_url, show=None):
 	location = cur.execute(f"""SELECT venue_name, venue_city, venue_state, venue_country FROM VENUES WHERE venue_url LIKE '{location_url}'""").fetchone()
-	return f"{', '.join(list(filter(None, location[0:])))}"
+
+	if show is not None:
+		return f"{', '.join(list(filter(None, location[0:])))} ({show})"
+	else:
+		return f"{', '.join(list(filter(None, location[0:])))}"

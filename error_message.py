@@ -8,6 +8,8 @@ def error_message(error_type):
 	match(error_type):
 		case "date":
 			return "ERROR: Date Not Specified or Incorrect Format (Date should be in YYYY-MM-DD Format)"
+		case "no-setlist":
+			return "No Set Details Found"
 		case "song":
 			return "ERROR: Song Missing from Input"
 		case "show":

@@ -8,81 +8,71 @@ from create_embed import create_embed
 from error_message import error_message
 import re
 
-@bot.command(aliases=['sl', 'setlist', 'show'])
-async def setlist_finder(ctx, date=None):
-	"""Gets setlist based on input date"""
+most_recent = cur.execute("""SELECT event_date FROM EVENTS WHERE setlist != '' ORDER BY event_id DESC LIMIT 1""").fetchone()[0]
 
-	if date is None:
-		date = cur.execute("""SELECT event_date FROM EVENTS WHERE setlist != '' ORDER BY event_id DESC LIMIT 1""").fetchone()[0]
+@bot.command(aliases=['sl', 'setlist', 'show'])
+async def setlist_finder(ctx, date=most_recent):
+	"""Gets setlist based on input date"""
 
 	if date_checker(date):
 		embed = create_embed(f"Brucebase Results For: {date}", "", ctx)
+		get_events = cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchall()
 
-		if cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchall():
-			for r in cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchall():
+		if get_events:
+			for r in get_events:
 				# id, date, event_url, location_url, show, tour, setlist, bootleg, livedl
-				location = setlist = ""
-				set_l = []
 
-				location = location_name_get(r[3])
-				if r[4] != "":
-					location += f" ({r[4]})"
+				has_setlist = cur.execute(f"""SELECT EXISTS(SELECT 1 FROM SETLISTS WHERE event_url LIKE '{r[2]}')""").fetchone()
 
-				embed.add_field(name="", value=f"[{r[1]} - {location}]({main_url}{r[2]})", inline=False)
-				embed.set_footer(text=r[5])
+				if has_setlist:
+					location = setlist = indicator = ""
+					set_l = tags = []
+					invalid_sets = cur.execute(f"""SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE set_type SIMILAR TO '%(Soundcheck|Rehearsal|Pre-)%') p""").fetchall()
 
-				#id, event_url, song_url, song_name, set_type, song_in_set, song_num, segue
-				for s in cur.execute(f"""SELECT * FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url LIKE '%{r[2]}%' ORDER BY set_type, setlist_song_id ASC) p ORDER BY setlist_song_id ASC""").fetchall():
-					set_l = []
+					if r[7]:
+						tags.append('Bootleg')
+					elif r[8]:
+						tags.append('Official Release')
+					else:
+						tags.append("Uncirculating")
 
-					songs_played = cur.execute(f"""SELECT song_name, song_url, segue FROM SETLISTS WHERE event_url LIKE '%{r[2]}%' AND set_type LIKE '%{s[4].replace("'", "''")}%' ORDER BY setlist_song_id ASC""").fetchall()
+					location = location_name_get(r[3], r[4])
+					releases = f"**Releases:** {', '.join(tags)}"
+
+					embed.add_field(name="", value=f"[{r[1]} - {location}]({main_url}{r[2]})\n{releases}", inline=False)
+					embed.set_footer(text=r[5])
+
+					#id, event_url, song_url, song_name, set_type, song_in_set, song_num, segue
+					for s in cur.execute(f"""SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url LIKE '{r[2]}') p ORDER BY setlist_song_id ASC""").fetchall():
+						set_l = []
 					
-					if len(songs_played) > 0:
-						for t in songs_played:
-							premiere = cur.execute(f"""SELECT first_played FROM SONGS WHERE song_url LIKE '%{t[1]}%'""").fetchone()
-							bustout = cur.execute(f"""SELECT MIN(event_date) FROM EVENTS WHERE setlist LIKE '%{t[0].replace("'", "''")}%' AND tour = '{r[4].replace("'", "''")}'""").fetchone()
+						set_songs = cur.execute(f"""SELECT song_name, song_url, segue FROM SETLISTS WHERE event_url LIKE '{r[2]}' AND set_type LIKE '%{s[0].replace("'", "''")}%' ORDER BY setlist_song_id ASC""").fetchall()
 
-							#check setlist table for song url and tour, order by id ascending, if date equals r[1] (date) and tour = r[9], then bustout
-							#bustout_date = re.findall("\d{4}-\d{2}-\d{2}", bustout[0])
+						for song in set_songs:
+							premiere = cur.execute(f"""SELECT EXISTS(SELECT 1 FROM SONGS WHERE song_url LIKE '{song[1]}' AND first_played LIKE '{r[2]}')""")
+							bustout = cur.execute(f"""SELECT MIN(event_date) FROM EVENTS WHERE setlist LIKE '%{s[0].replace("'", "''")}%' AND tour = '{r[4].replace("'", "''")}'""")
 
-							if premiere[0] == r[1] and s[4] not in ['Soundcheck', 'Rehearsal']:
-								if t[2]:
-									set_l.append(f"{t[0]} **[1]** > ")
-								else:
-									set_l.append(f"{t[0]} **[1]**")
-							elif bustout[0] == r[1] and s[4] not in ['Soundcheck', 'Rehearsal']:
-								if t[2]:
-									set_l.append(f"{t[0]} **[2]** > ")
-								else:
-									set_l.append(f"{t[0]} **[2]**")
+							# indicator is [1] or [2]
+							if s[0] not in invalid_sets:
+								if premiere:
+									indicator = "**[1]**"
+								elif bustout:
+									indicator = "**[2]**"
+
+							if song[2]:
+								set_l.append(f"{song[0]} {indicator} >")
 							else:
-								if t[2]:
-									set_l.append(f"{t[0]} >")
-								else:
-									set_l.append(f"{t[0]}")
+								set_l.append(f"{song[0]} {indicator}")
 
-						setlist = (", ".join(set_l)).replace(">,", ">")
+						setlist = ", ".join(set_l).replace(">,", ">")
 
-						if setlist != "":
-							bootleg = official = "No"
-							embed.add_field(name=f"{s[4]}:", value=setlist, inline=False)
-							
-							if r[7]:
-								bootleg = "Yes"
-							if r[8]:
-								official = "Yes"
-						else:
-							bootleg = official = "No"
-							embed.add_field(name=f"{s[4]}:", value="No Set Details Known", inline=False)
-					
-					embed.add_field(name="", value=f"**Bootleg:** {bootleg}", inline=False)
-					embed.add_field(name="", value=f"**Official Release:** {official}", inline=False)
+						embed.add_field(name=f"{s[0]}:", value=setlist, inline=False)
 				else:
-					embed.add_field(name=f"{s[4]}:", value=f"No Set Details Known for {r[2]}", inline=False)
+					embed.add_field(name="", value=error_message("no-setlist"), inline=False)
 
 			embed.add_field(name="", value="**[1]** - First Known Performance\n**[2]** - Tour Debut")
-		else:
-			embed.add_field(name="", value="ERROR: Show Not Found", inline=False)
+		else: # end "if get_events"
+			embed.add_field(name="", value=error_message("show"), inline=False)
 
 		await ctx.send(embed=embed)
 	else:
