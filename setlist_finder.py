@@ -8,10 +8,8 @@ from create_embed import create_embed
 from error_message import error_message
 import re
 
-most_recent = cur.execute("""SELECT event_date FROM EVENTS WHERE setlist != '' ORDER BY event_id DESC LIMIT 1""").fetchone()[0]
-
 @bot.command(aliases=['sl', 'setlist', 'show'])
-async def setlist_finder(ctx, date=most_recent):
+async def setlist_finder(ctx, date=cur.execute("""SELECT event_date FROM EVENTS WHERE setlist != '' ORDER BY event_id DESC LIMIT 1""").fetchone()[0]):
 	"""Gets setlist based on input date"""
 
 	if date_checker(date):
