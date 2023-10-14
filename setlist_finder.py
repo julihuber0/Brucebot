@@ -54,17 +54,16 @@ async def setlist_finder(ctx, date=most_recent):
 						for song in set_songs:
 							indicator = note = ""
 							premiere = cur.execute(f"""SELECT EXISTS(SELECT 1 FROM SONGS WHERE song_url LIKE '{song[1]}' AND first_played LIKE '{r[2]}')""")
-							bustout = cur.execute(f"""SELECT MIN(event_date) FROM EVENTS WHERE setlist LIKE '%{s[0].replace("'", "''")}%' AND tour = '{r[5].replace("'", "''")}'""")
+							bustout = cur.execute(f"""SELECT MIN(event_url) FROM EVENTS WHERE setlist LIKE '%{s[0].replace("'", "''")}%' AND tour = '{r[5].replace("'", "''")}' AND event_url LIKE '{r[2]}'""")
 
 							# indicator is [1] or [2]
 							if s[0] not in invalid_sets:
+								indicator = ""
 								if premiere:
 									indicator = "**[1]**"
 								if bustout:
 									indicator = "**[2]**"
-								if not premiere and not bustout:
-									indicator = ""
-
+									
 							if song[2]:
 								set_l.append(f"{song[0]} {indicator} >")
 							else:
