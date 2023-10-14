@@ -63,12 +63,14 @@ async def setlist_finder(ctx, date=None):
 					if setlist != "":
 						bootleg = official = "No"
 						embed.add_field(name=f"{s[4]}:", value=setlist, inline=False)
+						
 						if r[7]:
 							bootleg = "Yes"
-							embed.add_field(name="", value=f"**Bootleg:** {bootleg}", inline=False)
 						if r[8]:
 							official = "Yes"
-							embed.add_field(name="", value=f"**Official Release:** {official}", inline=False)
+
+						embed.add_field(name="", value=f"**Bootleg:** {bootleg}", inline=False)
+						embed.add_field(name="", value=f"**Official Release:** {official}", inline=False)
 					else:
 						embed.add_field(name=f"{s[4]}:", value="No Set Details Known", inline=False)
 				
