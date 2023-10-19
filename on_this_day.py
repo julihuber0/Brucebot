@@ -4,7 +4,7 @@ gets events based on inputted day
 or the current day if none specified
 """
 
-import re
+import re, datetime
 from import_stuff import bot, cur, main_url, cDate, location_name_get
 from create_embed import create_embed
 from error_message import error_message
@@ -28,7 +28,7 @@ async def on_this_day(ctx, *date):
 	if ndate:
 		otd_links = cur.execute(f"""SELECT event_url, location_url, show, event_date FROM EVENTS WHERE event_date LIKE '%{ndate}' ORDER BY event_id ASC""").fetchall()
 
-		embed = create_embed(f"On This Day: {ndate.strip('-')}", f"Number of Shows: {str(len(otd_links))}", ctx)
+		embed = create_embed(f"On This Day: {datetime.datetime.strptime(date, "%m-%d").strftime('%B %d')}", f"Number of Shows: {str(len(otd_links))}", ctx)
 
 		for i in otd_links:		
 			location = location_name_get(i[1], i[2])
