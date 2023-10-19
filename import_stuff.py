@@ -137,7 +137,7 @@ def date_checker(date):
 def location_name_get(location_url, show=None):
 	location = cur.execute(f"""SELECT venue_name, venue_city, venue_state, venue_country FROM VENUES WHERE venue_url LIKE '{location_url}'""").fetchone()
 
-	if show != "":
+	if show != "" and show is not None:
 		return f"{', '.join(list(filter(None, location[0:])))} ({show})"
 	else:
 		return f"{', '.join(list(filter(None, location[0:])))}"

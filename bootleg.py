@@ -15,10 +15,10 @@ async def bootleg_find(ctx, date=None):
 		event_name = cur.execute(f"""SELECT location_url, show FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchone()
 		
 		if event_name:
-			location = location_name_get(event_name[0])
+			location = location_name_get(event_name[0], event_name[1])
 
-			if event_name[1] != "":
-				location += f" ({event_name[1]})"
+			# if event_name[1] != "":
+			# 	location += f" ({event_name[1]})"
 
 			embed = create_embed(f"Bootlegs For: {date}", location, ctx)
 			url = f"https://www.springsteenlyrics.com/bootlegs.php?filter_date={date}&cmd=list&category=filter_date"

@@ -55,21 +55,24 @@ async def setlist_finder(ctx, date=None):
 						set_songs = cur.execute(f"""SELECT song_name, song_url, segue FROM SETLISTS WHERE event_url LIKE '{r[2]}' AND set_type LIKE '%{s[0].replace("'", "''")}%' ORDER BY setlist_song_id ASC""").fetchall()
 
 						for song in set_songs:
-							indicator = note = ""
+							indicator = note = segue = ""
 							premiere = cur.execute(f"""SELECT EXISTS(SELECT 1 FROM SONGS WHERE song_url LIKE '{song[1]}' AND first_played LIKE '{r[2]}')""").fetchone()
 							bustout = cur.execute(f"""SELECT MIN(event_url) FROM EVENTS WHERE setlist LIKE '%{s[0].replace("'", "''")}%' AND tour = '{r[5].replace("'", "''")}' AND event_url LIKE '{r[2]}'""").fetchone()
 
 							# indicator is [1] or [2]
 							if s[0] not in invalid_sets:
 								if premiere[0] != 0:
-									indicator = " **[1]**"
+									indicator = "**[1]**"
 								if bustout[0] == r[2]:
-									indicator = " **[2]**"
+									indicator = "**[2]**"
 									
 							if song[2]:
-								set_l.append(f"{song[0]}{indicator} >")
-							else:
-								set_l.append(f"{song[0]}{indicator}")
+								segue = ">"
+								# set_l.append(f"{song[0]} {indicator} >")
+							# else:
+							# 	set_l.append(f"{song[0]} {indicator} {segue}")
+							
+							set_l.append(f"{song[0]} {indicator} {segue}")
 
 						setlist = ", ".join(set_l).replace(">,", ">")
 
