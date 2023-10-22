@@ -36,7 +36,7 @@ async def on_this_day(ctx, *date):
 			# if i[2] != "":
 			# 	location += f" ({i[2]})"
 
-			embed.add_field(name=f"{i[3][0:4]}:", value=f"[{location}]({main_url}{i[0]})")
+			embed.add_field(name=f"{i[3][0:4]}:", value=f"[{location}]({main_url}{i[0]})", inline=True)
 
 		await ctx.send(embed=embed)
 	else:
