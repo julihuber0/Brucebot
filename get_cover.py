@@ -4,7 +4,7 @@ returns covers from my site
 """
 
 import requests, re
-from import_stuff import bot, date_checker
+from import_stuff import bot, dateinDB
 from error_message import error_message
 from bs4 import BeautifulSoup as bs4
 
@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup as bs4
 async def get_cover(ctx, date=None):
 	"""Gets covers from my site based in input date"""
 
-	if date_checker(date) and date is not None:
+	if dateinDB(date):
 		links = []
 		date_string = '{"name":"' + date
 		url = f"https://github.com/lilbud/Bootleg_Covers/raw/main/Bruce_Springsteen/covers/{date[0:4]}/"

@@ -31,7 +31,6 @@ async def relation_finder(ctx, *name):
         else:
             relationFind = cur.execute(f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '%{nameToFind}%' AND appearances != '0' AND relation_type LIKE '{typeFind}'""").fetchone()
 
-
         if relationFind:
             name = relationFind[0]
             url = relationFind[1]

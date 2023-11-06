@@ -104,19 +104,19 @@ cDate = datetime.datetime.now(ZoneInfo('US/Eastern'))
 main_url = "http://brucebase.wikidot.com"
 
 url = urlparse.urlparse(os.environ['DATABASE_URL'])
-dbname = url.path[1:]
-user = url.username
-password = url.password
-host = url.hostname
-port = url.port
+# dbname = url.path[1:]
+# user = url.username
+# password = url.password
+# host = url.hostname
+# port = url.port
 
 # conn = sqlite3.connect(os.path.abspath(__file__) + "\Databruce\_database\database.sqlite")
 conn = psycopg.connect(
-	dbname=dbname,
-	user=user,
-	password=password,
-	host=host,
-	port=port
+	dbname=url.path[1:],
+	user=url.username,
+	password=url.password,
+	host=url.hostname,
+	port=url.port
 )
 cur = conn.cursor()
 
