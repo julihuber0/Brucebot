@@ -13,16 +13,13 @@ async def bootleg_find(ctx, date=None):
 
 	if dateinDB(date):
 		event_name = cur.execute(f"""SELECT location_url, show FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchone()
-		
-		if event_name:
-			location = location_name_get(event_name[0], event_name[1])
+	
+		location = location_name_get(event_name[0], event_name[1])
 
-			embed = create_embed(f"Bootlegs For: {date}", location, ctx)
-			url = f"[SpringsteenLyrics](https://www.springsteenlyrics.com/bootlegs.php?filter_date={date}&cmd=list&category=filter_date)"
-			
-			embed.add_field(name="", value=url)
-			await ctx.send(embed=embed)
-		else:
-			await ctx.send(error_message("event"))
+		embed = create_embed(f"Bootlegs For: {date}", location, ctx)
+		url = f"[SpringsteenLyrics](https://www.springsteenlyrics.com/bootlegs.php?filter_date={date}&cmd=list&category=filter_date)"
+		
+		embed.add_field(name="", value=url)
+		await ctx.send(embed=embed)
 	else:
 		await ctx.send(error_message("date"))

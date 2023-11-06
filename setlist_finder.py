@@ -68,10 +68,7 @@ async def setlist_finder(ctx, date=None):
 									
 							if song[2]:
 								segue = ">"
-								# set_l.append(f"{song[0]} {indicator} >")
-							# else:
-							# 	set_l.append(f"{song[0]} {indicator} {segue}")
-							
+
 							set_l.append(f"{song[0]} {indicator} {segue}")
 
 						setlist = ", ".join(set_l).replace(">,", ">")
