@@ -3,7 +3,7 @@ Bootleg Finder
 Returns a link to SpringsteenLyrics Bootleg Page for the specified Date
 """
 
-from import_stuff import bot, cur, date_checker, location_name_get
+from import_stuff import bot, cur, dateinDB, location_name_get
 from create_embed import create_embed
 from error_message import error_message
 
@@ -11,7 +11,7 @@ from error_message import error_message
 async def bootleg_find(ctx, date=None):
 	"""Returns a link to SpringsteenLyrics Bootleg Page for the specified Date"""
 
-	if date_checker(date) and date is not None:
+	if dateinDB(date):
 		event_name = cur.execute(f"""SELECT location_url, show FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchone()
 		
 		if event_name:
