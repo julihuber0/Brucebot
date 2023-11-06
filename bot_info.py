@@ -73,58 +73,6 @@ async def bot_help(ctx):
 	for i in botcmds.keys():
 		embed.add_field(name=botcmds[i]["name"], value=botcmds[i]["value"], inline=False)
 
-	# embed.add_field(name="Setlist Finder:\t`!sl YYYY-MM-DD`  OR  `!setlist [YYYY-MM-DD]`",
-	# 				value="Returns the setlist of that show from Brucebase",
-	# 				inline=False)
-
-	# embed.add_field(name="Cover:\t`!cover YYYY-MM-DD`",
-	# 				value="Will get artwork from my website for that show",
-	# 				inline=False)
-
-	# embed.add_field(name="Jungleland:\t`!jl YYYY-MM-DD`",
-	# 				value="Returns link to Jungleland torrents with specified date",
-	# 				inline=False)
-	
-	# embed.add_field(name="On This Day:\t`!otd`  OR  `!otd MM-DD`",
-	# 				value="Returns a list of shows that happened on this day. Can leave blank for the current day, or enter a specific Month and Day",
-	# 				inline=False)
-
-	# embed.add_field(name="Artwork:\t`!artwork YYYY-MM-DD`",
-	# 				value="Returns list of artwork from Jungleland.it",
-	# 				inline=False)
-
-	# embed.add_field(name="Bootleg:\t`!bootleg YYYY-MM-DD`",
-	# 				value="Returns link to SpringsteenLyrics with list of Bootlegs for that date",
-	# 				inline=False)
-
-	# embed.add_field(name="Info:\t`!info`",
-	# 				value="Returns Info on this Bot",
-	# 				inline=False)
-
-	# embed.add_field(name="Song Finder:\t`!song [SONG NAME]`",
-	# 				value="Searches Brucebase for the requested song, returns a link as well as number of times it has been played.",
-	# 				inline=False)
-	
-	# embed.add_field(name="Location Finder:\t`!city [CITY_NAME] / !state [STATE ABBREV] / !country [COUNTRY_NAME]`",
-	# 				value="Searches the database for how many shows have been played in a specified city/state/country.",
-	# 				inline=False)
-	
-	# embed.add_field(name="Tour Stats:\t`!tour [TOUR_NAME]`",
-	# 				value="Searches the database for the specified tour, and returns stats for it",
-	# 				inline=False)
-	
-	# embed.add_field(name="Album Stats:\t`!album [ALBUM] / !a [ALBUM]`",
-	# 				value="Searches the database for the specified album, and returns stats for it",
-	# 				inline=False)
-	
-	# embed.add_field(name="Person Finder:\t`!person [NAME] / !p [NAME]`",
-	# 				value="Searches the database for the specified person, and returns stats about them",
-	# 				inline=False)
-	
-	# embed.add_field(name="Band Finder:\t`!band [NAME] / !b [NAME]`",
-	# 				value="Searches the database for the specified band, and returns stats about them",
-	# 				inline=False)
-
 	await ctx.send(embed=embed)
 
 
