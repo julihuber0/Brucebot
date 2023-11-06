@@ -52,14 +52,12 @@ async def album_finder(ctx, *album):
         song_list = ", ".join(songs)
         embed.add_field(name="Songs (Bold = Not Played):", value=f"{song_list}", inline=False)
 
-        embed.add_field(name="Most Played:", value=f"{plays[-1][0]} ({plays[-1][1]})", inline=False)
-        embed.add_field(name="Least Played:", value=f"{plays[0][0]} ({plays[0][1]})", inline=False)
+        embed.add_field(name="Most/Least Played:", value=f"{plays[-1][0]} ({plays[-1][1]})\n{plays[0][0]} ({plays[0][1]})", inline=False)
 
         first_date = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[0][1]}'""").fetchone()
         last_date = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[-1][1]}'""").fetchone()
 
         embed.add_field(name=f"First/Last Premiered{note}:", value=f"{premiere[0][0]} ([{first_date[0]}]({main_url}{premiere[0][1]}))\n{premiere[-1][0]} ([{last_date[0]}]({main_url}{premiere[-1][1]}))", inline=False)
-        # embed.add_field(name=f"Last Premiered{note}:", value=f"{premiere[-1][0]} ([{last_date[0]}]({main_url}{premiere[-1][1]}))", inline=False)
 
         await ctx.send(embed=embed)
     else:
