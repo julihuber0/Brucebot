@@ -1,7 +1,6 @@
 from import_stuff import bot, cur, main_url, albums
 from create_embed import create_embed
 from error_message import error_message
-import re
 
 def album_name_fix(album):
     album_name = ""
@@ -49,8 +48,7 @@ async def album_finder(ctx, *album):
             else:
                 songs.append(find_song[0])
         
-        song_list = ", ".join(songs)
-        embed.add_field(name="Songs (Bold = Not Played):", value=f"{song_list}", inline=False)
+        embed.add_field(name="Songs (Bold = Not Played):", value=f"{", ".join(songs)}", inline=False)
 
         embed.add_field(name="Most/Least Played:", value=f"{plays[-1][0]} ({plays[-1][1]})\n{plays[0][0]} ({plays[0][1]})", inline=False)
 
