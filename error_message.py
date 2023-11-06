@@ -24,3 +24,5 @@ def error_message(error_type):
 			return "ERROR: Album Not Found, or Tracks (which is too long for an embed)"
 		case "relation":
 			return "ERROR: Relation Not Found"
+		case "event":
+			return "ERROR: No Event Found for Specified Date"

@@ -126,13 +126,22 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents, help_command=None)
 
 def date_checker(date):
+	# if date is not None:
+	# 	try:
+	# 		return datetime.date.fromisoformat(date)
+	# 	except:
+	# 		return False
+	# else:
+	# 	return False
+	
 	if date is not None:
-		try:
-			return datetime.date.fromisoformat(date)
-		except:
-			return False
-	else:
-		return False
+		if datetime.date.fromisoformat(date):
+			check = cur.execute(f"""SELECT EXISTS(SELECT 1 FROM EVENTS WHERE event_date LIKE '{date}')""").fetchone()
+
+			if check:
+				return True
+
+	return False
 
 def location_name_get(location_url, show=None):
 	location = cur.execute(f"""SELECT venue_name, venue_city, venue_state, venue_country FROM VENUES WHERE venue_url LIKE '{location_url}'""").fetchone()
