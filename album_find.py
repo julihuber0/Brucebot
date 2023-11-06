@@ -43,10 +43,6 @@ async def album_finder(ctx, *album):
         for s in info:
             find_song = cur.execute(f"""SELECT song_name, num_plays FROM SONGS WHERE song_url LIKE '{s[2]}'""").fetchone()
 
-            #               name - num plays
-            # most: plays[-1][0] - plays[-1][1]
-            # least: plays[0][0] - plays[0][1]
-
             if find_song[1] == "":
                 songs.append(f"**{find_song[0]}**")
                 note = " (Note: Not All Songs Played Live Yet)"
@@ -56,42 +52,15 @@ async def album_finder(ctx, *album):
         song_list = ", ".join(songs)
         embed.add_field(name="Songs (Bold = Not Played):", value=f"{song_list}", inline=False)
 
-        embed.add_field(name="Most Played:", value=f"{plays[-1][0]} ({plays[-1][1]})", inline=True)
-        embed.add_field(name="Least Played:", value=f"{plays[0][0]} ({plays[0][1]})", inline=True)
+        embed.add_field(name="Most Played:", value=f"{plays[-1][0]} ({plays[-1][1]})", inline=False)
+        embed.add_field(name="Least Played:", value=f"{plays[0][0]} ({plays[0][1]})", inline=False)
 
         first_date = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[0][1]}'""").fetchone()
         last_date = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[-1][1]}'""").fetchone()
 
-        embed.add_field(name=f"First Premiered{note}:", value=f"{premiere[0][0]} ([{first_date[0]}]({main_url}{premiere[0][1]}))", inline=True)
-        embed.add_field(name=f"Last Premiered{note}:", value=f"{premiere[-1][0]} ([{last_date[0]}]({main_url}{premiere[-1][1]}))", inline=True)
+        embed.add_field(name=f"First Premiered{note}:", value=f"{premiere[0][0]} ([{first_date[0]}]({main_url}{premiere[0][1]}))", inline=False)
+        embed.add_field(name=f"Last Premiered{note}:", value=f"{premiere[-1][0]} ([{last_date[0]}]({main_url}{premiere[-1][1]}))", inline=False)
 
         await ctx.send(embed=embed)
     else:
-        await ctx.send(f"{error_message('album')}, No results for: {album}")
-
-    # if album_info and album_info[0][0] != "Tracks":
-    #     embed = create_embed(album_info[0][0], f"Year: {album_info[0][1]}", ctx)
-    #     plays = cur.execute(f"""select song_name, num_plays FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE '{album_info[0][0]}') AND num_plays != '' ORDER BY CAST(num_plays as integer) ASC""").fetchall()
-    #     premiere = cur.execute(f"""select song_name, first_played FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE '{album_info[0][0]}') AND first_played != '' ORDER BY first_played ASC""").fetchall()
-
-    #     for s in album_info:
-    #         find_song = cur.execute(f"""SELECT song_name, num_plays FROM SONGS WHERE song_url LIKE '{s[2]}'""").fetchone()
-
-    #         if find_song[1] == "":
-    #             songs.append(f"**{find_song[0]}**")
-    #         else:
-    #             songs.append(find_song[0])
-        
-    #     song_list = ", ".join(songs)
-    #     embed.add_field(name="Songs (Bold = Not Played):", value=f"{song_list}", inline=False)
-
-    #     embed.add_field(name="Most/Least Played:", value=f"{plays[-1][0]} ({plays[-1][1]}) / {plays[0][0]} ({plays[0][1]})", inline=False)
-
-    #     first_date = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[0][1]}'""").fetchone()
-    #     last_date = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[-1][1]}'""").fetchone()
-
-    #     embed.add_field(name="First/Last Premiered (Note: Not All Songs Played Live Yet):", value=f"{premiere[0][0]} ([{first_date[0]}]({main_url}{premiere[0][1]})) / {premiere[-1][0]} ([{last_date[0]}]({main_url}{premiere[-1][1]}))", inline=False)
-
-    #     await ctx.send(embed=embed)
-    # else:
-    #     await ctx.send(f"{error_message('album')}, No results for: {album_to_find}")
+        await ctx.send(f"{error_message('album')}, No results for: {inputFixed}")
