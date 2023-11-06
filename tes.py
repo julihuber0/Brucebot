@@ -57,6 +57,6 @@ botcmds = {
 }
 
 
-for i in botcmds.keys():
-    print(botcmds[i]["name"])
-    print(botcmds[i]["value"])
+for i in botcmds.items():
+    for k, v in i[1].items():
+        print(k, v)
