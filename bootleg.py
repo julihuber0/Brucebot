@@ -17,9 +17,6 @@ async def bootleg_find(ctx, date=None):
 		if event_name:
 			location = location_name_get(event_name[0], event_name[1])
 
-			# if event_name[1] != "":
-			# 	location += f" ({event_name[1]})"
-
 			embed = create_embed(f"Bootlegs For: {date}", location, ctx)
 			url = f"https://www.springsteenlyrics.com/bootlegs.php?filter_date={date}&cmd=list&category=filter_date"
 			embed.add_field(name="", value=f"[SpringsteenLyrics]({url})")
