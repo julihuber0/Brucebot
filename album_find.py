@@ -58,8 +58,8 @@ async def album_finder(ctx, *album):
         first_date = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[0][1]}'""").fetchone()
         last_date = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[-1][1]}'""").fetchone()
 
-        embed.add_field(name=f"First Premiered{note}:", value=f"{premiere[0][0]} ([{first_date[0]}]({main_url}{premiere[0][1]}))", inline=False)
-        embed.add_field(name=f"Last Premiered{note}:", value=f"{premiere[-1][0]} ([{last_date[0]}]({main_url}{premiere[-1][1]}))", inline=False)
+        embed.add_field(name=f"First/Last Premiered{note}:", value=f"{premiere[0][0]} ([{first_date[0]}]({main_url}{premiere[0][1]}))\n{premiere[-1][0]} ([{last_date[0]}]({main_url}{premiere[-1][1]}))", inline=False)
+        # embed.add_field(name=f"Last Premiered{note}:", value=f"{premiere[-1][0]} ([{last_date[0]}]({main_url}{premiere[-1][1]}))", inline=False)
 
         await ctx.send(embed=embed)
     else:
