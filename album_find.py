@@ -3,10 +3,9 @@ from create_embed import create_embed
 from error_message import error_message
 import re
 
-album_name = note = ""
-songs = []
-
 def album_name_fix(album):
+    album_name = ""
+
     # album name: [list of shorthand/abbreviations]
     for key, value in albums.items():
         for v in value:
@@ -29,6 +28,8 @@ def checkDBforalbum(album):
 @bot.command(aliases=['album', 'a'])
 async def album_finder(ctx, *album):
     """Gets info on album"""
+    songs = []
+    note = ""
     input = " ".join(album).replace("'", "''")
     inputFixed = album_name_fix(input)
 
