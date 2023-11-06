@@ -3,7 +3,7 @@ setlist_finder
 gets setlist based on inputted date
 """
 
-from import_stuff import date_checker, cur, bot, main_url, location_name_get
+from import_stuff import dateinDB, cur, bot, main_url, location_name_get
 from create_embed import create_embed
 from error_message import error_message
 import re
@@ -15,7 +15,7 @@ async def setlist_finder(ctx, date=None):
 	if date is None:
 		date = cur.execute("""SELECT event_date FROM EVENTS WHERE setlist != '' ORDER BY event_id DESC LIMIT 1""").fetchone()[0]
 
-	if date_checker(date):
+	if dateinDB(date):
 		embed = create_embed(f"Brucebase Results For: {date}", "", ctx)
 		get_events = cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchall()
 		invalid_sets = []
@@ -62,14 +62,14 @@ async def setlist_finder(ctx, date=None):
 							# indicator is [1] or [2]
 							if s[0] not in invalid_sets:
 								if premiere[0] != 0:
-									indicator = "**[1]**"
+									indicator = " **[1]** "
 								if bustout[0] == r[2]:
-									indicator = "**[2]**"
+									indicator = " **[2]** "
 									
 							if song[2]:
-								segue = ">"
+								segue = " >"
 
-							set_l.append(f"{song[0]} {indicator} {segue}")
+							set_l.append(f"{song[0]}{indicator}{segue}")
 
 						setlist = ", ".join(set_l).replace(">,", ">")
 

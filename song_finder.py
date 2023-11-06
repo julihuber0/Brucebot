@@ -6,6 +6,7 @@ gets info in inputted song
 from import_stuff import bot, cur, main_url
 from create_embed import create_embed
 from error_message import error_message
+from fuzzywuzzy import fuzz
 import re
 
 def song_name_fix(song):
@@ -36,7 +37,6 @@ async def song_finder(ctx, *song):
 	
 	if len(" ".join(song)) > 1:
 		song_name = song_name_fix(re.sub("['\"]", "''", " ".join(song)))
-		# song_name = song_name_fix(" ".join(song).replace("'", "''").replace("\"", "''").replace("’", "''"))
 		#id, url, name, first_played_url, last_played_url, num_plays, opener, closer, frequency
 
 		if cur.execute(f"""SELECT * FROM SONGS WHERE LOWER(song_name) LIKE '{song_name.lower()}'""").fetchone():
