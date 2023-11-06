@@ -35,7 +35,7 @@ async def album_finder(ctx, *album):
 
     if checkDBforalbum(inputFixed) and inputFixed.lower() != "tracks":
         info = cur.execute(f"""SELECT album_name, album_year, song_url FROM ALBUMS WHERE LOWER(album_name) LIKE '{inputFixed.lower()}' ORDER BY song_num ASC""").fetchall()
-        embed = create_embed(info[0], f"Year: {info[1]}", ctx)
+        embed = create_embed(info[0][0], f"Year: {info[0][1]}", ctx)
 
         plays = cur.execute(f"""select song_name, num_plays FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE '{info[0][0]}') AND num_plays != '' ORDER BY CAST(num_plays as integer) ASC""").fetchall()
         premiere = cur.execute(f"""select song_name, first_played FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE '{info[0][0]}') AND first_played != '' ORDER BY first_played ASC""").fetchall()
@@ -56,13 +56,14 @@ async def album_finder(ctx, *album):
         song_list = ", ".join(songs)
         embed.add_field(name="Songs (Bold = Not Played):", value=f"{song_list}", inline=False)
 
-        embed.add_field(name="Most Played:", value=f"{plays[-1][0]} ({plays[-1][1]})", inline=False)
-        embed.add_field(name="Least Played:", value=f"{plays[0][0]} ({plays[0][1]})", inline=False)
+        embed.add_field(name="Most Played:", value=f"{plays[-1][0]} ({plays[-1][1]})", inline=True)
+        embed.add_field(name="Least Played:", value=f"{plays[0][0]} ({plays[0][1]})", inline=True)
 
         first_date = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[0][1]}'""").fetchone()
         last_date = cur.execute(f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[-1][1]}'""").fetchone()
 
-        embed.add_field(name=f"First/Last Premiered{note}:", value=f"{premiere[0][0]} ([{first_date[0]}]({main_url}{premiere[0][1]})) / {premiere[-1][0]} ([{last_date[0]}]({main_url}{premiere[-1][1]}))", inline=False)
+        embed.add_field(name=f"First Premiered{note}:", value=f"{premiere[0][0]} ([{first_date[0]}]({main_url}{premiere[0][1]}))", inline=True)
+        embed.add_field(name=f"Last Premiered{note}:", value=f"{premiere[-1][0]} ([{last_date[0]}]({main_url}{premiere[-1][1]}))", inline=True)
 
         await ctx.send(embed=embed)
     else:
