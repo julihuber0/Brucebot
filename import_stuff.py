@@ -126,20 +126,20 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents, help_command=None)
 
 def date_checker(date):
-	# if date is not None:
-	# 	try:
-	# 		return datetime.date.fromisoformat(date)
-	# 	except:
-	# 		return False
-	# else:
-	# 	return False
-	
 	if date is not None:
-		if datetime.date.fromisoformat(date):
-			check = cur.execute(f"""SELECT EXISTS(SELECT 1 FROM EVENTS WHERE event_date LIKE '{date}')""").fetchone()
+		try:
+			return datetime.date.fromisoformat(date)
+		except:
+			return False
+	else:
+		return False
 
-			if check:
-				return True
+def dateinDB(date):
+	if date_checker(date):
+		check = cur.execute(f"""SELECT EXISTS(SELECT 1 FROM EVENTS WHERE event_date LIKE '{date}')""").fetchone()
+
+		if check:
+			return True
 
 	return False
 
