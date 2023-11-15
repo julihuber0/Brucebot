@@ -56,17 +56,19 @@ async def setlist_finder(ctx, date=None):
 
 						for song in set_songs:
 							indicator = note = segue = ""
-							premiere = cur.execute(f"""SELECT EXISTS(SELECT 1 FROM SONGS WHERE song_url LIKE '{song[1]}' AND first_played LIKE '{r[2]}')""").fetchone()
+							# premiere = cur.execute(f"""SELECT EXISTS(SELECT 1 FROM SONGS WHERE song_url LIKE '{song[1]}' AND first_played LIKE '{r[2]}')""").fetchone()
+							premiere = cur.execute(f"""SELECT first_played FROM SONGS WHERE song_url LIKE '{song[1]}'""").fetchone()
 							bustout = cur.execute(f"""SELECT MIN(event_url) FROM EVENTS WHERE setlist LIKE '%{s[0].replace("'", "''")}%' AND tour LIKE '{r[5].replace("'", "''")}'""").fetchone()
 
 							# indicator is [1] or [2]
-							# if s[0].lower() not in invalid_sets:
-							if premiere[0] != 0:
-								indicator = " **[1]**"
-							elif bustout[0] == r[2]:
-								indicator = " **[2]**"
-							else:
-								indicator = " **[?]**"
+							if s[0].lower() not in invalid_sets:
+								if premiere[0] == r[2]:
+									indicator = " **[1]**"
+								
+								if bustout[0] == r[2]:
+									indicator = " **[2]**"
+								# else:
+								# 	indicator = " **[?]**"
 									
 							if song[2]:
 								segue = " >"
