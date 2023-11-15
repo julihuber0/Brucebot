@@ -66,7 +66,7 @@ async def setlist_finder(ctx, date=None):
 							elif bustout[0] == r[2]:
 								indicator = " **[2]**"
 							else:
-								indicator = ""
+								indicator = " **[?]**"
 									
 							if song[2]:
 								segue = " >"
