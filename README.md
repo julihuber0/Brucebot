@@ -12,6 +12,7 @@ Its not a 1:1 exact copy of their embed, but enough to where I feel I should pro
 
 ## Changelog (as best as I can)
 
+- 2023-11-14: realized that the bustouts haven't been showing up for the past month or so, since at least September/October (whenever I cleaned up the code of various functions). Mainly because I used the wrong variable inside of a loop (used 's' instead of 'song'). So, when trying to find bustouts, it was looking for a song_url of "Show".
 - 2023-10-13: added "relation finder", which will return info on a specified person or band
 - 2023-10-13: added "album find", returns stats on an album (song list, most/least played, first/last premiered)
 - 2023-10-11: modified the database to only count song opener/closer if the known setlist is more than a single song. As it's unknown exactly where in the set it falls.
