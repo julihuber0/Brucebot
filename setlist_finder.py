@@ -47,6 +47,7 @@ async def setlist_finder(ctx, date=None):
 
 				if has_setlist[0] != 0:
 					location = setlist = indicator = ""
+					count = 0
 
 					#id, event_url, song_url, song_name, set_type, song_in_set, song_num, segue
 					for s in cur.execute(f"""SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url LIKE '{r[2]}') p ORDER BY setlist_song_id ASC""").fetchall():
@@ -63,9 +64,11 @@ async def setlist_finder(ctx, date=None):
 							# indicator is [1] or [2]
 							if s[0].lower() not in invalid_sets:
 								if premiere[0] == r[2]:
+									count += 1
 									indicator = " **[1]**"
 								
 								if bustout[0] == r[2]:
+									count += 1
 									indicator = " **[2]**"
 								# else:
 								# 	indicator = " **[?]**"
@@ -80,7 +83,7 @@ async def setlist_finder(ctx, date=None):
 						if not r[7] and not r[8]:
 							note = "(Setlist May Be Incomplete)"
 
-						embed.add_field(name=f"{s[0]} {note}:", value=setlist, inline=False)
+						embed.add_field(name=f"{s[0]} {note} {count}:", value=setlist, inline=False)
 				else: # end "if has_setlist"
 					embed.add_field(name="", value=error_message("no-setlist"), inline=False)
 
