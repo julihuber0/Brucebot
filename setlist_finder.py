@@ -18,10 +18,10 @@ async def setlist_finder(ctx, date=None):
 	if dateinDB(date):
 		embed = create_embed(f"Brucebase Results For: {date}", "", ctx)
 		get_events = cur.execute(f"""SELECT * FROM EVENTS WHERE event_date LIKE '{str(date)}'""").fetchall()
-		invalid_sets = []
+		invalid_sets = ['soundcheck', 'rehearsal']
 		
-		for i in cur.execute(f"""SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE set_type SIMILAR TO '%(Soundcheck|Rehearsal|Pre-)%') p""").fetchall():
-			invalid_sets.append(i[0])
+		# for i in cur.execute(f"""SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE set_type SIMILAR TO '%(Soundcheck|Rehearsal|Pre-)%') p""").fetchall():
+		# 	invalid_sets.append(i[0])
 
 		if get_events:
 			for r in get_events:
@@ -57,10 +57,10 @@ async def setlist_finder(ctx, date=None):
 						for song in set_songs:
 							indicator = note = segue = ""
 							premiere = cur.execute(f"""SELECT EXISTS(SELECT 1 FROM SONGS WHERE song_url LIKE '{song[1]}' AND first_played LIKE '{r[2]}')""").fetchone()
-							bustout = cur.execute(f"""SELECT MIN(event_url) FROM EVENTS WHERE setlist LIKE '%{s[0].replace("'", "''")}%' AND tour = '{r[5].replace("'", "''")}' AND event_url LIKE '{r[2]}'""").fetchone()
+							bustout = cur.execute(f"""SELECT MIN(event_url) FROM EVENTS WHERE setlist LIKE '%{s[0].replace("'", "''")}%' AND tour LIKE '{r[5].replace("'", "''")}'""").fetchone()
 
 							# indicator is [1] or [2]
-							if s[0] not in invalid_sets:
+							if s[0].lower() not in invalid_sets:
 								if premiere[0] != 0:
 									indicator = " **[1]**"
 								if bustout[0] == r[2]:
