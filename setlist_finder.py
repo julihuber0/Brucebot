@@ -63,8 +63,10 @@ async def setlist_finder(ctx, date=None):
 							# if s[0].lower() not in invalid_sets:
 							if premiere[0] != 0:
 								indicator = " **[1]**"
-							if bustout[0] == r[2]:
+							elif bustout[0] == r[2]:
 								indicator = " **[2]**"
+							else:
+								indicator = ""
 									
 							if song[2]:
 								segue = " >"
