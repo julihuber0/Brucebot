@@ -60,11 +60,11 @@ async def setlist_finder(ctx, date=None):
 							bustout = cur.execute(f"""SELECT MIN(event_url) FROM EVENTS WHERE setlist LIKE '%{s[0].replace("'", "''")}%' AND tour LIKE '{r[5].replace("'", "''")}'""").fetchone()
 
 							# indicator is [1] or [2]
-							if s[0].lower() not in invalid_sets:
-								if premiere[0] != 0:
-									indicator = " **[1]**"
-								if bustout[0] == r[2]:
-									indicator = " **[2]**"
+							# if s[0].lower() not in invalid_sets:
+							if premiere[0] != 0:
+								indicator = " **[1]**"
+							if bustout[0] == r[2]:
+								indicator = " **[2]**"
 									
 							if song[2]:
 								segue = " >"
