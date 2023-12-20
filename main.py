@@ -12,9 +12,11 @@ from album_find import album_finder
 from relation_find import relation_finder
 from location_finder import city_finder, state_finder, country_finder
 
+
 @bot.event
 async def on_ready():
-	print(f'Bot online and logged in as {bot.user}')
+    print(f"Bot online and logged in as {bot.user}")
 
-my_secret = os.environ['TOKEN']
+
+my_secret = os.environ["TOKEN"]
 bot.run(my_secret)
