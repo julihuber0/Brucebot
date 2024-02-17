@@ -83,7 +83,7 @@ async def get_cover(ctx, date=None):
                     # )
 
             if links:
-                send_webhook(ctx, links)
+                await send_webhook(ctx, links)
 
             # await ctx.send("\n".join(links))
 
