@@ -30,8 +30,10 @@ async def get_cover(ctx, date=None):
 
             for cover in covers:
                 if date in cover["path"]:
-                    links.append(f"https://raw.githubusercontent.com/lilbud/Bootleg_Covers/main/{cover["path"]}")
-            
+                    links.append(
+                        f"https://raw.githubusercontent.com/lilbud/Bootleg_Covers/main/{cover['path']}"
+                    )
+
             if links:
                 await ctx.send("\n".join(links))
             else:
