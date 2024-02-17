@@ -5,7 +5,7 @@ returns covers from my site
 
 # import requests
 import httpx
-import re
+import json
 from import_stuff import bot, dateinDB
 from error_message import error_message
 from bs4 import BeautifulSoup as bs4
@@ -17,23 +17,21 @@ async def get_cover(ctx, date=None):
 
     if dateinDB(date):
         links = []
-        date_string = '{"name":"' + date
-        url = f"https://github.com/lilbud/Bootleg_Covers/raw/main/Bruce_Springsteen/covers/{date[0:4]}/"
+        url = f"https://github.com/lilbud/Bootleg_Covers/tree/main/Bruce_Springsteen/covers/{date[0:4]}"
 
         with httpx.Client() as client:
             try:
-                r = client.get(url).text
+                r = client.get(url)
             except httpx.RequestError as exc:
                 print(f"An error occurred while requesting {exc.request.url!r}.")
 
-            # r = requests.get(url).text
-            soup = bs4(r, "lxml")
+            soup = bs4(r.text, "lxml")
+            covers = json.loads(str(soup.find("p").text))["payload"]["tree"]["items"]
 
-            for s in soup.text.split(","):
-                if date_string in s:
-                    for m in re.findall(f'{date}.*[^"]', s):
-                        links.append(f"{url}{m}")
-
+            for cover in covers:
+                if date in cover["path"]:
+                    links.append(f"https://raw.githubusercontent.com/lilbud/Bootleg_Covers/main/{cover["path"]}")
+            
             if links:
                 await ctx.send("\n".join(links))
             else:
