@@ -7,4 +7,3 @@ lxml
 psycopg
 urllib3
 httpx
-json
