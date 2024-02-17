@@ -28,12 +28,48 @@ async def get_cover(ctx, date=None):
                     links.append(f"{git_url}{m}")
 
         if links:
-            for link in links:
-                embed = discord.Embed(url="https://lilbud.github.io").set_image(
-                    url=link
-                )
+            match len(links):
+                case 1:
+                    embed1 = discord.Embed(url="https://lilbud.github.io").set_image(
+                        url=links[0]
+                    )
+                    await ctx.send(embed=embed1)
+                case 2:
+                    embed1 = discord.Embed(url="https://lilbud.github.io").set_image(
+                        url=links[0]
+                    )
+                    embed2 = discord.Embed(url="https://lilbud.github.io").set_image(
+                        url=links[1]
+                    )
+                    await ctx.send(embed=[embed1, embed2])
+                case 3:
+                    embed1 = discord.Embed(url="https://lilbud.github.io").set_image(
+                        url=links[0]
+                    )
+                    embed2 = discord.Embed(url="https://lilbud.github.io").set_image(
+                        url=links[1]
+                    )
+                    embed3 = discord.Embed(url="https://lilbud.github.io").set_image(
+                        url=links[2]
+                    )
+                    await ctx.send(embed=[embed1, embed2, embed3])
+                case 4:
+                    embed1 = discord.Embed(url="https://lilbud.github.io").set_image(
+                        url=links[0]
+                    )
+                    embed2 = discord.Embed(url="https://lilbud.github.io").set_image(
+                        url=links[1]
+                    )
+                    embed3 = discord.Embed(url="https://lilbud.github.io").set_image(
+                        url=links[2]
+                    )
+                    embed4 = discord.Embed(url="https://lilbud.github.io").set_image(
+                        url=links[3]
+                    )
+                    await ctx.send(embed=[embed1, embed2, embed3, embed4])
+
             # await ctx.send("\n".join(links))
-            await ctx.send(embed=embed)
+
         else:
             await ctx.send(error_message("cover"))
     else:
