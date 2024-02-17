@@ -6,3 +6,4 @@ discord
 lxml
 psycopg
 urllib3
+httpx
