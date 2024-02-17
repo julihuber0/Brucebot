@@ -9,14 +9,14 @@ from import_stuff import bot, dateinDB
 from error_message import error_message
 from bs4 import BeautifulSoup as bs4
 
-from discord import Webhook, AsyncWebhookAdapter, discord
+from discord import Webhook, discord
 import aiohttp
 
 
 @bot.command()
 async def send_webhook(ctx, links):
     async with aiohttp.ClientSession() as session:
-        webhook = Webhook.from_url("webhook_url", adapter=AsyncWebhookAdapter(session))
+        webhook = Webhook.from_url("webhook_url", session=session)
 
         # e = discord.Embed(title="Title", description="Description")
         # e.add_field(name="Field 1", value="Value 1")
