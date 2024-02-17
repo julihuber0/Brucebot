@@ -8,8 +8,8 @@ import re
 from import_stuff import bot, dateinDB
 from error_message import error_message
 from bs4 import BeautifulSoup as bs4
-
-from discord import Webhook, discord
+import discord
+from discord import Webhook
 import aiohttp
 
 
