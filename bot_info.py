@@ -88,7 +88,7 @@ async def bot_help(ctx):
     #     embed.add_field(
     #         name=botcmds[i]["name"], value=botcmds[i]["value"], inline=False
     #     )
-    embed.add_field("Commands:", "\n".join(cmds), inline=False)
+    embed.add_field(name="Commands:", value="\n".join(cmds), inline=False)
 
     await ctx.send(embed=embed)
 
