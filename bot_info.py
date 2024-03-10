@@ -61,27 +61,30 @@ botcmds = {
     },
 }
 
-cmds = [
+concerts = [
     "`!sl <yyyy-mm-dd>`, `!setlist <yyyy-mm-dd>` | _Returns the setlist of that show from Brucebase_",
-    "`!cover <yyyy-mm-dd>` | _Will get artwork from my website for that show_",
-    "`!jl <yyyy-mm-dd>` | _Returns link to Jungleland torrents with specified date_",
     "`!otd <mm-dd>` | _Returns a list of shows that happened on a certain day, leave blank for current date_",
-    "`!artwork <yyyy-mm-dd>` | _Returns list of artwork from Jungleland.it_",
+    "`!song <song>` | _Searches for the requested song, returns a link as well as number of times it has been played_",
+    "`!album <album name>`, `!a <album name>` | _Searches the database for the specified album, and returns stats for it_",
+    "`!tour <tour>` | _Searches the database for the specified tour, and returns stats for it_",
+    "`!person <person name>`, `!p <person name>` | _Searches the database for the specified person, and returns stats about them_",
+    "`!band <band name>`, `!b <band name>` | _Searches the database for the specified band, and returns stats about them_",
+]
+
+bootlegs = [
+    "`!jl <yyyy-mm-dd>` | _Returns link to Jungleland torrents with specified date (must be logged in to Jungleland)_",
     "`!bootleg <yyyy-mm-dd>` | _Returns link to SpringsteenLyrics with list of Bootlegs for that date_",
 ]
 
-cmds2 = [
-    "`!info` | _Returns Info on this Bot_",
-    "`!song` | _Searches for the requested song, returns a link as well as number of times it has been played_",
-    "",
-    "`!tour` | _Searches the database for the specified tour, and returns stats for it_",
-    "`!album <album name>`, `!a <album name>` | _Searches the database for the specified album, and returns stats for it_",
-    "`!person <person name>`, `!p <person name>` | _Searches the database for the specified person, and returns stats about them_",
-    "`!band <band name>`, `!b <band name>` | _Searches the database for the specified band, and returns stats about them_",
-    "",
-    "`!city` | _Searches the database for how many shows have been played in a specified city_",
-    "`!state` | _Searches the database for how many shows have been played in a specified state_",
-    "`!country` | _Searches the database for how many shows have been played in a specified country_",
+art = [
+    "`!cover <yyyy-mm-dd>` | _Will get artwork from my website for that show_",
+    "`!artwork <yyyy-mm-dd>` | _Returns list of artwork from Jungleland.it_",
+]
+
+location = [
+    "`!city <city>` | _Searches the database for how many shows have been played in a specified city_",
+    "`!state <state/abbrev>` | _Searches the database for how many shows have been played in a specified state_",
+    "`!country <country>` | _Searches the database for how many shows have been played in a specified country_",
 ]
 
 
@@ -89,14 +92,18 @@ cmds2 = [
 async def bot_help(ctx):
     """Returns a list of bot commands"""
 
-    embed = create_embed("Brucebot Help", "", ctx)
+    embed = create_embed(
+        "Brucebot Command", "Type `!info` for information about this bot", ctx
+    )
 
     # for i in botcmds.keys():
     #     embed.add_field(
     #         name=botcmds[i]["name"], value=botcmds[i]["value"], inline=False
     #     )
-    embed.add_field(name="Commands:", value="\n".join(cmds), inline=False)
-    embed.add_field(name="", value="\n".join(cmds2), inline=False)
+    embed.add_field(name="Live Stats:", value="\n".join(concerts), inline=False)
+    embed.add_field(name="Bootlegs:", value="\n".join(bootlegs), inline=False)
+    embed.add_field(name="Artwork:", value="\n".join(art), inline=False)
+    embed.add_field(name="Location Stats:", value="\n".join(location), inline=False)
 
     await ctx.send(embed=embed)
 
