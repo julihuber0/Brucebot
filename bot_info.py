@@ -68,8 +68,11 @@ cmds = [
     "`!otd`, `!otd <MM-DD>` | _Returns a list of shows that happened on a certain day, leave blank for current date_",
     "`!artwork <YYYY-MM-DD>` | _Returns list of artwork from Jungleland.it_",
     "`!bootleg <YYYY-MM-DD>` | _Returns link to SpringsteenLyrics with list of Bootlegs for that date_",
-    "`!info`",
-    "`!song [SONG NAME]` | _Searches Brucebase for the requested song, returns a link as well as number of times it has been played_",
+]
+
+cmds2 = [
+    "`!info` | _Returns Info on this Bot_",
+    "`!song [SONG NAME]` | _Searches for the requested song, returns a link as well as number of times it has been played_",
     "`!city [CITY_NAME]` , `!state [STATE ABBREV]` , `!country [COUNTRY_NAME]` | _Searches the database for how many shows have been played in a specified city/state/country_",
     "`!tour [TOUR_NAME]` | _Searches the database for the specified tour, and returns stats for it_",
     "`!album [ALBUM]` , `!a [ALBUM]` | _Searches the database for the specified album, and returns stats for it_",
@@ -89,6 +92,7 @@ async def bot_help(ctx):
     #         name=botcmds[i]["name"], value=botcmds[i]["value"], inline=False
     #     )
     embed.add_field(name="Commands:", value="\n".join(cmds), inline=False)
+    embed.add_field(name="Commands:", value="\n".join(cmds2), inline=False)
 
     await ctx.send(embed=embed)
 
