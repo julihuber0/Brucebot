@@ -61,17 +61,34 @@ botcmds = {
     },
 }
 
+cmds = [
+    "`!sl <YYYY-MM-DD>` , `!setlist <YYYY-MM-DD>` | _Returns the setlist of that show from Brucebase_",
+    "`!cover <YYYY-MM-DD>` | _Will get artwork from my website for that show_",
+    "`!jl <YYYY-MM-DD>` | _Returns link to Jungleland torrents with specified date_",
+    "`!otd`, `!otd <MM-DD>` | _Returns a list of shows that happened on a certain day, leave blank for current date_",
+    "`!artwork <YYYY-MM-DD>` | _Returns list of artwork from Jungleland.it_",
+    "`!bootleg <YYYY-MM-DD>` | _Returns link to SpringsteenLyrics with list of Bootlegs for that date_",
+    "`!info`",
+    "`!song [SONG NAME]` | _Searches Brucebase for the requested song, returns a link as well as number of times it has been played_",
+    "`!city [CITY_NAME]` , `!state [STATE ABBREV]` , `!country [COUNTRY_NAME]` | _Searches the database for how many shows have been played in a specified city/state/country_",
+    "`!tour [TOUR_NAME]` | _Searches the database for the specified tour, and returns stats for it_",
+    "`!album [ALBUM]` , `!a [ALBUM]` | _Searches the database for the specified album, and returns stats for it_",
+    "`!person [NAME]` , `!p [NAME]` | _Searches the database for the specified person, and returns stats about them_",
+    "`!band [NAME]` , `!b [NAME]` | _Searches the database for the specified band, and returns stats about them_",
+]
+
 
 @bot.command(aliases=["help"])
 async def bot_help(ctx):
     """Returns a list of bot commands"""
 
-    embed = create_embed("Brucebot Help", "List of Brucebot Commands", ctx)
+    embed = create_embed("Brucebot Help", "", ctx)
 
-    for i in botcmds.keys():
-        embed.add_field(
-            name=botcmds[i]["name"], value=botcmds[i]["value"], inline=False
-        )
+    # for i in botcmds.keys():
+    #     embed.add_field(
+    #         name=botcmds[i]["name"], value=botcmds[i]["value"], inline=False
+    #     )
+    embed.add_field("Commands:", "\n".join(cmds), inline=False)
 
     await ctx.send(embed=embed)
 
