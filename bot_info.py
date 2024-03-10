@@ -73,13 +73,15 @@ cmds = [
 cmds2 = [
     "`!info` | _Returns Info on this Bot_",
     "`!song` | _Searches for the requested song, returns a link as well as number of times it has been played_",
-    "`!city` | _Searches the database for how many shows have been played in a specified city_",
-    "`!state` | _Searches the database for how many shows have been played in a specified state_",
-    "`!country` | _Searches the database for how many shows have been played in a specified country_",
+    "",
     "`!tour` | _Searches the database for the specified tour, and returns stats for it_",
     "`!album <album name>`, `!a <album name>` | _Searches the database for the specified album, and returns stats for it_",
     "`!person <person name>`, `!p <person name>` | _Searches the database for the specified person, and returns stats about them_",
     "`!band <band name>`, `!b <band name>` | _Searches the database for the specified band, and returns stats about them_",
+    "",
+    "`!city` | _Searches the database for how many shows have been played in a specified city_",
+    "`!state` | _Searches the database for how many shows have been played in a specified state_",
+    "`!country` | _Searches the database for how many shows have been played in a specified country_",
 ]
 
 
