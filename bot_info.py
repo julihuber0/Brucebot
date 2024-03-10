@@ -62,22 +62,24 @@ botcmds = {
 }
 
 cmds = [
-    "`!sl <YYYY-MM-DD>` , `!setlist <YYYY-MM-DD>` | _Returns the setlist of that show from Brucebase_",
-    "`!cover <YYYY-MM-DD>` | _Will get artwork from my website for that show_",
-    "`!jl <YYYY-MM-DD>` | _Returns link to Jungleland torrents with specified date_",
-    "`!otd`, `!otd <MM-DD>` | _Returns a list of shows that happened on a certain day, leave blank for current date_",
-    "`!artwork <YYYY-MM-DD>` | _Returns list of artwork from Jungleland.it_",
-    "`!bootleg <YYYY-MM-DD>` | _Returns link to SpringsteenLyrics with list of Bootlegs for that date_",
+    "`!sl` , `setlist` <yyyy-mm-dd> | _Returns the setlist of that show from Brucebase_",
+    "`!cover` <yyyy-mm-dd> | _Will get artwork from my website for that show_",
+    "`!jl` <yyyy-mm-dd> | _Returns link to Jungleland torrents with specified date_",
+    "`!otd` <mm-dd> | _Returns a list of shows that happened on a certain day, leave blank for current date_",
+    "`!artwork` <yyyy-mm-dd> | _Returns list of artwork from Jungleland.it_",
+    "`!bootleg` <yyyy-mm-dd> | _Returns link to SpringsteenLyrics with list of Bootlegs for that date_",
 ]
 
 cmds2 = [
     "`!info` | _Returns Info on this Bot_",
-    "`!song [SONG NAME]` | _Searches for the requested song, returns a link as well as number of times it has been played_",
-    "`!city [CITY_NAME]` , `!state [STATE ABBREV]` , `!country [COUNTRY_NAME]` | _Searches the database for how many shows have been played in a specified city/state/country_",
-    "`!tour [TOUR_NAME]` | _Searches the database for the specified tour, and returns stats for it_",
-    "`!album [ALBUM]` , `!a [ALBUM]` | _Searches the database for the specified album, and returns stats for it_",
-    "`!person [NAME]` , `!p [NAME]` | _Searches the database for the specified person, and returns stats about them_",
-    "`!band [NAME]` , `!b [NAME]` | _Searches the database for the specified band, and returns stats about them_",
+    "`!song` | _Searches for the requested song, returns a link as well as number of times it has been played_",
+    "`!city` | _Searches the database for how many shows have been played in a specified city_",
+    "`!state` | _Searches the database for how many shows have been played in a specified state_",
+    "`!country` | _Searches the database for how many shows have been played in a specified country_",
+    "`!tour` | _Searches the database for the specified tour, and returns stats for it_",
+    "`!album` , `a` <album name> | _Searches the database for the specified album, and returns stats for it_",
+    "`!person` , `p` <person name> | _Searches the database for the specified person, and returns stats about them_",
+    "`!band` , `b` <band name> | _Searches the database for the specified band, and returns stats about them_",
 ]
 
 
