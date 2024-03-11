@@ -1,17 +1,16 @@
 import os
 from import_stuff import bot
-
-# from bot_info import bot_info, bot_help
-# from setlist_finder import setlist_finder
-# from get_cover import get_cover
-# from jungleland import jungleland_torrent, jungleland_art
-# from on_this_day import on_this_day
-# from song_finder import song_finder
-# from bootleg import bootleg_find
-# from tour_finder import tour_stats
-# from album_find import album_finder
-# from relation_find import relation_finder
-# from location_finder import city_finder, state_finder, country_finder
+from bot_info import bot_info, bot_help
+from setlist_finder import setlist_finder
+from get_cover import get_cover
+from jungleland import jungleland_torrent, jungleland_art
+from on_this_day import on_this_day
+from song_finder import song_finder
+from bootleg import bootleg_find
+from tour_finder import tour_stats
+from album_find import album_finder
+from relation_find import relation_finder
+from location_finder import city_finder, state_finder, country_finder
 
 
 @bot.event
