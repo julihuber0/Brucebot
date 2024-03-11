@@ -34,7 +34,7 @@ botcmds = {
         "name": "Bootleg:\t`!bootleg YYYY-MM-DD`",
         "value": "Returns link to SpringsteenLyrics with list of Bootlegs for that date",
     },
-    "info": {"name": "Info:\t`!info`", "value": "Returns Info on this Bot"},
+    "info": {"name": "Info:\t`!botinfo`", "value": "Returns Info on this Bot"},
     "song": {
         "name": "Song Finder:\t`!song [SONG NAME]`",
         "value": "Searches Brucebase for the requested song, returns a link as well as number of times it has been played.",
@@ -84,12 +84,12 @@ cmds2 = [
 ]
 
 
-@bot.command(aliases=["help"])
+@bot.command(aliases=["bothelp"])
 async def bot_help(ctx):
     """Returns a list of bot commands"""
 
     embed = create_embed(
-        "Brucebot Help", "Type `!info` for information about this bot", ctx
+        "Brucebot Help", "Type `!botinfo` for information about this bot", ctx
     )
 
     # for i in botcmds.keys():
@@ -102,7 +102,7 @@ async def bot_help(ctx):
     await ctx.send(embed=embed)
 
 
-@bot.command(aliases=["info"])
+@bot.command(aliases=["botinfo"])
 async def bot_info(ctx):
     """Returns information on the bot"""
 
@@ -133,13 +133,13 @@ async def bot_info(ctx):
     )
 
     embed.add_field(
-        name="Help:", value="Type '!help' to get list of commands", inline="False"
+        name="Help:", value="Type '!bothelp' to get list of commands", inline="False"
     )
 
     await ctx.send(embed=embed)
 
 
-@bot.command(aliases=["status"])
+@bot.command(aliases=["botstatus"])
 async def bot_status(ctx):
     """Returns a message if bot is online and active"""
 
