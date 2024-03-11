@@ -6,7 +6,8 @@ gets setlist based on inputted date
 from import_stuff import dateinDB, cur, bot, main_url, location_name_get
 from create_embed import create_embed
 from error_message import error_message
-import re
+
+# import re
 
 
 @bot.command(aliases=["sl", "setlist", "show"])
@@ -26,7 +27,7 @@ async def setlist_finder(ctx, date=None):
         invalid_sets = []
 
         for i in cur.execute(
-            f"""SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE set_type SIMILAR TO '%(Soundcheck|Rehearsal|Pre-)%') p"""
+            """SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE set_type SIMILAR TO '%(Soundcheck|Rehearsal|Pre-)%') p"""
         ).fetchall():
             invalid_sets.append(i[0])
 

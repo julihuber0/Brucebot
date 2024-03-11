@@ -76,7 +76,7 @@ async def relation_finder(ctx, *name):
                     inline=True,
                 )
             else:
-                embed.add_field(name="Performances:", value=f"0", inline=True)
+                embed.add_field(name="Performances:", value="0", inline=True)
 
             await ctx.send(embed=embed)
         else:

@@ -4,7 +4,8 @@ gets events based on inputted day
 or the current day if none specified
 """
 
-import re, datetime
+import re
+import datetime
 from import_stuff import bot, cur, main_url, cDate, location_name_get
 from create_embed import create_embed
 from error_message import error_message
