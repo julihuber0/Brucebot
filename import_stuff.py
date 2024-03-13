@@ -128,7 +128,7 @@ main_url = "http://brucebase.wikidot.com"
     host=url.hostname,
     port=url.port,
 )'''
-conn = sqlite3.connect(os.environ['DATABASE'])
+conn = sqlite3.connect("/db/database.sqlite")
 cur = conn.cursor()
 
 intents = discord.Intents.default()
