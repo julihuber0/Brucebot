@@ -1,7 +1,7 @@
 FROM python
 WORKDIR /app
-COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
+COPY requirements_fixed.txt requirements_fixed.txt
+RUN pip3 install -r requirements_fixed.txt
 
 COPY . .
 
