@@ -7,6 +7,7 @@ all of the import statements needed for the bot
 import os
 import datetime
 import psycopg
+import sqlite3
 import urllib.parse as urlparse
 from zoneinfo import ZoneInfo
 import discord
@@ -114,19 +115,20 @@ albums = {
     "The Legendary 1979 No Nukes Concerts": ["nonukes", ""],
 }
 
-cDate = datetime.datetime.now(ZoneInfo("US/Eastern"))
+cDate = datetime.datetime.now(ZoneInfo("Europe/Berlin"))
 
 main_url = "http://brucebase.wikidot.com"
 
-url = urlparse.urlparse(os.environ["DATABASE_URL"])
+#url = urlparse.urlparse(os.environ["DATABASE_URL"])
 
-conn = psycopg.connect(
+'''conn = psycopg.connect(
     dbname=url.path[1:],
     user=url.username,
     password=url.password,
     host=url.hostname,
     port=url.port,
-)
+)'''
+conn = sqlite3.connect("I:\PythonProjects\Databruce\_database\database.sqlite")
 cur = conn.cursor()
 
 intents = discord.Intents.default()

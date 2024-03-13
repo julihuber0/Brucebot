@@ -8,22 +8,22 @@ def error_message(error_type):
     """Returns an error message based on value"""
     match (error_type):
         case "date":
-            return "ERROR: Date Not Specified or Incorrect Format (Date should be in YYYY-MM-DD Format)"
+            return "Please provide a valid date (Date should be in YYYY-MM-DD Format)"
         case "no-setlist":
             return "No Set Details Found"
         case "song":
-            return "ERROR: Song Missing from Input"
+            return "This song could not be found"
         case "show":
-            return "ERROR: Show Not Found"
+            return "This show could not be found"
         case "tour":
-            return "ERROR: Tour Not Found"
+            return "This tour could not be found"
         case "cover":
-            return "ERROR: Cover Not Found"
+            return "This cover could not be found"
         case "input":
-            return "ERROR: Invalid Input"
+            return "Please provide a valid input"
         case "album":
-            return "ERROR: Album Not Found, or Tracks (which is too long for an embed)"
+            return "This album could not be found, or Tracks (which is too long for an embed)"
         case "relation":
-            return "ERROR: Relation Not Found"
+            return "This relation could not be found"
         case "event":
-            return "ERROR: No Event Found for Specified Date"
+            return "There is no event for that specific date"

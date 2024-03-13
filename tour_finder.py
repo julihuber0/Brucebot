@@ -34,16 +34,16 @@ async def tour_stats(ctx, *tour):
         stats = ""
 
         if cur.execute(
-            f"""SELECT * FROM TOURS WHERE tour_name ILIKE '{tour_name.replace("'", "''")}'"""
+            f"""SELECT * FROM TOURS WHERE tour_name LIKE '{tour_name.replace("'", "''")}'"""
         ).fetchall():
             stats = cur.execute(
-                f"""SELECT * FROM TOURS WHERE tour_name ILIKE '{tour_name.replace("'", "''")}'"""
+                f"""SELECT * FROM TOURS WHERE tour_name LIKE '{tour_name.replace("'", "''")}'"""
             ).fetchall()[0]
         elif cur.execute(
-            f"""SELECT * FROM TOURS WHERE tour_name ILIKE '%{tour_name.replace("'", "''")}%'"""
+            f"""SELECT * FROM TOURS WHERE tour_name LIKE '%{tour_name.replace("'", "''")}%'"""
         ).fetchall():
             stats = cur.execute(
-                f"""SELECT * FROM TOURS WHERE tour_name ILIKE '%{tour_name.replace("'", "''")}%'"""
+                f"""SELECT * FROM TOURS WHERE tour_name LIKE '%{tour_name.replace("'", "''")}%'"""
             ).fetchall()[0]
 
         if stats != "":

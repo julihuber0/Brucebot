@@ -3,3 +3,5 @@ keep_alive.py
 *.ps1
 _old/
 test.py
+.venv/
+main.py
