@@ -18,5 +18,5 @@ async def on_ready():
     print(f"Bot online and logged in as {bot.user}")
 
 
-my_secret = os.environ["TOKEN"]
+my_secret = os.environ['TOKEN']
 bot.run(my_secret)
