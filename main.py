@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 from import_stuff import bot
 from bot_info import bot_info, bot_help
 from setlist_finder import setlist_finder

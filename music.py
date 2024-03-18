@@ -1,7 +1,28 @@
 from import_stuff import bot
-from discord import FFmpegPCMAudio
+from nextcord import FFmpegPCMAudio
+import random as rn
+import pandas as pd
+import nextcord
 
 voice_clients = {}
+queues = {}
+title_array = pd.read_csv('/music/songs.csv').values[:,0]
+
+def check_queue(ctx, id):
+    if queues[id] != []:
+        voice = ctx.guild.voice_client
+        filename = queues[id].pop(0)
+        path = '/music/' + filename
+        source = FFmpegPCMAudio(path)
+        voice.pause()
+        voice.play(source, after=lambda x=None: check_queue(ctx, id))
+
+def fill_queue(id):
+    rn.shuffle(title_array)
+    queues[id] = title_array.tolist()
+
+def set_listening():
+    print()
 
 @bot.command()
 async def randomlive(ctx):
@@ -12,9 +33,13 @@ async def randomlive(ctx):
         except:
             await ctx.send("There was an error when connecting the music bot")
         
-        voice_cl = voice_clients[ctx.guild.id]
-        source = FFmpegPCMAudio('btr.m4a')
-        voice_cl.play(source)
+        id = ctx.guild.id
+        fill_queue(id)
+        voice_cl = voice_clients[id]
+        filename = queues[id].pop(0)
+        path = '/music/' + filename
+        source = FFmpegPCMAudio(path)
+        voice_cl.play(source, after=lambda x=None: check_queue(ctx, id))
 
     else:
         await ctx.send("This command only works when you're in a voice channel")
@@ -24,7 +49,7 @@ async def randomlive(ctx):
 async def leave(ctx):
     if (ctx.voice_client):
         voice = voice_clients[ctx.guild.id]
-        voice.stop()
+        await stop(ctx)
         await voice.disconnect()
 
     else:
@@ -52,4 +77,20 @@ async def resume(ctx):
 @bot.command()
 async def stop(ctx):
     voice = voice_clients[ctx.guild.id]
+    queues[ctx.guild.id] = []
     voice.stop()
+
+@bot.command()
+async def skip(ctx):
+    id = ctx.guild.id
+    check_queue(ctx, id)
+
+@bot.command()
+async def reshuffle(ctx):
+    id = ctx.guild.id
+    if queues[id] != []:
+        queue = queues[id]
+        rn.shuffle(queue)
+        queues[id] = queue
+    else:
+        await ctx.send("Queue is currently empty")

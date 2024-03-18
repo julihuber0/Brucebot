@@ -10,8 +10,8 @@ import psycopg
 import sqlite3
 import urllib.parse as urlparse
 from zoneinfo import ZoneInfo
-import discord
-from discord.ext import commands
+import nextcord
+from nextcord.ext import commands
 
 months = [
     "_None",
@@ -131,7 +131,7 @@ main_url = "http://brucebase.wikidot.com"
 conn = sqlite3.connect("/db/database.sqlite")
 cur = conn.cursor()
 
-intents = discord.Intents.default()
+intents = nextcord.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents, help_command=None)
