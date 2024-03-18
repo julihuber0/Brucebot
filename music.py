@@ -2,7 +2,6 @@ from import_stuff import bot
 from nextcord import FFmpegPCMAudio
 import random as rn
 import pandas as pd
-import nextcord
 
 voice_clients = {}
 queues = {}
@@ -20,9 +19,6 @@ def check_queue(ctx, id):
 def fill_queue(id):
     rn.shuffle(title_array)
     queues[id] = title_array.tolist()
-
-def set_listening():
-    print()
 
 @bot.command()
 async def randomlive(ctx):
