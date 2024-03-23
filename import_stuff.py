@@ -165,7 +165,7 @@ def location_name_get(location_url, show=None):
     if location:
         if show != "" and show is not None:
             return f"{', '.join(list(filter(None, location[0:])))} ({show})"
-        elif show is None:
-            return f"{', '.join(list(filter(None, location[0:])))}"
         else:
-            return ""
+            return f"{', '.join(list(filter(None, location[0:])))}"
+        # else:
+        #     return ""
