@@ -7,8 +7,6 @@ from import_stuff import dateinDB, cur, bot, main_url, location_name_get
 from create_embed import create_embed
 from error_message import error_message
 
-# import re
-
 
 @bot.command(aliases=["sl", "setlist", "show"])
 async def setlist_finder(ctx, date=None):
