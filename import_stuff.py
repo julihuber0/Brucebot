@@ -162,7 +162,10 @@ def location_name_get(location_url, show=None):
         f"""SELECT venue_name, venue_city, venue_state, venue_country FROM VENUES WHERE venue_url LIKE '{location_url}'"""
     ).fetchone()
 
-    if show != "" and show is not None:
-        return f"{', '.join(list(filter(None, location[0:])))} ({show})"
-    else:
-        return f"{', '.join(list(filter(None, location[0:])))}"
+    if location:
+        if show != "" and show is not None:
+            return f"{', '.join(list(filter(None, location[0:])))} ({show})"
+        elif show is None:
+            return f"{', '.join(list(filter(None, location[0:])))}"
+        else:
+            return ""
