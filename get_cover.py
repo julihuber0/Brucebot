@@ -33,7 +33,7 @@ async def get_cover(ctx, date=None):
             res = r.json()
 
             links = [
-                f"{base_url}/{img["path"]}" for img in res["tree"] if url in img["path"]
+                f"{base_url}/{img['path']}" for img in res["tree"] if url in img["path"]
             ]
 
             if links:
