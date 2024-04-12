@@ -43,7 +43,7 @@ async def song_finder(ctx, *song):
 
         songs = cur.execute("""SELECT song_name FROM SONGS""").fetchall()
 
-        result = process.extractOne(input, [row[0] for row in songs])[0]
+        result = process.extractOne(input, songs)[0]
 
         s = cur.execute("""SELECT * FROM SONGS WHERE song_name = ?""", (result))
 
