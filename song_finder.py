@@ -45,7 +45,7 @@ async def song_finder(ctx, *song):
 
         result = process.extractOne(song_name, songs)[0]
 
-        s = cur.execute("""SELECT * FROM SONGS WHERE song_name = ?""", (result))
+        s = cur.execute(f"""SELECT * FROM SONGS WHERE song_name = {result}""")
 
         # if cur.execute(
         #     f"""SELECT * FROM SONGS WHERE LOWER(song_name) LIKE '{song_name.lower()}'"""
