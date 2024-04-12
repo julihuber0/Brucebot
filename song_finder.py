@@ -7,6 +7,7 @@ from import_stuff import bot, cur, main_url
 from create_embed import create_embed
 from error_message import error_message
 import re
+from fuzzywuzzy import process
 
 
 def song_name_fix(song):
@@ -40,16 +41,22 @@ async def song_finder(ctx, *song):
         song_name = song_name_fix(re.sub("['\"]", "''", " ".join(song)))
         # id, url, name, first_played_url, last_played_url, num_plays, opener, closer, frequency
 
-        if cur.execute(
-            f"""SELECT * FROM SONGS WHERE LOWER(song_name) LIKE '{song_name.lower()}'"""
-        ).fetchone():
-            s = cur.execute(
-                f"""SELECT * FROM SONGS WHERE LOWER(song_name) LIKE '{song_name.lower()}'"""
-            ).fetchone()
-        else:
-            s = cur.execute(
-                f"""SELECT * FROM SONGS WHERE LOWER(song_name) LIKE '%{song_name.lower()}%'"""
-            ).fetchone()
+        songs = cur.execute("""SELECT song_name FROM SONGS""").fetchall()
+
+        result = process.extractOne(input, [row[0] for row in songs])[0]
+
+        s = cur.execute("""SELECT * FROM SONGS WHERE song_name = ?""", (result))
+
+        # if cur.execute(
+        #     f"""SELECT * FROM SONGS WHERE LOWER(song_name) LIKE '{song_name.lower()}'"""
+        # ).fetchone():
+        #     s = cur.execute(
+        #         f"""SELECT * FROM SONGS WHERE LOWER(song_name) LIKE '{song_name.lower()}'"""
+        #     ).fetchone()
+        # else:
+        #     s = cur.execute(
+        #         f"""SELECT * FROM SONGS WHERE LOWER(song_name) LIKE '%{song_name.lower()}%'"""
+        #     ).fetchone()
 
         if s:
             f = cur.execute(
