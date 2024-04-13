@@ -83,22 +83,22 @@ async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa
                                 LIKE %s AND first_played LIKE %s)""",
                                 (song[1], r[2]),
                             ).fetchone()
-                            bustout = cur.execute(
-                                """SELECT MIN(event_url) FROM EVENTS WHERE setlist
-                                LIKE %s AND tour LIKE %s""",
-                                (
-                                    f"%{song[0].replace("'", "''")}%",
-                                    r[5].replace("'", "''"),
-                                ),
-                            ).fetchone()
+                            # bustout = cur.execute(
+                            #     """SELECT MIN(event_url) FROM EVENTS WHERE setlist
+                            #     LIKE %s AND tour LIKE %s""",
+                            #     (
+                            #         f"%{song[0].replace("'", "''")}%",
+                            #         r[5].replace("'", "''"),
+                            #     ),
+                            # ).fetchone()
 
                             """indicator is [1] or [2]"""
-                            if s[0] not in invalid_sets:
+                            if s[0] not in invalid_sets:  # noqa: SIM102
                                 if premiere[0] != 0:
                                     indicator = " **[1]**"
 
-                                if bustout[0] == r[2]:
-                                    indicator = " **[2]**"
+                                # if bustout[0] == r[2]:
+                                #     indicator = " **[2]**"
 
                             if song[2]:
                                 segue = " >"
