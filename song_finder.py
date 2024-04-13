@@ -37,8 +37,10 @@ def song_name_fix(song):
 async def song_finder(ctx, *song):
     """Gets info on inputted song"""
 
-    if len(" ".join(song)) > 1:
-        song_name = song_name_fix(re.sub("['\"]", "''", " ".join(song)))
+    song_new = song.replace("’", "", " ".join(song))
+
+    if len(" ".join(song_new)) > 1:
+        song_name = song_name_fix(re.sub("['\"]", "''", " ".join(song_new)))
         # id, url, name, first_played_url, last_played_url, num_plays, opener, closer, frequency
 
         songs = cur.execute("""SELECT song_name FROM SONGS""").fetchall()
