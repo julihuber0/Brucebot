@@ -1,8 +1,5 @@
-"""import_stuff
-all of the import statements needed for the bot
-"""
+"""import_stuff all of the import statements needed for the bot."""
 
-# import re
 import datetime
 import os
 import urllib.parse as urlparse
@@ -94,7 +91,7 @@ albums = {
     "Born To Run": ["btr"],
     "The River": ["theriver"],
     "Born In The U.S.A.": ["bitusa", " usa"],
-    "Live 1975–85": ["7585", ""],
+    "Live 1975-85": ["7585", ""],
     "Tunnel Of Love": ["tol"],
     "Human Touch": ["ht"],
     "Lucky Town": ["lt"],
@@ -114,7 +111,7 @@ albums = {
     "The Legendary 1979 No Nukes Concerts": ["nonukes", ""],
 }
 
-cDate = datetime.datetime.now(ZoneInfo("US/Eastern"))
+current_date = datetime.datetime.now(ZoneInfo("US/Eastern"))
 
 main_url = "http://brucebase.wikidot.com"
 
@@ -135,7 +132,8 @@ intents.message_content = True
 bot = commands.Bot(command_prefix="!", intents=intents, help_command=None)
 
 
-def date_checker(date):
+def date_checker(date: str) -> bool:
+    """Verify dates entered to the setlist finder."""
     if date is not None:
         try:
             return datetime.date.fromisoformat(date)
@@ -145,10 +143,12 @@ def date_checker(date):
         return False
 
 
-def dateinDB(date):
+def date_in_db(date: str) -> bool:
+    """Check database for given date."""
     if date_checker(date):
         check = cur.execute(
-            f"""SELECT EXISTS(SELECT 1 FROM EVENTS WHERE event_date LIKE '{date}')""",
+            """SELECT EXISTS(SELECT 1 FROM EVENTS WHERE event_date LIKE %s)""",
+            (date,),
         ).fetchone()
 
         if check:
@@ -157,15 +157,18 @@ def dateinDB(date):
     return False
 
 
-def location_name_get(location_url, show=None):
+def location_name_get(location_url: str, show: str) -> str:
+    """Get venue info for a given venue_url."""
     location = cur.execute(
-        f"""SELECT venue_name, venue_city, venue_state, venue_country FROM VENUES WHERE venue_url LIKE '{location_url}'""",
+        """SELECT venue_name, venue_city, venue_state, venue_country
+            FROM VENUES WHERE venue_url = %s""",
+        (location_url,),
     ).fetchone()
 
     if location:
         if show != "" and show is not None:
             return f"{', '.join(list(filter(None, location[0:])))} ({show})"
-        else:
-            return f"{', '.join(list(filter(None, location[0:])))}"
-        # else:
-        #     return ""
+
+        return f"{', '.join(list(filter(None, location[0:])))}"
+
+    return ""

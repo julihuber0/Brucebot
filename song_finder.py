@@ -1,6 +1,4 @@
-"""song_finder
-gets info in inputted song
-"""
+"""song_finder gets info in inputted song."""
 
 import re
 
@@ -26,33 +24,24 @@ def song_name_fix(song: str) -> str:
 async def song_finder(ctx: commands.Context, *, args: str = "") -> None:
     """Get info on inputted song."""
     args = (
-        args.replace("’", "''").replace("‘", "''").replace("”", '"').replace("‟", '"')
+        args.replace("’", "''").replace("‘", "''").replace("”", '"').replace("‟", '"')  # noqa: RUF001
     )
 
     if len(args) > 1:
         song_name = song_name_fix(re.sub("['\"]", "''", args))
-        # id, url, name, first_played_url, last_played_url, num_plays, opener, closer, frequency
 
         songs = cur.execute("""SELECT song_name FROM SONGS""").fetchall()
 
         result = process.extractOne(song_name, songs)[0]
 
         s = cur.execute(
-            f"""SELECT * FROM SONGS WHERE song_name = '{result[0].replace("'", "''")}'""",
+            """SELECT * FROM SONGS WHERE song_name = '%s'""",
+            (result[0].replace("'", "''"),),
         ).fetchone()
 
         if s:
             first = re.search(r"\d{4}-\d{2}-\d{2}\w?", s[3])[0]
             last = re.search(r"\d{4}-\d{2}-\d{2}\w?", s[4])[0]
-            # if match := re.search(r"\d{4}-\d{2}-\d{2}\w?", date_str.strip()):
-            #     return match.group(0)
-
-            # f = cur.execute(
-            #     f"""SELECT event_date FROM EVENTS WHERE event_url = '{s[3]}'""",
-            # ).fetchone()
-            # l = cur.execute(
-            #     f"""SELECT event_date FROM EVENTS WHERE event_url = '{s[4]}'""",
-            # ).fetchone()
 
             embed = create_embed(s[2], f"[Brucebase Song Page]({main_url}{s[1]})", ctx)
 
