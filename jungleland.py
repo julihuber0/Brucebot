@@ -14,7 +14,7 @@ async def jungleland_torrent(ctx: commands.Context, date: str) -> None:
     """Return link to Jungleland Torrents for Specified Date."""
     if date_in_db(date):
         location = cur.execute(
-            """SELECT location_url, show FROM EVENTS WHERE event_date %s""",
+            """SELECT location_url, show FROM EVENTS WHERE event_date = %s""",
             (date,),
         ).fetchone()
         title = location_name_get(location[0], location[1])
