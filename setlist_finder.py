@@ -54,7 +54,7 @@ async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa
                 embed.set_footer(text=r[5])
 
                 has_setlist = cur.execute(
-                    """SELECT EXISTS(SELECT 1 FROM SETLISTS WHERE event_url LIKE %s)""",
+                    """SELECT EXISTS(SELECT 1 FROM SETLISTS WHERE event_url = %s)""",
                     (r[2],),
                 ).fetchone()
 
@@ -63,7 +63,7 @@ async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa
 
                     for s in cur.execute(
                         """SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM
-                        SETLISTS WHERE event_url LIKE %s) p ORDER BY
+                        SETLISTS WHERE event_url = %s) p ORDER BY
                         setlist_song_id ASC""",
                         (r[2],),
                     ).fetchall():
@@ -71,7 +71,7 @@ async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa
 
                         set_songs = cur.execute(
                             """SELECT song_name, song_url, segue FROM SETLISTS
-                            WHERE event_url LIKE %s AND set_type =
+                            WHERE event_url = %s AND set_type =
                             %s ORDER BY setlist_song_id ASC""",
                             (r[2], s[0].replace("'", "''")),
                         ).fetchall()
@@ -79,26 +79,26 @@ async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa
                         for song in set_songs:
                             indicator = note = segue = ""
                             premiere = cur.execute(
-                                """SELECT EXISTS(SELECT 1 FROM SONGS WHERE song_url
-                                LIKE %s AND first_played LIKE %s)""",
+                                """SELECT EXISTS(SELECT 1 FROM SONGS WHERE song_url = %s
+                                AND first_played = %s)""",
                                 (song[1], r[2]),
                             ).fetchone()
-                            # bustout = cur.execute(
-                            #     """SELECT MIN(event_url) FROM EVENTS WHERE setlist
-                            #     LIKE %s AND tour LIKE %s""",
-                            #     (
-                            #         f"%{song[0].replace("'", "''")}%",
-                            #         r[5].replace("'", "''"),
-                            #     ),
-                            # ).fetchone()
+                            bustout = cur.execute(
+                                """SELECT MIN(event_url) FROM EVENTS WHERE setlist
+                                LIKE %s AND tour LIKE %s""",
+                                (
+                                    "%" + song[0].replace("'", "''") + "%",
+                                    r[5].replace("'", "''"),
+                                ),
+                            ).fetchone()
 
                             """indicator is [1] or [2]"""
-                            if s[0] not in invalid_sets:  # noqa: SIM102
+                            if s[0] not in invalid_sets:
                                 if premiere[0] != 0:
                                     indicator = " **[1]**"
 
-                                # if bustout[0] == r[2]:
-                                #     indicator = " **[2]**"
+                                if bustout[0] == r[2]:
+                                    indicator = " **[2]**"
 
                             if song[2]:
                                 segue = " >"
