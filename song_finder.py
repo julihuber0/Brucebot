@@ -44,7 +44,9 @@ def song_name_fix(song: str) -> str:
 @bot.command(aliases=["song"])
 async def song_finder(ctx: commands.Context, *, args: str = "") -> None:
     """Get info on inputted song."""
-    args = args.replace("’", "'").replace("‘", "'").replace("”", '"').replace("‟", '"')
+    args = (
+        args.replace("’", "''").replace("‘", "''").replace("”", '"').replace("‟", '"')
+    )
 
     if len(args) > 1:
         song_name = song_name_fix(re.sub("['\"]", "''", args))
