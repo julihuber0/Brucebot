@@ -1,6 +1,6 @@
-from import_stuff import bot, cur, main_url, albums
 from create_embed import create_embed
 from error_message import error_message
+from import_stuff import albums, bot, cur, main_url
 
 
 def album_name_fix(album):
@@ -20,7 +20,7 @@ def album_name_fix(album):
 
 def checkDBforalbum(album):
     check = cur.execute(
-        f"""SELECT EXISTS(SELECT 1 FROM ALBUMS WHERE LOWER(album_name) LIKE '{album}')"""
+        f"""SELECT EXISTS(SELECT 1 FROM ALBUMS WHERE LOWER(album_name) LIKE '{album}')""",
     ).fetchone()
 
     if check:
@@ -39,20 +39,20 @@ async def album_finder(ctx, *album):
 
     if checkDBforalbum(inputFixed) and inputFixed.lower() != "tracks":
         info = cur.execute(
-            f"""SELECT album_name, album_year, song_url FROM ALBUMS WHERE LOWER(album_name) LIKE '{inputFixed.lower()}' ORDER BY song_num ASC"""
+            f"""SELECT album_name, album_year, song_url FROM ALBUMS WHERE LOWER(album_name) LIKE '{inputFixed.lower()}' ORDER BY song_num ASC""",
         ).fetchall()
         embed = create_embed(info[0][0], f"Year: {info[0][1]}", ctx)
 
         plays = cur.execute(
-            f"""select song_name, num_plays FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE '{info[0][0]}') AND num_plays != '' ORDER BY CAST(num_plays as integer) ASC"""
+            f"""select song_name, num_plays FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE '{info[0][0]}') AND num_plays != '' ORDER BY CAST(num_plays as integer) ASC""",
         ).fetchall()
         premiere = cur.execute(
-            f"""select song_name, first_played FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE '{info[0][0]}') AND first_played != '' ORDER BY first_played ASC"""
+            f"""select song_name, first_played FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE '{info[0][0]}') AND first_played != '' ORDER BY first_played ASC""",
         ).fetchall()
 
         for s in info:
             find_song = cur.execute(
-                f"""SELECT song_name, num_plays FROM SONGS WHERE song_url LIKE '{s[2]}'"""
+                f"""SELECT song_name, num_plays FROM SONGS WHERE song_url LIKE '{s[2]}'""",
             ).fetchone()
 
             if find_song[1] == "":
@@ -62,7 +62,9 @@ async def album_finder(ctx, *album):
                 songs.append(find_song[0])
 
         embed.add_field(
-            name="Songs (Bold = Not Played):", value=f"{', '.join(songs)}", inline=False
+            name="Songs (Bold = Not Played):",
+            value=f"{', '.join(songs)}",
+            inline=False,
         )
 
         embed.add_field(
@@ -72,10 +74,10 @@ async def album_finder(ctx, *album):
         )
 
         first_date = cur.execute(
-            f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[0][1]}'"""
+            f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[0][1]}'""",
         ).fetchone()
         last_date = cur.execute(
-            f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[-1][1]}'"""
+            f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[-1][1]}'""",
         ).fetchone()
 
         embed.add_field(

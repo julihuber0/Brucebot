@@ -4,7 +4,7 @@ gets setlist based on inputted date
 
 from create_embed import create_embed
 from error_message import error_message
-from import_stuff import bot, cur, dateinDB, location_name_get, main_url
+from import_stuff import bot, cur, date_in_db, location_name_get, main_url
 
 
 @bot.command(aliases=["sl", "setlist", "show"])
@@ -15,7 +15,7 @@ async def setlist_finder(ctx, date=None):
             """SELECT event_date FROM EVENTS WHERE setlist != '' ORDER BY event_id DESC LIMIT 1""",
         ).fetchone()[0]
 
-    if dateinDB(date):
+    if date_in_db(date):
         embed = create_embed(f"Brucebase Results For: {date}", "", ctx)
         get_events = cur.execute(
             f"""SELECT * FROM EVENTS WHERE event_date LIKE '{date!s}'""",

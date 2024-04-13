@@ -6,13 +6,13 @@ from discord.ext import commands
 
 from create_embed import create_embed
 from error_message import error_message
-from import_stuff import bot, cur, dateinDB, location_name_get
+from import_stuff import bot, cur, date_in_db, location_name_get
 
 
 @bot.command(aliases=["jl", "jungleland"])
 async def jungleland_torrent(ctx: commands.Context, date: str) -> None:
     """Return link to Jungleland Torrents for Specified Date."""
-    if dateinDB(date):
+    if date_in_db(date):
         location = cur.execute(
             """SELECT location_url, show FROM EVENTS WHERE event_date %s""",
             (date,),
@@ -38,7 +38,7 @@ async def jungleland_torrent(ctx: commands.Context, date: str) -> None:
 @bot.command(aliases=["artwork"])
 async def jungleland_art(ctx: commands.Context, date: str) -> None:
     """Return list of artwork on Jungleland.it for specified date."""
-    if dateinDB(date):
+    if date_in_db(date):
         links = cur.execute(
             """SELECT artwork_url FROM ARTWORK WHERE date = %s""",
             (date),

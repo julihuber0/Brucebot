@@ -5,13 +5,13 @@ from bs4 import BeautifulSoup as bs4
 from discord.ext import commands
 
 from error_message import error_message
-from import_stuff import bot, dateinDB
+from import_stuff import bot, date_in_db
 
 
 @bot.command(aliases=["cover", "getcover"])
 async def get_cover(ctx: commands.Context, date: str) -> None:
     """Get covers from my site based in input date."""
-    if dateinDB(date):
+    if date_in_db(date):
         base_url = "https://raw.githubusercontent.com/lilbud/Bootleg_Covers/main"
         url = f"Bruce_Springsteen/covers/{date[0:4]}/{date}"
 

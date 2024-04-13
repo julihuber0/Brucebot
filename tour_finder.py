@@ -1,7 +1,8 @@
 import re
-from import_stuff import bot, cur, main_url
+
 from create_embed import create_embed
 from error_message import error_message
+from import_stuff import bot, cur, main_url
 
 
 def tour_name_fix(tour):
@@ -34,24 +35,24 @@ async def tour_stats(ctx, *tour):
         stats = ""
 
         if cur.execute(
-            f"""SELECT * FROM TOURS WHERE tour_name ILIKE '{tour_name.replace("'", "''")}'"""
+            f"""SELECT * FROM TOURS WHERE tour_name ILIKE '{tour_name.replace("'", "''")}'""",
         ).fetchall():
             stats = cur.execute(
-                f"""SELECT * FROM TOURS WHERE tour_name ILIKE '{tour_name.replace("'", "''")}'"""
+                f"""SELECT * FROM TOURS WHERE tour_name ILIKE '{tour_name.replace("'", "''")}'""",
             ).fetchall()[0]
         elif cur.execute(
-            f"""SELECT * FROM TOURS WHERE tour_name ILIKE '%{tour_name.replace("'", "''")}%'"""
+            f"""SELECT * FROM TOURS WHERE tour_name ILIKE '%{tour_name.replace("'", "''")}%'""",
         ).fetchall():
             stats = cur.execute(
-                f"""SELECT * FROM TOURS WHERE tour_name ILIKE '%{tour_name.replace("'", "''")}%'"""
+                f"""SELECT * FROM TOURS WHERE tour_name ILIKE '%{tour_name.replace("'", "''")}%'""",
             ).fetchall()[0]
 
         if stats != "":
             first_show = cur.execute(
-                f"""SELECT event_date FROM EVENTS WHERE tour LIKE '{stats[2].replace("'", "''")}' AND event_url LIKE '{str(stats[3])}' AND event_url LIKE '/gig:%'"""
+                f"""SELECT event_date FROM EVENTS WHERE tour LIKE '{stats[2].replace("'", "''")}' AND event_url LIKE '{stats[3]!s}' AND event_url LIKE '/gig:%'""",
             ).fetchall()[0]
             last_show = cur.execute(
-                f"""SELECT event_date FROM EVENTS WHERE tour LIKE '{stats[2].replace("'", "''")}' AND event_url LIKE '{str(stats[4])}' AND event_url LIKE '/gig:%'"""
+                f"""SELECT event_date FROM EVENTS WHERE tour LIKE '{stats[2].replace("'", "''")}' AND event_url LIKE '{stats[4]!s}' AND event_url LIKE '/gig:%'""",
             ).fetchall()[0]
 
             embed = create_embed(
@@ -64,12 +65,12 @@ async def tour_stats(ctx, *tour):
             embed.add_field(name="Number of Shows:", value=f"{stats[5]}", inline=False)
             embed.add_field(
                 name="First Show:",
-                value=f"[{first_show[0]}]({main_url}{str(stats[3])})",
+                value=f"[{first_show[0]}]({main_url}{stats[3]!s})",
                 inline=False,
             )
             embed.add_field(
                 name="Last Show:",
-                value=f"[{last_show[0]}]({main_url}{str(stats[4])})",
+                value=f"[{last_show[0]}]({main_url}{stats[4]!s})",
                 inline=False,
             )
             embed.add_field(name="Number of Songs:", value=f"{stats[6]}", inline=False)
