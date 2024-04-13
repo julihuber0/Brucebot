@@ -57,7 +57,7 @@ async def song_finder(ctx: commands.Context, *, args: str = "") -> None:
         result = process.extractOne(song_name, songs)[0]
 
         s = cur.execute(
-            f"""SELECT * FROM SONGS WHERE song_name = '{result[0]}'""",
+            f"""SELECT * FROM SONGS WHERE song_name = '{result[0].replace("'", "''")}'""",
         ).fetchone()
 
         # if cur.execute(
@@ -107,6 +107,6 @@ async def song_finder(ctx: commands.Context, *, args: str = "") -> None:
 
             await ctx.send(embed=embed)
         else:
-            await ctx.send(f"\nNo Results Found For: {' '.join(song)}")
+            await ctx.send(f"\nNo Results Found For: {' '.join(args)}")
     else:
         await ctx.send(error_message("song"))

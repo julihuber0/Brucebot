@@ -1,31 +1,29 @@
-"""
-setlist_finder
+"""setlist_finder
 gets setlist based on inputted date
 """
 
-from import_stuff import dateinDB, cur, bot, main_url, location_name_get
 from create_embed import create_embed
 from error_message import error_message
+from import_stuff import bot, cur, dateinDB, location_name_get, main_url
 
 
 @bot.command(aliases=["sl", "setlist", "show"])
 async def setlist_finder(ctx, date=None):
     """Gets setlist based on input date"""
-
     if date is None:
         date = cur.execute(
-            """SELECT event_date FROM EVENTS WHERE setlist != '' ORDER BY event_id DESC LIMIT 1"""
+            """SELECT event_date FROM EVENTS WHERE setlist != '' ORDER BY event_id DESC LIMIT 1""",
         ).fetchone()[0]
 
     if dateinDB(date):
         embed = create_embed(f"Brucebase Results For: {date}", "", ctx)
         get_events = cur.execute(
-            f"""SELECT * FROM EVENTS WHERE event_date LIKE '{str(date)}'"""
+            f"""SELECT * FROM EVENTS WHERE event_date LIKE '{date!s}'""",
         ).fetchall()
         invalid_sets = []
 
         for i in cur.execute(
-            """SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE set_type SIMILAR TO '%(Soundcheck|Rehearsal|Pre-)%') p"""
+            """SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE set_type SIMILAR TO '%(Soundcheck|Rehearsal|Pre-)%') p""",
         ).fetchall():
             invalid_sets.append(i[0])
 
@@ -54,7 +52,7 @@ async def setlist_finder(ctx, date=None):
                 embed.set_footer(text=r[5])
 
                 has_setlist = cur.execute(
-                    f"""SELECT EXISTS(SELECT 1 FROM SETLISTS WHERE event_url LIKE '{r[2]}')"""
+                    f"""SELECT EXISTS(SELECT 1 FROM SETLISTS WHERE event_url LIKE '{r[2]}')""",
                 ).fetchone()
 
                 if has_setlist[0] != 0:
@@ -62,21 +60,21 @@ async def setlist_finder(ctx, date=None):
 
                     # id, event_url, song_url, song_name, set_type, song_in_set, song_num, segue
                     for s in cur.execute(
-                        f"""SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url LIKE '{r[2]}') p ORDER BY setlist_song_id ASC"""
+                        f"""SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url LIKE '{r[2]}') p ORDER BY setlist_song_id ASC""",
                     ).fetchall():
                         set_l = []
 
                         set_songs = cur.execute(
-                            f"""SELECT song_name, song_url, segue FROM SETLISTS WHERE event_url LIKE '{r[2]}' AND set_type LIKE '%{s[0].replace("'", "''")}%' ORDER BY setlist_song_id ASC"""
+                            f"""SELECT song_name, song_url, segue FROM SETLISTS WHERE event_url LIKE '{r[2]}' AND set_type LIKE '%{s[0].replace("'", "''")}%' ORDER BY setlist_song_id ASC""",
                         ).fetchall()
 
                         for song in set_songs:
                             indicator = note = segue = ""
                             premiere = cur.execute(
-                                f"""SELECT EXISTS(SELECT 1 FROM SONGS WHERE song_url LIKE '{song[1]}' AND first_played LIKE '{r[2]}')"""
+                                f"""SELECT EXISTS(SELECT 1 FROM SONGS WHERE song_url LIKE '{song[1]}' AND first_played LIKE '{r[2]}')""",
                             ).fetchone()
                             bustout = cur.execute(
-                                f"""SELECT MIN(event_url) FROM EVENTS WHERE setlist LIKE '%{song[0].replace("'", "''")}%' AND tour LIKE '{r[5].replace("'", "''")}'"""
+                                f"""SELECT MIN(event_url) FROM EVENTS WHERE setlist LIKE '%{song[0].replace("'", "''")}%' AND tour LIKE '{r[5].replace("'", "''")}'""",
                             ).fetchone()
 
                             # indicator is [1] or [2]
@@ -98,15 +96,20 @@ async def setlist_finder(ctx, date=None):
                             note = "(Setlist May Be Incomplete)"
 
                         embed.add_field(
-                            name=f"{s[0]} {note}:", value=setlist, inline=False
+                            name=f"{s[0]} {note}:",
+                            value=setlist,
+                            inline=False,
                         )
                 else:  # end "if has_setlist"
                     embed.add_field(
-                        name="", value=error_message("no-setlist"), inline=False
+                        name="",
+                        value=error_message("no-setlist"),
+                        inline=False,
                     )
 
             embed.add_field(
-                name="", value="**[1]** - First Known Performance\n**[2]** - Tour Debut"
+                name="",
+                value="**[1]** - First Known Performance\n**[2]** - Tour Debut",
             )
         else:  # end "if get_events"
             embed.add_field(name="", value=error_message("show"), inline=False)
