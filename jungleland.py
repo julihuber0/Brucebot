@@ -41,7 +41,7 @@ async def jungleland_art(ctx: commands.Context, date: str = "") -> None:
     if date_in_db(date):
         links = cur.execute(
             """SELECT artwork_url FROM ARTWORK WHERE date = %s""",
-            (date),
+            (date,),
         ).fetchall()
 
         if links:

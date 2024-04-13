@@ -10,7 +10,7 @@ from import_stuff import bot, cur, date_in_db, location_name_get, main_url
 @bot.command(aliases=["sl", "setlist", "show"])
 async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa: C901, PLR0912
     """Get setlist based on input date."""
-    if date is None:
+    if date == "":
         date = cur.execute(
             """SELECT event_date FROM EVENTS WHERE setlist != ''
             ORDER BY event_id DESC LIMIT 1""",
@@ -19,8 +19,8 @@ async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa
     if date_in_db(date):
         embed = create_embed(f"Brucebase Results For: {date}", "", ctx)
         get_events = cur.execute(
-            """SELECT * FROM EVENTS WHERE event_date LIKE %s""",
-            (date),
+            """SELECT * FROM EVENTS WHERE event_date = %s""",
+            (date,),
         ).fetchall()
         invalid_sets = []
 

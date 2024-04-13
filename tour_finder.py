@@ -41,19 +41,19 @@ async def tour_stats(ctx: commands.Context, *, args: str = "") -> None:
 
         if cur.execute(
             """SELECT * FROM TOURS WHERE tour_name = %s""",
-            (tour_name),
+            (tour_name,),
         ).fetchall():
             stats = cur.execute(
                 """SELECT * FROM TOURS WHERE tour_name = %s""",
-                (tour_name),
+                (tour_name,),
             ).fetchall()[0]
         elif cur.execute(
             """SELECT * FROM TOURS WHERE tour_name ILIKE %s""",
-            (f"%{tour_name}%"),
+            (f"%{tour_name}%",),
         ).fetchall():
             stats = cur.execute(
                 """SELECT * FROM TOURS WHERE tour_name ILIKE %s""",
-                (f"%{tour_name}%"),
+                (f"%{tour_name}%",),
             ).fetchall()[0]
 
         if stats != "":

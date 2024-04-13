@@ -27,7 +27,7 @@ def check_database_for_album(album: str) -> bool:
     """Search database for album."""
     check = cur.execute(
         """SELECT EXISTS(SELECT 1 FROM ALBUMS WHERE LOWER(album_name) = %s)""",
-        (album),
+        (album,),
     ).fetchone()
 
     if check:
@@ -47,7 +47,7 @@ async def album_finder(ctx: commands.Context, *, args: str = "") -> None:
         info = cur.execute(
             """SELECT album_name, album_year, song_url FROM ALBUMS WHERE
             LOWER(album_name) = %s ORDER BY song_num ASC""",
-            (input_fixed.lower()),
+            (input_fixed.lower(),),
         ).fetchall()
         embed = create_embed(info[0][0], f"Year: {info[0][1]}", ctx)
 
@@ -56,20 +56,20 @@ async def album_finder(ctx: commands.Context, *, args: str = "") -> None:
             (SELECT song_url FROM ALBUMS WHERE album_name LIKE
             %s) AND num_plays != ''
             ORDER BY CAST(num_plays as integer) ASC""",
-            (info[0][0]),
+            (info[0][0],),
         ).fetchall()
         premiere = cur.execute(
             """select song_name, first_played FROM SONGS WHERE song_url
             IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE
             %s) AND first_played != ''
             ORDER BY first_played ASC""",
-            (info[0][0]),
+            (info[0][0],),
         ).fetchall()
 
         for s in info:
             find_song = cur.execute(
                 """SELECT song_name, num_plays FROM SONGS WHERE song_url LIKE %s""",
-                (s[2]),
+                (s[2],),
             ).fetchone()
 
             if find_song[1] == "":
@@ -92,11 +92,11 @@ async def album_finder(ctx: commands.Context, *, args: str = "") -> None:
 
         first_date = cur.execute(
             """SELECT event_date FROM EVENTS WHERE event_url LIKE %s""",
-            (premiere[0][1]),
+            (premiere[0][1],),
         ).fetchone()
         last_date = cur.execute(
             """SELECT event_date FROM EVENTS WHERE event_url LIKE %s""",
-            (premiere[-1][1]),
+            (premiere[-1][1],),
         ).fetchone()
 
         embed.add_field(

@@ -24,7 +24,7 @@ def city_name_fixer(city_name: str) -> str:
 async def city_finder(ctx: commands.Context, *, args: str = "") -> None:
     """Find inputted city in locations."""
     if len(args) > 1:
-        city_name = city_name_fixer(" ".join(args).replace("'", "''").lower())
+        city_name = city_name_fixer(args.replace("'", "''").lower())
 
         first_last = cur.execute(
             """SELECT MIN(event_url), MAX(event_url), COUNT(event_url) FROM EVENTS WHERE

@@ -9,7 +9,7 @@ from import_stuff import bot, date_in_db
 
 
 @bot.command(aliases=["cover", "getcover"])
-async def get_cover(ctx: commands.Context, date: str) -> None:
+async def get_cover(ctx: commands.Context, date: str = "") -> None:
     """Get covers from my site based in input date."""
     if date_in_db(date):
         base_url = "https://raw.githubusercontent.com/lilbud/Bootleg_Covers/main"

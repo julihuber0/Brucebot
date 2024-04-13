@@ -24,7 +24,7 @@ async def on_this_day(ctx: commands.Context, *, args: str = "") -> None:
         otd_links = cur.execute(
             """SELECT event_url, location_url, show, event_date FROM EVENTS WHERE
                 event_date LIKE %s ORDER BY event_id ASC""",
-            (f"%{ndate}"),
+            (f"%{ndate}",),
         ).fetchall()
 
         embed = create_embed(

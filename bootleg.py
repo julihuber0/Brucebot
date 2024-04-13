@@ -16,7 +16,7 @@ async def bootleg_find(ctx: commands.Context, date: str = "") -> None:
     if date_in_db(date):
         event_name = cur.execute(
             """SELECT location_url, show FROM EVENTS WHERE event_date = %s""",
-            (date),
+            (date,),
         ).fetchone()
 
         location = location_name_get(event_name[0], event_name[1])
