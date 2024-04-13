@@ -1,16 +1,16 @@
-"""
-import_stuff
+"""import_stuff
 all of the import statements needed for the bot
 """
 
 # import re
-import os
 import datetime
-import psycopg
+import os
 import urllib.parse as urlparse
-from zoneinfo import ZoneInfo
+
 import discord
+import psycopg
 from discord.ext import commands
+from zoneinfo import ZoneInfo
 
 months = [
     "_None",
@@ -135,6 +135,17 @@ intents.message_content = True
 bot = commands.Bot(command_prefix="!", intents=intents, help_command=None)
 
 
+@bot.event
+async def on_command_error(ctx, error) -> None:
+    if isinstance(error, commands.UnexpectedQuoteError):
+        if hasattr(ctx, "coerced_quotes"):
+            return
+        if error.quote == "’":
+            ctx.message.content = ctx.message.content.replace("’", "'")
+            ctx.coerced_quotes = True
+            await bot.invoke(ctx)
+
+
 def date_checker(date):
     if date is not None:
         try:
@@ -148,7 +159,7 @@ def date_checker(date):
 def dateinDB(date):
     if date_checker(date):
         check = cur.execute(
-            f"""SELECT EXISTS(SELECT 1 FROM EVENTS WHERE event_date LIKE '{date}')"""
+            f"""SELECT EXISTS(SELECT 1 FROM EVENTS WHERE event_date LIKE '{date}')""",
         ).fetchone()
 
         if check:
@@ -159,7 +170,7 @@ def dateinDB(date):
 
 def location_name_get(location_url, show=None):
     location = cur.execute(
-        f"""SELECT venue_name, venue_city, venue_state, venue_country FROM VENUES WHERE venue_url LIKE '{location_url}'"""
+        f"""SELECT venue_name, venue_city, venue_state, venue_country FROM VENUES WHERE venue_url LIKE '{location_url}'""",
     ).fetchone()
 
     if location:
