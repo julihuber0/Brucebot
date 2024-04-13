@@ -135,17 +135,6 @@ intents.message_content = True
 bot = commands.Bot(command_prefix="!", intents=intents, help_command=None)
 
 
-@bot.event
-async def on_command_error(ctx, error) -> None:
-    if isinstance(error, commands.UnexpectedQuoteError):
-        if hasattr(ctx, "coerced_quotes"):
-            return
-        if error.quote == "’":
-            ctx.message.content = ctx.message.content.replace("’", "'")
-            ctx.coerced_quotes = True
-            await bot.invoke(ctx)
-
-
 def date_checker(date):
     if date is not None:
         try:

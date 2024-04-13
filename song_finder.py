@@ -1,13 +1,14 @@
-"""
-song_finder
+"""song_finder
 gets info in inputted song
 """
 
-from import_stuff import bot, cur, main_url
+import re
+
+from fuzzywuzzy import process
+
 from create_embed import create_embed
 from error_message import error_message
-import re
-from fuzzywuzzy import process
+from import_stuff import bot, cur, main_url
 
 
 def song_name_fix(song):
@@ -34,10 +35,12 @@ def song_name_fix(song):
 
 
 @bot.command(aliases=["song"])
-async def song_finder(ctx, *song):
+async def song_finder(ctx, *, args: str = ""):
     """Gets info on inputted song"""
+    args = args.replace("’", "'").replace("‘", "'").replace("”", '"').replace("‟", '"')
 
-    song_new = song.replace("’", "", " ".join(song))
+    song_new = args
+    print(args)
 
     if len(" ".join(song_new)) > 1:
         song_name = song_name_fix(re.sub("['\"]", "''", " ".join(song_new)))
@@ -48,7 +51,7 @@ async def song_finder(ctx, *song):
         result = process.extractOne(song_name, songs)[0]
 
         s = cur.execute(
-            f"""SELECT * FROM SONGS WHERE song_name = '{result[0]}'"""
+            f"""SELECT * FROM SONGS WHERE song_name = '{result[0]}'""",
         ).fetchone()
 
         # if cur.execute(
@@ -64,10 +67,10 @@ async def song_finder(ctx, *song):
 
         if s:
             f = cur.execute(
-                f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{str(s[3])}'"""
+                f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{s[3]!s}'""",
             ).fetchone()
             l = cur.execute(
-                f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{str(s[4])}'"""
+                f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{s[4]!s}'""",
             ).fetchone()
 
             embed = create_embed(s[2], f"[Brucebase Song Page]({main_url}{s[1]})", ctx)
