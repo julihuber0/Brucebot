@@ -17,8 +17,8 @@ async def on_this_day(ctx: commands.Context, *, args: str = "") -> None:
 
     if not args:
         ndate = f"-{(current_date.strftime('%m'))}-{current_date.strftime('%d')}"
-    elif re.search(r"\d{2}-\d{2}", args[0]):
-        ndate = f"-{args[0]!s}"
+    elif re.search(r"\d{2}-\d{2}$", args):
+        ndate = f"-{args}"
 
     if ndate:
         otd_links = cur.execute(

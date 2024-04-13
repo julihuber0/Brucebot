@@ -55,7 +55,7 @@ async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa
 
                 has_setlist = cur.execute(
                     """SELECT EXISTS(SELECT 1 FROM SETLISTS WHERE event_url LIKE %s)""",
-                    (r[2]),
+                    (r[2],),
                 ).fetchone()
 
                 if has_setlist[0] != 0:
@@ -65,7 +65,7 @@ async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa
                         """SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM
                         SETLISTS WHERE event_url LIKE %s) p ORDER BY
                         setlist_song_id ASC""",
-                        (r[2]),
+                        (r[2],),
                     ).fetchall():
                         set_l = []
 

@@ -73,16 +73,16 @@ async def relation_finder(ctx: commands.Context, *, args: str = "") -> None:
             if int(performances) > 0:
                 first_last = cur.execute(
                     """SELECT MIN(event_url), MAX(event_url) FROM ON_STAGE
-                    WHERE relation_url LIKE %s AND event_url LIKE '/gig:%'""",
-                    (url,),
+                    WHERE relation_url = %s AND event_url LIKE %s""",
+                    (url, "/gig:%"),
                 ).fetchone()
 
                 first_date = cur.execute(
-                    """SELECT event_date FROM EVENTS WHERE event_url LIKE %s""",
+                    """SELECT event_date FROM EVENTS WHERE event_url = %s""",
                     (first_last[0],),
                 ).fetchall()[0]
                 last_date = cur.execute(
-                    """SELECT event_date FROM EVENTS WHERE event_url LIKE %s""",
+                    """SELECT event_date FROM EVENTS WHERE event_url = %s""",
                     (first_last[1],),
                 ).fetchall()[0]
 
