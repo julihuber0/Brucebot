@@ -4,6 +4,7 @@ gets info in inputted song
 
 import re
 
+from discord.ext import commands
 from fuzzywuzzy import process
 
 from create_embed import create_embed
@@ -11,39 +12,42 @@ from error_message import error_message
 from import_stuff import bot, cur, main_url
 
 
-def song_name_fix(song):
-    pattern = replace = ""
+def song_name_fix(song: str) -> str:
     """Fixes some possible incorrect song inputs, and also expands abbreviations"""
-    if song is not None:
-        if re.search(" usa", song, re.IGNORECASE):
-            pattern = "usa"
-            replace = "u.s.a."
-        elif re.search("bitusa", song, re.IGNORECASE):
-            pattern = "bitusa"
-            replace = "born in the u.s.a."
-        elif re.search("btr", song, re.IGNORECASE):
-            pattern = "btr"
-            replace = "born to run"
-        elif re.search("rosie", song, re.IGNORECASE):
-            pattern = "rosie"
-            replace = "rosalita"
+    # if song is not None:
+    #     if re.search(" usa", song, re.IGNORECASE):
+    #         pattern = "usa"
+    #         replace = "u.s.a."
+    #     elif re.search("bitusa", song, re.IGNORECASE):
+    #         pattern = "bitusa"
+    #         replace = "born in the u.s.a."
+    #     elif re.search("btr", song, re.IGNORECASE):
+    #         pattern = "btr"
+    #         replace = "born to run"
+    #     elif re.search("rosie", song, re.IGNORECASE):
+    #         pattern = "rosie"
+    #         replace = "rosalita"
 
-        if pattern and replace:
-            return re.sub(pattern, replace, song, flags=re.IGNORECASE)
-        else:
-            return song
+    #     if pattern and replace:
+    #         return re.sub(pattern, replace, song, flags=re.IGNORECASE)
+
+    #     return song
+
+    if re.search("btr", song):
+        return re.sub("btr", "born to run", song)
+    elif re.search("rosie", song):  # noqa: RET505
+        return re.sub("rosie", "rosalita", song)
+
+    return song
 
 
 @bot.command(aliases=["song"])
-async def song_finder(ctx, *, args: str = ""):
-    """Gets info on inputted song"""
+async def song_finder(ctx: commands.Context, *, args: str = "") -> None:
+    """Get info on inputted song."""
     args = args.replace("’", "'").replace("‘", "'").replace("”", '"').replace("‟", '"')
 
-    song_new = args
-    print(args)
-
-    if len(" ".join(song_new)) > 1:
-        song_name = song_name_fix(re.sub("['\"]", "''", " ".join(song_new)))
+    if len(args) > 1:
+        song_name = song_name_fix(re.sub("['\"]", "''", args))
         # id, url, name, first_played_url, last_played_url, num_plays, opener, closer, frequency
 
         songs = cur.execute("""SELECT song_name FROM SONGS""").fetchall()
