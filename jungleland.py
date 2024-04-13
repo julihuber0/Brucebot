@@ -10,7 +10,7 @@ from import_stuff import bot, cur, date_in_db, location_name_get
 
 
 @bot.command(aliases=["jl", "jungleland"])
-async def jungleland_torrent(ctx: commands.Context, date: str) -> None:
+async def jungleland_torrent(ctx: commands.Context, date: str = "") -> None:
     """Return link to Jungleland Torrents for Specified Date."""
     if date_in_db(date):
         location = cur.execute(
@@ -36,7 +36,7 @@ async def jungleland_torrent(ctx: commands.Context, date: str) -> None:
 
 
 @bot.command(aliases=["artwork"])
-async def jungleland_art(ctx: commands.Context, date: str) -> None:
+async def jungleland_art(ctx: commands.Context, date: str = "") -> None:
     """Return list of artwork on Jungleland.it for specified date."""
     if date_in_db(date):
         links = cur.execute(

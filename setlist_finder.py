@@ -1,6 +1,6 @@
-"""setlist_finder
-gets setlist based on inputted date
-"""
+"""setlist_finder gets setlist based on inputted date."""
+
+from discord.ext import commands
 
 from create_embed import create_embed
 from error_message import error_message
@@ -8,29 +8,31 @@ from import_stuff import bot, cur, date_in_db, location_name_get, main_url
 
 
 @bot.command(aliases=["sl", "setlist", "show"])
-async def setlist_finder(ctx, date=None):
-    """Gets setlist based on input date"""
+async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa: C901, PLR0912
+    """Get setlist based on input date."""
     if date is None:
         date = cur.execute(
-            """SELECT event_date FROM EVENTS WHERE setlist != '' ORDER BY event_id DESC LIMIT 1""",
+            """SELECT event_date FROM EVENTS WHERE setlist != ''
+            ORDER BY event_id DESC LIMIT 1""",
         ).fetchone()[0]
 
     if date_in_db(date):
         embed = create_embed(f"Brucebase Results For: {date}", "", ctx)
         get_events = cur.execute(
-            f"""SELECT * FROM EVENTS WHERE event_date LIKE '{date!s}'""",
+            """SELECT * FROM EVENTS WHERE event_date LIKE %s""",
+            (date),
         ).fetchall()
         invalid_sets = []
 
         for i in cur.execute(
-            """SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE set_type SIMILAR TO '%(Soundcheck|Rehearsal|Pre-)%') p""",
+            """SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE
+            set_type SIMILAR TO '%(Soundcheck|Rehearsal|Pre-)%') p""",
         ).fetchall():
-            invalid_sets.append(i[0])
+            invalid_sets.append(i[0])  # noqa: PERF401
 
         if get_events:
             for r in get_events:
                 tags = []
-                # id, date, event_url, location_url, show, tour, setlist, bootleg, livedl
 
                 if r[7]:
                     tags.append("Bootleg")
@@ -52,32 +54,45 @@ async def setlist_finder(ctx, date=None):
                 embed.set_footer(text=r[5])
 
                 has_setlist = cur.execute(
-                    f"""SELECT EXISTS(SELECT 1 FROM SETLISTS WHERE event_url LIKE '{r[2]}')""",
+                    """SELECT EXISTS(SELECT 1 FROM SETLISTS WHERE event_url LIKE %s)""",
+                    (r[2]),
                 ).fetchone()
 
                 if has_setlist[0] != 0:
                     location = setlist = indicator = ""
 
-                    # id, event_url, song_url, song_name, set_type, song_in_set, song_num, segue
                     for s in cur.execute(
-                        f"""SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE event_url LIKE '{r[2]}') p ORDER BY setlist_song_id ASC""",
+                        """SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM
+                        SETLISTS WHERE event_url LIKE %s) p ORDER BY
+                        setlist_song_id ASC""",
+                        (r[2]),
                     ).fetchall():
                         set_l = []
 
                         set_songs = cur.execute(
-                            f"""SELECT song_name, song_url, segue FROM SETLISTS WHERE event_url LIKE '{r[2]}' AND set_type LIKE '%{s[0].replace("'", "''")}%' ORDER BY setlist_song_id ASC""",
+                            """SELECT song_name, song_url, segue FROM SETLISTS
+                            WHERE event_url LIKE %s AND set_type =
+                            %s ORDER BY setlist_song_id ASC""",
+                            (r[2], s[0].replace("'", "''")),
                         ).fetchall()
 
                         for song in set_songs:
                             indicator = note = segue = ""
                             premiere = cur.execute(
-                                f"""SELECT EXISTS(SELECT 1 FROM SONGS WHERE song_url LIKE '{song[1]}' AND first_played LIKE '{r[2]}')""",
+                                """SELECT EXISTS(SELECT 1 FROM SONGS WHERE song_url
+                                LIKE %s AND first_played LIKE %s)""",
+                                (song[1], r[2]),
                             ).fetchone()
                             bustout = cur.execute(
-                                f"""SELECT MIN(event_url) FROM EVENTS WHERE setlist LIKE '%{song[0].replace("'", "''")}%' AND tour LIKE '{r[5].replace("'", "''")}'""",
+                                """SELECT MIN(event_url) FROM EVENTS WHERE setlist
+                                LIKE %s AND tour LIKE %s""",
+                                (
+                                    f"%{song[0].replace("'", "''")}%",
+                                    r[5].replace("'", "''"),
+                                ),
                             ).fetchone()
 
-                            # indicator is [1] or [2]
+                            """indicator is [1] or [2]"""
                             if s[0] not in invalid_sets:
                                 if premiere[0] != 0:
                                     indicator = " **[1]**"

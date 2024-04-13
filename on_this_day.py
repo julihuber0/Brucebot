@@ -1,10 +1,9 @@
-"""on_this_day
-gets events based on inputted day
-or the current day if none specified
-"""
+"""on_this_day gets events based on inputted day or the current day if none specified."""  # noqa: E501
 
 import datetime
 import re
+
+from discord.ext import commands
 
 from create_embed import create_embed
 from error_message import error_message
@@ -12,24 +11,24 @@ from import_stuff import bot, cur, current_date, location_name_get, main_url
 
 
 @bot.command(aliases=["otd", "onthisday"])
-async def on_this_day(ctx, *date):
-    """Gets events based on specified month-day input
-    or the current day if none specified
-    """
+async def on_this_day(ctx: commands.Context, *, args: str = "") -> None:
+    """Get events based on specified month-day input or the current day if none."""
     ndate = ""
 
-    if not date:
+    if not args:
         ndate = f"-{(current_date.strftime('%m'))}-{current_date.strftime('%d')}"
-    elif re.search(r"\d{2}-\d{2}", date[0]):
-        ndate = f"-{date[0]!s}"
+    elif re.search(r"\d{2}-\d{2}", args[0]):
+        ndate = f"-{args[0]!s}"
 
     if ndate:
         otd_links = cur.execute(
-            f"""SELECT event_url, location_url, show, event_date FROM EVENTS WHERE event_date LIKE '%{ndate}' ORDER BY event_id ASC""",
+            """SELECT event_url, location_url, show, event_date FROM EVENTS WHERE
+                event_date LIKE %s ORDER BY event_id ASC""",
+            (f"%{ndate}"),
         ).fetchall()
 
         embed = create_embed(
-            f"On This Day: {datetime.datetime.strptime(ndate.strip('-'), '%m-%d').strftime('%B %d')}",
+            f"On This Day: {datetime.datetime.strptime(ndate.strip('-'), '%m-%d').strftime('%B %d')}",  # noqa: DTZ007, E501
             f"Number of Shows: {len(otd_links)!s}",
             ctx,
         )

@@ -1,48 +1,68 @@
-from import_stuff import bot, cur, main_url
-from create_embed import create_embed
-from error_message import error_message
+"""Relation find."""
+
 import re
 
+from discord.ext import commands
 
-def relation_name_fix(name):
+from create_embed import create_embed
+from error_message import error_message
+from import_stuff import bot, cur, main_url
+
+
+def relation_name_fix(name: str) -> str:
+    """Fix relation names."""
     if re.search(" us ", name, re.IGNORECASE):
         return "gary u.s. bonds"
-    else:
-        return name
+
+    return name
+
+
+def get_relation_type(r_type: str) -> str:
+    """Get type of relation to search for."""
+    match r_type:
+        case "p":
+            return "person"
+        case "b":
+            return "band"
+        case _:
+            return r_type
 
 
 @bot.command(aliases=["band", "b", "person", "p"])
-async def relation_finder(ctx, *name):
-    """gets info on bands/people that have played with bruce"""
+async def relation_finder(ctx: commands.Context, *, args: str = "") -> None:
+    """Get info on bands/people that have played with bruce."""
+    r_type = ctx.invoked_with
 
-    rType = ctx.invoked_with
+    type_find = get_relation_type(r_type)
 
-    if rType == "p":
-        typeFind = "person"
-    elif rType == "b":
-        typeFind = "band"
-    else:
-        typeFind = rType
+    name = relation_name_fix(args).lower().replace("'", "''")
 
-    nameToFind = relation_name_fix(" ".join(name)).lower().replace("'", "''")
-
-    if len(nameToFind) > 0:
+    if len(name) > 0:
         if cur.execute(
-            f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '{nameToFind}' AND appearances != '0' AND relation_type LIKE '{typeFind}'"""
+            """SELECT relation_name, relation_url, appearances, relation_type FROM
+            RELATIONS WHERE LOWER(relation_name) LIKE %s AND appearances != '0'
+            AND relation_type LIKE %s""",
+            (f"%{name}%", type_find),
         ).fetchone():
-            relationFind = cur.execute(
-                f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '{nameToFind}' AND appearances != '0' AND relation_type LIKE '{typeFind}'"""
+            relation_find = cur.execute(
+                """SELECT relation_name, relation_url, appearances, relation_type FROM
+                RELATIONS WHERE LOWER(relation_name) LIKE %s AND appearances != '0'
+                AND relation_type LIKE %s""",
+                (f"%{name}%", type_find),
             ).fetchone()
         else:
-            relationFind = cur.execute(
-                f"""SELECT relation_name, relation_url, appearances, relation_type FROM RELATIONS WHERE LOWER(relation_name) LIKE '%{nameToFind}%' AND appearances != '0' AND relation_type LIKE '{typeFind}'"""
+            relation_find = cur.execute(
+                """SELECT relation_name, relation_url, appearances, relation_type FROM
+                RELATIONS WHERE LOWER(relation_name) LIKE %s
+                AND appearances != '0' AND relation_type = %s""",
+                (f"%{name}%", type_find),
             ).fetchone()
 
-        if relationFind:
-            name = relationFind[0]
-            url = relationFind[1]
-            performances = relationFind[2]
-            relation_type = relationFind[3]
+        if relation_find:
+            name = relation_find[0]
+            url = relation_find[1]
+            performances = relation_find[2]
+            relation_type = relation_find[3]
 
             embed = create_embed(
                 f"{name} ({relation_type.title()})",
@@ -52,18 +72,24 @@ async def relation_finder(ctx, *name):
 
             if int(performances) > 0:
                 first_last = cur.execute(
-                    f"""SELECT MIN(event_url), MAX(event_url) FROM ON_STAGE WHERE relation_url LIKE '{url}' AND event_url LIKE '/gig:%'"""
+                    """SELECT MIN(event_url), MAX(event_url) FROM ON_STAGE
+                    WHERE relation_url LIKE %s AND event_url LIKE '/gig:%'""",
+                    (url),
                 ).fetchone()
 
                 first_date = cur.execute(
-                    f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{first_last[0]}'"""
+                    """SELECT event_date FROM EVENTS WHERE event_url LIKE %s""",
+                    (first_last[0]),
                 ).fetchall()[0]
                 last_date = cur.execute(
-                    f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{first_last[1]}'"""
+                    """SELECT event_date FROM EVENTS WHERE event_url LIKE %s""",
+                    (first_last[1]),
                 ).fetchall()[0]
 
                 embed.add_field(
-                    name="Performances:", value=f"{performances}", inline=True
+                    name="Performances:",
+                    value=f"{performances}",
+                    inline=True,
                 )
                 embed.add_field(
                     name="First Performance:",

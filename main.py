@@ -1,3 +1,5 @@
+"""Main function for this bot."""
+
 import os
 
 from album_find import album_finder
@@ -15,7 +17,8 @@ from tour_finder import tour_stats
 
 
 @bot.event
-async def on_ready():
+async def on_ready() -> None:
+    """Message to send in log if online and ready."""
     print(f"Bot online and logged in as {bot.user}")
 
 
