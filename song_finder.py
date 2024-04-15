@@ -34,19 +34,12 @@ async def song_finder(ctx: commands.Context, *, args: str = "") -> None:
 
         result = process.extractOne(song_name, songs)[0]
 
-        print("%" + result[0] + "%")
-
         s = cur.execute(
-            """SELECT * FROM SONGS WHERE song_name LIKE %s""",
-            ("%" + result[0] + "%",),
+            """SELECT * FROM SONGS WHERE song_name = %s""",
+            (result[0],),
         ).fetchone()
 
-        print(s)
-
         if s:
-            first = re.search(r"\d{4}-\d{2}-\d{2}\w?", s[3])[0]
-            last = re.search(r"\d{4}-\d{2}-\d{2}\w?", s[4])[0]
-
             embed = create_embed(s[2], f"[Brucebase Song Page]({main_url}{s[1]})", ctx)
 
             embed.add_field(
@@ -56,6 +49,9 @@ async def song_finder(ctx: commands.Context, *, args: str = "") -> None:
             )
 
             if s[5] != "" and int(s[5]) > 0:
+                first = re.search(r"\d{4}-\d{2}-\d{2}\w?", s[3])[0]
+                last = re.search(r"\d{4}-\d{2}-\d{2}\w?", s[4])[0]
+
                 embed.add_field(name="Performances:", value=s[5], inline=True)
                 embed.add_field(
                     name="First Played:",
