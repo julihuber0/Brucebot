@@ -36,8 +36,10 @@ async def song_finder(ctx: commands.Context, *, args: str = "") -> None:
 
         s = cur.execute(
             """SELECT * FROM SONGS WHERE song_name = %s""",
-            (result.replace("'", "''"),),
+            (result[0].replace("'", "''"),),
         ).fetchone()
+
+        print(s)
 
         if s:
             first = re.search(r"\d{4}-\d{2}-\d{2}\w?", s[3])[0]
