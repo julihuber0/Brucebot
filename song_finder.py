@@ -71,6 +71,6 @@ async def song_finder(ctx: commands.Context, *, args: str = "") -> None:
 
             await ctx.send(embed=embed)
         else:
-            await ctx.send(f"\nNo Results Found For: {' '.join(args)}")
+            await ctx.send(f"\nNo Results Found For: {args}")
     else:
         await ctx.send(error_message("song"))
