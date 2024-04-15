@@ -34,11 +34,9 @@ async def song_finder(ctx: commands.Context, *, args: str = "") -> None:
 
         result = process.extractOne(song_name, songs)[0]
 
-        print(result[0])
-
         s = cur.execute(
             """SELECT * FROM SONGS WHERE song_name = %s""",
-            (result[0],),
+            (result[0].replace("'", "''"),),
         ).fetchone()
 
         if s:
