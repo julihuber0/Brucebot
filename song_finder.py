@@ -38,7 +38,7 @@ async def song_finder(ctx: commands.Context, *, args: str = "") -> None:
 
         s = cur.execute(
             """SELECT * FROM SONGS WHERE song_name = %s""",
-            (result[0].replace("'", "''"),),
+            (result[0],),
         ).fetchone()
 
         print(s)
