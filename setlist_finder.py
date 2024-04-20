@@ -11,23 +11,32 @@ from import_stuff import bot, cur, date_in_db, location_name_get, main_url
 async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa: C901, PLR0912
     """Get setlist based on input date."""
     if date == "":
-        date = cur.execute(
+        cur.execute(
             """SELECT event_date FROM EVENTS WHERE setlist != ''
             ORDER BY event_id DESC LIMIT 1""",
-        ).fetchone()[0]
+        )
+
+        date = cur.fetchone()
 
     if date_in_db(date):
         embed = create_embed(f"Brucebase Results For: {date}", "", ctx)
-        get_events = cur.execute(
+        cur.execute(
             """SELECT * FROM EVENTS WHERE event_date = %s""",
             (date,),
-        ).fetchall()
+        )
+
+        get_events = cur.fetchall()
+
         invalid_sets = []
 
-        for i in cur.execute(
+        cur.execute(
             """SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM SETLISTS WHERE
             set_type SIMILAR TO '%(Soundcheck|Rehearsal|Pre-)%') p""",
-        ).fetchall():
+        )
+
+        sets = cur.fetchall()
+
+        for i in sets:
             invalid_sets.append(i[0])  # noqa: PERF401
 
         if get_events:
@@ -60,30 +69,36 @@ async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa
 
                 if has_setlist[0] != 0:
                     location = setlist = indicator = ""
-
-                    for s in cur.execute(
+                    cur.execute(
                         """SELECT set_type FROM (SELECT DISTINCT ON (set_type) * FROM
                         SETLISTS WHERE event_url = %s) p ORDER BY
                         setlist_song_id ASC""",
                         (r[2],),
-                    ).fetchall():
+                    )
+                    set_types = cur.fetchall()
+
+                    for s in set_types:
                         set_l = []
 
-                        set_songs = cur.execute(
+                        cur.execute(
                             """SELECT song_name, song_url, segue FROM SETLISTS
                             WHERE event_url = %s AND set_type =
                             %s ORDER BY setlist_song_id ASC""",
                             (r[2], s[0].replace("'", "''")),
                         ).fetchall()
 
+                        set_songs = cur.fetchall()
+
                         for song in set_songs:
                             indicator = note = segue = ""
-                            premiere = cur.execute(
+                            cur.execute(
                                 """SELECT EXISTS(SELECT 1 FROM SONGS WHERE song_url = %s
                                 AND first_played = %s)""",
                                 (song[1], r[2]),
                             ).fetchone()
-                            bustout = cur.execute(
+                            premiere = cur.fetchone()
+
+                            cur.execute(
                                 """SELECT MIN(event_url) FROM EVENTS WHERE setlist
                                 LIKE %s AND tour LIKE %s""",
                                 (
@@ -91,6 +106,8 @@ async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa
                                     r[5].replace("'", "''"),
                                 ),
                             ).fetchone()
+
+                            bustout = cur.fetchone()
 
                             """indicator is [1] or [2]"""
                             if s[0] not in invalid_sets:
