@@ -26,12 +26,14 @@ async def city_finder(ctx: commands.Context, *, args: str = "") -> None:
     if len(args) > 1:
         city_name = city_name_fixer(args.replace("'", "''").lower())
 
-        first_last = cur.execute(
+        cur.execute(
             """SELECT MIN(event_url), MAX(event_url), COUNT(event_url) FROM EVENTS WHERE
             location_url IN (SELECT venue_url FROM VENUES WHERE LOWER(venue_city) = %s)
             AND tour != ''""",
             (city_name,),
-        ).fetchall()[0]
+        )
+
+        first_last = cur.fetchall()[0]
 
         if first_last and first_last[2] > 0:
             first_date = re.findall(r"\d{4}-\d{2}-\d{2}", first_last[0])
@@ -73,12 +75,14 @@ async def state_finder(ctx: commands.Context, *, args: str = "") -> None:
         await ctx.send(error_message("input"))
 
     if len(state_abbev) == 2 or len(state_name) > 2:  # noqa: PLR2004
-        first_last = cur.execute(
+        cur.execute(
             """SELECT MIN(event_url), MAX(event_url), COUNT(event_url) FROM EVENTS WHERE
             location_url IN (SELECT venue_url FROM VENUES WHERE LOWER(venue_state) = %s)
               AND tour != ''""",
             (state_abbrev,),
-        ).fetchall()[0]
+        )
+
+        first_last = cur.fetchall()[0]
 
         if first_last and first_last[2] > 0:
             first_date = re.findall(r"\d{4}-\d{2}-\d{2}", first_last[0])
@@ -112,12 +116,14 @@ async def country_finder(ctx: commands.Context, *, args: str = "") -> None:
     """Find country."""
     if len(args) > 1:
         country_name = args.replace("'", "''").lower()
-        first_last = cur.execute(
+        cur.execute(
             """SELECT MIN(event_url), MAX(event_url), COUNT(event_url) FROM EVENTS WHERE
             location_url IN (SELECT venue_url FROM VENUES WHERE LOWER(venue_country)
             = %s) AND tour != ''""",
             (country_name,),
-        ).fetchall()[0]
+        )
+
+        first_last = cur.fetchall()[0]
 
         if first_last and first_last[2] > 0:
             first_date = re.findall(r"\d{4}-\d{2}-\d{2}", first_last[0])

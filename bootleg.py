@@ -14,10 +14,12 @@ from import_stuff import bot, cur, date_in_db, location_name_get
 async def bootleg_find(ctx: commands.Context, date: str = "") -> None:
     """Return a link to SpringsteenLyrics Bootleg Page for the specified Date."""
     if date_in_db(date):
-        event_name = cur.execute(
+        cur.execute(
             """SELECT location_url, show FROM EVENTS WHERE event_date = %s""",
             (date,),
-        ).fetchone()
+        )
+
+        event_name = cur.fetchone()
 
         location = location_name_get(event_name[0], event_name[1])
 

@@ -167,11 +167,13 @@ def date_in_db(date: str) -> bool:
 
 def location_name_get(location_url: str, show: str) -> str:
     """Get venue info for a given venue_url."""
-    location = cur.execute(
+    cur.execute(
         """SELECT venue_name, venue_city, venue_state, venue_country
             FROM VENUES WHERE venue_url = %s""",
         (location_url,),
-    ).fetchone()
+    )
+
+    location = cur.fetchone()
 
     if location:
         if show != "" and show is not None:

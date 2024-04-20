@@ -34,10 +34,12 @@ async def song_finder(ctx: commands.Context, *, args: str = "") -> None:
 
         result = process.extractOne(song_name, songs)[0]
 
-        s = cur.execute(
+        cur.execute(
             """SELECT * FROM SONGS WHERE song_name = %s""",
             (result[0],),
-        ).fetchone()
+        )
+
+        s = cur.fetchone()
 
         if s:
             embed = create_embed(s[2], f"[Brucebase Song Page]({main_url}{s[1]})", ctx)

@@ -38,25 +38,31 @@ async def relation_finder(ctx: commands.Context, *, args: str = "") -> None:
     name = relation_name_fix(args).lower().replace("'", "''")
 
     if len(name) > 0:
-        if cur.execute(
+        res = cur.execute(
             """SELECT relation_name, relation_url, appearances, relation_type FROM
             RELATIONS WHERE LOWER(relation_name) LIKE %s AND appearances != '0'
             AND relation_type LIKE %s""",
             (f"%{name}%", type_find),
-        ).fetchone():
-            relation_find = cur.execute(
+        )
+
+        if cur.fetchone():
+            cur.execute(
                 """SELECT relation_name, relation_url, appearances, relation_type FROM
                 RELATIONS WHERE LOWER(relation_name) LIKE %s AND appearances != '0'
                 AND relation_type LIKE %s""",
                 (f"%{name}%", type_find),
-            ).fetchone()
+            )
+
+            relation_find = cur.fetchone()
         else:
-            relation_find = cur.execute(
+            cur.execute(
                 """SELECT relation_name, relation_url, appearances, relation_type FROM
                 RELATIONS WHERE LOWER(relation_name) LIKE %s
                 AND appearances != '0' AND relation_type = %s""",
                 (f"%{name}%", type_find),
-            ).fetchone()
+            )
+
+            relation_find = cur.fetchone()
 
         if relation_find:
             name = relation_find[0]
@@ -71,21 +77,27 @@ async def relation_finder(ctx: commands.Context, *, args: str = "") -> None:
             )
 
             if int(performances) > 0:
-                first_last = cur.execute(
+                cur.execute(
                     """SELECT MIN(event_url), MAX(event_url) FROM ON_STAGE
                     WHERE relation_url = %s AND event_url LIKE %s""",
                     (url, "/gig:%"),
-                ).fetchone()
+                )
 
-                first_date = cur.execute(
+                first_last = cur.fetchone()
+
+                cur.execute(
                     """SELECT event_date FROM EVENTS WHERE event_url = %s""",
                     (first_last[0],),
-                ).fetchall()[0]
+                )
 
-                last_date = cur.execute(
+                first_date = cur.fetchall()[0]
+
+                cur.execute(
                     """SELECT event_date FROM EVENTS WHERE event_url = %s""",
                     (first_last[1],),
-                ).fetchall()[0]
+                )
+
+                last_date = cur.fetchall()[0]
 
                 embed.add_field(
                     name="Performances:",

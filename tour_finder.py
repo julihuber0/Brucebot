@@ -46,25 +46,31 @@ async def tour_stats(ctx: commands.Context, *, args: str = "") -> None:
 
         print(result[0].replace("'", "''"))
 
-        stats = cur.execute(
+        cur.execute(
             """SELECT * FROM TOURS WHERE tour_name = %s""",
             (result[0].replace("'", "''"),),
-        ).fetchall()
+        )
+
+        stats = cur.fetchall()
 
         print(stats)
 
         if stats:
             stats = stats[0]
 
-            first_show = cur.execute(
+            cur.execute(
                 """SELECT event_date FROM EVENTS WHERE event_url = %s""",
                 (stats[3],),
-            ).fetchall()[0]
+            )
 
-            last_show = cur.execute(
+            first_show = cur.fetchall()[0]
+
+            cur.execute(
                 """SELECT event_date FROM EVENTS WHERE event_url = %s""",
                 (stats[4],),
-            ).fetchall()[0]
+            )
+
+            last_show = cur.fetchall()[0]
 
             embed = create_embed(
                 f"Tour: {stats[2]}",

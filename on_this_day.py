@@ -21,11 +21,13 @@ async def on_this_day(ctx: commands.Context, *, args: str = "") -> None:
         ndate = f"-{args}"
 
     if ndate:
-        otd_links = cur.execute(
+        cur.execute(
             """SELECT event_url, location_url, show, event_date FROM EVENTS WHERE
                 event_date LIKE %s ORDER BY event_id ASC""",
             (f"%{ndate}",),
-        ).fetchall()
+        )
+
+        otd_links = cur.fetchall()
 
         embed = create_embed(
             f"On This Day: {datetime.datetime.strptime(ndate.strip('-'), '%m-%d').strftime('%B %d')}",  # noqa: DTZ007, E501

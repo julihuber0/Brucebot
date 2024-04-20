@@ -25,10 +25,12 @@ def album_name_fix(album: str) -> str:
 
 def check_database_for_album(album: str) -> bool:
     """Search database for album."""
-    check = cur.execute(
+    cur.execute(
         """SELECT EXISTS(SELECT 1 FROM ALBUMS WHERE LOWER(album_name) = %s)""",
         (album,),
-    ).fetchone()
+    )
+
+    check = cur.fetchone()
 
     if check:
         return True
@@ -44,33 +46,43 @@ async def album_finder(ctx: commands.Context, *, args: str = "") -> None:
     input_fixed = album_name_fix(args.replace("'", "''"))
 
     if check_database_for_album(input_fixed) and input_fixed.lower() != "tracks":
-        info = cur.execute(
+        cur.execute(
             """SELECT album_name, album_year, song_url FROM ALBUMS WHERE
             LOWER(album_name) = %s ORDER BY song_num ASC""",
             (input_fixed.lower(),),
-        ).fetchall()
+        )
+
+        info = cur.fetchall()
+
         embed = create_embed(info[0][0], f"Year: {info[0][1]}", ctx)
 
-        plays = cur.execute(
+        cur.execute(
             """select song_name, num_plays FROM SONGS WHERE song_url IN
             (SELECT song_url FROM ALBUMS WHERE album_name LIKE
             %s) AND num_plays != ''
             ORDER BY CAST(num_plays as integer) ASC""",
             (info[0][0],),
-        ).fetchall()
-        premiere = cur.execute(
+        )
+
+        plays = cur.fetchall()
+
+        cur.execute(
             """select song_name, first_played FROM SONGS WHERE song_url
             IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE
             %s) AND first_played != ''
             ORDER BY first_played ASC""",
             (info[0][0],),
-        ).fetchall()
+        )
+
+        premiere = cur.fetchall()
 
         for s in info:
-            find_song = cur.execute(
+            cur.execute(
                 """SELECT song_name, num_plays FROM SONGS WHERE song_url LIKE %s""",
                 (s[2],),
-            ).fetchone()
+            )
+
+            find_song = cur.fetchone()
 
             if find_song[1] == "":
                 songs.append(f"**{find_song[0]}**")
@@ -90,14 +102,19 @@ async def album_finder(ctx: commands.Context, *, args: str = "") -> None:
             inline=False,
         )
 
-        first_date = cur.execute(
+        cur.execute(
             """SELECT event_date FROM EVENTS WHERE event_url LIKE %s""",
             (premiere[0][1],),
-        ).fetchone()
-        last_date = cur.execute(
+        )
+
+        first_date = cur.fetchone()
+
+        cur.execute(
             """SELECT event_date FROM EVENTS WHERE event_url LIKE %s""",
             (premiere[-1][1],),
-        ).fetchone()
+        )
+
+        last_date = cur.fetchone()
 
         embed.add_field(
             name=f"First/Last Premiered{note}:",

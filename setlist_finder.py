@@ -63,10 +63,12 @@ async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa
                 )
                 embed.set_footer(text=r[5])
 
-                has_setlist = cur.execute(
+                cur.execute(
                     """SELECT EXISTS(SELECT 1 FROM SETLISTS WHERE event_url = %s)""",
                     (r[2],),
-                ).fetchone()
+                )
+
+                has_setlist = cur.fetchone()
 
                 if has_setlist[0] != 0:
                     location = setlist = indicator = ""
@@ -86,7 +88,7 @@ async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa
                             WHERE event_url = %s AND set_type =
                             %s ORDER BY setlist_song_id ASC""",
                             (r[2], s[0].replace("'", "''")),
-                        ).fetchall()
+                        )
 
                         set_songs = cur.fetchall()
 
@@ -96,7 +98,7 @@ async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa
                                 """SELECT EXISTS(SELECT 1 FROM SONGS WHERE song_url = %s
                                 AND first_played = %s)""",
                                 (song[1], r[2]),
-                            ).fetchone()
+                            )
                             premiere = cur.fetchone()
 
                             cur.execute(
@@ -106,7 +108,7 @@ async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa
                                     "%" + song[0].replace("'", "''") + "%",
                                     r[5].replace("'", "''"),
                                 ),
-                            ).fetchone()
+                            )
 
                             bustout = cur.fetchone()
 
