@@ -3,6 +3,7 @@
 import re
 
 from discord.ext import commands
+from fuzzywuzzy import process
 
 from create_embed import create_embed
 from error_message import error_message
@@ -39,22 +40,31 @@ async def tour_stats(ctx: commands.Context, *, args: str = "") -> None:
         tour_name = tour_name_fix(args).replace("'", "''")
         stats = ""
 
-        if cur.execute(
+        tours = cur.execute("""SELECT tour_name FROM TOURS""").fetchall()
+
+        result = process.extractOne(tour_name, tours)[0]
+
+        # if cur.execute(
+        #     """SELECT * FROM TOURS WHERE tour_name = %s""",
+        #     (tour_name,),
+        # ).fetchall():
+        #     stats = cur.execute(
+        #         """SELECT * FROM TOURS WHERE tour_name = %s""",
+        #         (tour_name,),
+        #     ).fetchall()[0]
+        # elif cur.execute(
+        #     """SELECT * FROM TOURS WHERE tour_name ILIKE %s""",
+        #     (f"%{tour_name}%",),
+        # ).fetchall():
+        #     stats = cur.execute(
+        #         """SELECT * FROM TOURS WHERE tour_name ILIKE %s""",
+        #         (f"%{tour_name}%",),
+        #     ).fetchall()[0]
+
+        stats = cur.execute(
             """SELECT * FROM TOURS WHERE tour_name = %s""",
-            (tour_name,),
-        ).fetchall():
-            stats = cur.execute(
-                """SELECT * FROM TOURS WHERE tour_name = %s""",
-                (tour_name,),
-            ).fetchall()[0]
-        elif cur.execute(
-            """SELECT * FROM TOURS WHERE tour_name ILIKE %s""",
-            (f"%{tour_name}%",),
-        ).fetchall():
-            stats = cur.execute(
-                """SELECT * FROM TOURS WHERE tour_name ILIKE %s""",
-                (f"%{tour_name}%",),
-            ).fetchall()[0]
+            (result,),
+        ).fetchall()
 
         if stats != "":
             first_show = cur.execute(
