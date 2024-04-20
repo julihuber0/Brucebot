@@ -73,12 +73,12 @@ async def tour_stats(ctx: commands.Context, *, args: str = "") -> None:
         if stats != "":
             first_show = cur.execute(
                 """SELECT event_date FROM EVENTS WHERE event_url = %s""",
-                (stats[3]),
+                (stats[3],),
             ).fetchall()[0]
 
             last_show = cur.execute(
                 """SELECT event_date FROM EVENTS WHERE event_url = %s""",
-                (stats[4]),
+                (stats[4],),
             ).fetchall()[0]
 
             embed = create_embed(
