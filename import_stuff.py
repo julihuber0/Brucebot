@@ -6,6 +6,7 @@ import urllib.parse as urlparse
 
 import discord
 import psycopg
+import psycopg2
 from discord.ext import commands
 from zoneinfo import ZoneInfo
 
@@ -117,10 +118,9 @@ main_url = "http://brucebase.wikidot.com"
 
 url = urlparse.urlparse(os.environ["DATABASE_URL"])
 
-# DATABASE_URL = os.environ["DATABASE_URL"]
-# conn = psycopg2.connect(DATABASE_URL, sslmode="require")
+# connection = f"dbname={url.path[1:]} user={url.username} password="
 
-conn = psycopg.connect(
+conn = psycopg2.connect(
     dbname=url.path[1:],
     user=url.username,
     password=url.password,

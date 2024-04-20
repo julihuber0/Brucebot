@@ -1,7 +1,6 @@
 """get_cover returns covers from my site."""
 
 import httpx
-from bs4 import BeautifulSoup as bs4
 from discord.ext import commands
 
 from error_message import error_message
