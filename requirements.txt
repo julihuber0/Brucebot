@@ -1,8 +1,7 @@
 datetime
 titlecase
-BeautifulSoup4
 discord
-lxml
+psycopg2-binary
 psycopg
 urllib3
 httpx
