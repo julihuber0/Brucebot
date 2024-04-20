@@ -44,23 +44,6 @@ async def tour_stats(ctx: commands.Context, *, args: str = "") -> None:
 
         result = process.extractOne(tour_name, tours)[0]
 
-        # if cur.execute(
-        #     """SELECT * FROM TOURS WHERE tour_name = %s""",
-        #     (tour_name,),
-        # ).fetchall():
-        #     stats = cur.execute(
-        #         """SELECT * FROM TOURS WHERE tour_name = %s""",
-        #         (tour_name,),
-        #     ).fetchall()[0]
-        # elif cur.execute(
-        #     """SELECT * FROM TOURS WHERE tour_name ILIKE %s""",
-        #     (f"%{tour_name}%",),
-        # ).fetchall():
-        #     stats = cur.execute(
-        #         """SELECT * FROM TOURS WHERE tour_name ILIKE %s""",
-        #         (f"%{tour_name}%",),
-        #     ).fetchall()[0]
-
         print(result[0].replace("'", "''"))
 
         stats = cur.execute(
