@@ -16,7 +16,8 @@ async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa
             ORDER BY event_id DESC LIMIT 1""",
         )
 
-        date = cur.fetchone()
+        date = cur.fetchone()[0]
+        print(date)
 
     if date_in_db(date):
         embed = create_embed(f"Brucebase Results For: {date}", "", ctx)

@@ -152,10 +152,12 @@ def date_checker(date: str) -> bool:
 def date_in_db(date: str) -> bool:
     """Check database for given date."""
     if date_checker(date):
-        check = cur.execute(
+        cur.execute(
             """SELECT EXISTS(SELECT 1 FROM EVENTS WHERE event_date LIKE %s)""",
             (date,),
-        ).fetchone()
+        )
+
+        check = cur.fetchone()
 
         if check:
             return True
