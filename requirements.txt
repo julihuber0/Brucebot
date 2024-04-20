@@ -4,7 +4,7 @@ titlecase
 BeautifulSoup4
 discord
 lxml
-psycopg
+psycopg2-binary
 urllib3
 httpx
 fuzzywuzzy
