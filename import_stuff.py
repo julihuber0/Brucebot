@@ -5,7 +5,7 @@ import os
 import urllib.parse as urlparse
 
 import discord
-import psycopg2
+import psycopg
 from discord.ext import commands
 from zoneinfo import ZoneInfo
 
@@ -120,13 +120,13 @@ url = urlparse.urlparse(os.environ["DATABASE_URL"])
 # DATABASE_URL = os.environ["DATABASE_URL"]
 # conn = psycopg2.connect(DATABASE_URL, sslmode="require")
 
-conn = psycopg2.connect(
+conn = psycopg.connect(
     dbname=url.path[1:],
     user=url.username,
     password=url.password,
     host=url.hostname,
     port=url.port,
-    # sslmode="require",
+    sslmode="require",
 )
 
 cur = conn.cursor()
