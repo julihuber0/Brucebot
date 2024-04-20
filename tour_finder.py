@@ -66,11 +66,13 @@ async def tour_stats(ctx: commands.Context, *, args: str = "") -> None:
         stats = cur.execute(
             """SELECT * FROM TOURS WHERE tour_name = %s""",
             (result[0].replace("'", "''"),),
-        ).fetchall()[0]
+        ).fetchall()
 
         print(stats)
 
-        if stats != "":
+        if stats:
+            stats = stats[0]
+
             first_show = cur.execute(
                 """SELECT event_date FROM EVENTS WHERE event_url = %s""",
                 (stats[3],),
