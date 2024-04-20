@@ -8,7 +8,7 @@ from import_stuff import bot, cur, date_in_db, location_name_get, main_url
 
 
 @bot.command(aliases=["sl", "setlist", "show"])
-async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa: C901, PLR0912
+async def setlist_finder(ctx: commands.Context, date: str = "") -> None:  # noqa: C901, PLR0912, PLR0915
     """Get setlist based on input date."""
     if date == "":
         cur.execute(

@@ -120,16 +120,6 @@ url = urlparse.urlparse(os.environ["DATABASE_URL"])
 DATABASE_URL = os.environ["DATABASE_URL"]
 
 conn = psycopg2.connect(DATABASE_URL, sslmode="require")
-
-# conn = psycopg2.connect(
-#     dbname=url.path[1:],
-#     user=url.username,
-#     password=url.password,
-#     host=url.hostname,
-#     port=url.port,
-#     sslmode="require",
-# )
-
 cur = conn.cursor()
 
 intents = discord.Intents.default()

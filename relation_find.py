@@ -38,7 +38,7 @@ async def relation_finder(ctx: commands.Context, *, args: str = "") -> None:
     name = relation_name_fix(args).lower().replace("'", "''")
 
     if len(name) > 0:
-        res = cur.execute(
+        cur.execute(
             """SELECT relation_name, relation_url, appearances, relation_type FROM
             RELATIONS WHERE LOWER(relation_name) LIKE %s AND appearances != '0'
             AND relation_type LIKE %s""",
