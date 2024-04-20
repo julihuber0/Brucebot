@@ -61,6 +61,8 @@ async def tour_stats(ctx: commands.Context, *, args: str = "") -> None:
         #         (f"%{tour_name}%",),
         #     ).fetchall()[0]
 
+        print(result)
+
         stats = cur.execute(
             """SELECT * FROM TOURS WHERE tour_name = %s""",
             (result,),
