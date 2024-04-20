@@ -117,7 +117,7 @@ main_url = "http://brucebase.wikidot.com"
 
 url = urlparse.urlparse(os.environ["DATABASE_URL"])
 
-DATABASE_URL = os.environ["DATABASE_URL"]
+# DATABASE_URL = os.environ["DATABASE_URL"]
 # conn = psycopg2.connect(DATABASE_URL, sslmode="require")
 
 conn = psycopg2.connect(
@@ -126,7 +126,7 @@ conn = psycopg2.connect(
     password=url.password,
     host=url.hostname,
     port=url.port,
-    sslmode="require",
+    # sslmode="require",
 )
 
 cur = conn.cursor()
