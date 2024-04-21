@@ -30,7 +30,9 @@ async def song_finder(ctx: commands.Context, *, args: str = "") -> None:
     if len(args) > 1:
         song_name = song_name_fix(args)
 
-        songs = cur.execute("""SELECT song_name FROM SONGS""").fetchall()
+        cur.execute("""SELECT song_name FROM SONGS""")
+
+        songs = cur.fetchall()
 
         result = process.extractOne(song_name, songs)[0]
 
