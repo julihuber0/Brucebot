@@ -5,7 +5,7 @@ from discord.ext import commands
 from import_stuff import nextcord
 
 
-def create_embed(title: str, description: str, ctx: commands.Context) -> discord.Embed:
+def create_embed(title: str, description: str, ctx: commands.Context) -> nextcord.Embed:
     """Return a Discord Embed with the provided title and des."""
     embed = nextcord.Embed(title=title, description=description, color=0x6D3DA4)
     embed.set_author(
