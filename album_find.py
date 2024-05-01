@@ -1,9 +1,14 @@
-from import_stuff import bot, cur, main_url, albums
+"""Album finder."""
+
+from discord.ext import commands
+
 from create_embed import create_embed
 from error_message import error_message
+from import_stuff import albums, bot, cur, main_url
 
 
-def album_name_fix(album):
+def album_name_fix(album: str) -> str:
+    """Fix incorrect album names."""
     album_name = ""
 
     # album name: [list of shorthand/abbreviations]
@@ -14,14 +19,18 @@ def album_name_fix(album):
 
     if album_name:
         return album_name
-    else:
-        return album
+
+    return album
 
 
-def checkDBforalbum(album):
-    check = cur.execute(
-        f"""SELECT EXISTS(SELECT 1 FROM ALBUMS WHERE LOWER(album_name) LIKE '{album}')"""
-    ).fetchone()
+def check_database_for_album(album: str) -> bool:
+    """Search database for album."""
+    cur.execute(
+        """SELECT EXISTS(SELECT 1 FROM ALBUMS WHERE LOWER(album_name) = %s)""",
+        (album,),
+    )
+
+    check = cur.fetchone()
 
     if check:
         return True
@@ -30,30 +39,50 @@ def checkDBforalbum(album):
 
 
 @bot.command(aliases=["album", "a"])
-async def album_finder(ctx, *album):
-    """Gets info on album"""
+async def album_finder(ctx: commands.Context, *, args: str = "") -> None:
+    """Get info on album."""
     songs = []
     note = ""
-    input = " ".join(album).replace("'", "''")
-    inputFixed = album_name_fix(input)
+    input_fixed = album_name_fix(args.replace("'", "''"))
 
-    if checkDBforalbum(inputFixed) and inputFixed.lower() != "tracks":
-        info = cur.execute(
-            f"""SELECT album_name, album_year, song_url FROM ALBUMS WHERE LOWER(album_name) LIKE '{inputFixed.lower()}' ORDER BY song_num ASC"""
-        ).fetchall()
+    if check_database_for_album(input_fixed) and input_fixed.lower() != "tracks":
+        cur.execute(
+            """SELECT album_name, album_year, song_url FROM ALBUMS WHERE
+            LOWER(album_name) = %s ORDER BY song_num ASC""",
+            (input_fixed.lower(),),
+        )
+
+        info = cur.fetchall()
+
         embed = create_embed(info[0][0], f"Year: {info[0][1]}", ctx)
 
-        plays = cur.execute(
-            f"""select song_name, num_plays FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE '{info[0][0]}') AND num_plays != '' ORDER BY CAST(num_plays as integer) ASC"""
-        ).fetchall()
-        premiere = cur.execute(
-            f"""select song_name, first_played FROM SONGS WHERE song_url IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE '{info[0][0]}') AND first_played != '' ORDER BY first_played ASC"""
-        ).fetchall()
+        cur.execute(
+            """select song_name, num_plays FROM SONGS WHERE song_url IN
+            (SELECT song_url FROM ALBUMS WHERE album_name LIKE
+            %s) AND num_plays != ''
+            ORDER BY CAST(num_plays as integer) ASC""",
+            (info[0][0],),
+        )
+
+        plays = cur.fetchall()
+
+        cur.execute(
+            """select song_name, first_played FROM SONGS WHERE song_url
+            IN (SELECT song_url FROM ALBUMS WHERE album_name LIKE
+            %s) AND first_played != ''
+            ORDER BY first_played ASC""",
+            (info[0][0],),
+        )
+
+        premiere = cur.fetchall()
 
         for s in info:
-            find_song = cur.execute(
-                f"""SELECT song_name, num_plays FROM SONGS WHERE song_url LIKE '{s[2]}'"""
-            ).fetchone()
+            cur.execute(
+                """SELECT song_name, num_plays FROM SONGS WHERE song_url LIKE %s""",
+                (s[2],),
+            )
+
+            find_song = cur.fetchone()
 
             if find_song[1] == "":
                 songs.append(f"**{find_song[0]}**")
@@ -62,7 +91,9 @@ async def album_finder(ctx, *album):
                 songs.append(find_song[0])
 
         embed.add_field(
-            name="Songs (Bold = Not Played):", value=f"{', '.join(songs)}", inline=False
+            name="Songs (Bold = Not Played):",
+            value=f"{', '.join(songs)}",
+            inline=False,
         )
 
         embed.add_field(
@@ -71,19 +102,26 @@ async def album_finder(ctx, *album):
             inline=False,
         )
 
-        first_date = cur.execute(
-            f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[0][1]}'"""
-        ).fetchone()
-        last_date = cur.execute(
-            f"""SELECT event_date FROM EVENTS WHERE event_url LIKE '{premiere[-1][1]}'"""
-        ).fetchone()
+        cur.execute(
+            """SELECT event_date FROM EVENTS WHERE event_url LIKE %s""",
+            (premiere[0][1],),
+        )
+
+        first_date = cur.fetchone()
+
+        cur.execute(
+            """SELECT event_date FROM EVENTS WHERE event_url LIKE %s""",
+            (premiere[-1][1],),
+        )
+
+        last_date = cur.fetchone()
 
         embed.add_field(
             name=f"First/Last Premiered{note}:",
-            value=f"{premiere[0][0]} ([{first_date[0]}]({main_url}{premiere[0][1]}))\n{premiere[-1][0]} ([{last_date[0]}]({main_url}{premiere[-1][1]}))",
+            value=f"{premiere[0][0]} ([{first_date[0]}]({main_url}{premiere[0][1]}))\n{premiere[-1][0]} ([{last_date[0]}]({main_url}{premiere[-1][1]}))",  # noqa: E501
             inline=False,
         )
 
         await ctx.send(embed=embed)
     else:
-        await ctx.send(f"{error_message('album')}, No results for: {inputFixed}")
+        await ctx.send(f"{error_message('album')}, No results for: {input_fixed}")

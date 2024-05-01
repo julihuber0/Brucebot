@@ -1,39 +1,37 @@
-"""
-on_this_day
-gets events based on inputted day
-or the current day if none specified
-"""
+"""on_this_day gets events based on inputted day or the current day if none specified."""  # noqa: E501
 
-import re
 import datetime
-from import_stuff import bot, cur, main_url, cDate, location_name_get
+import re
+
+from discord.ext import commands
+
 from create_embed import create_embed
 from error_message import error_message
+from import_stuff import bot, cur, current_date, location_name_get, main_url
 
 
 @bot.command(aliases=["otd", "onthisday"])
-async def on_this_day(ctx, *date):
-    """
-    Gets events based on specified month-day input
-    or the current day if none specified
-    """
-
+async def on_this_day(ctx: commands.Context, *, args: str = "") -> None:
+    """Get events based on specified month-day input or the current day if none."""
     ndate = ""
 
-    if not date:
-        ndate = f"-{(cDate.strftime('%m'))}-{cDate.strftime('%d')}"
-    else:
-        if re.search("\d{2}-\d{2}", date[0]):
-            ndate = f"-{str(date[0])}"
+    if not args:
+        ndate = f"-{(current_date.strftime('%m'))}-{current_date.strftime('%d')}"
+    elif re.search(r"\d{2}-\d{2}$", args):
+        ndate = f"-{args}"
 
     if ndate:
-        otd_links = cur.execute(
-            f"""SELECT event_url, location_url, show, event_date FROM EVENTS WHERE event_date LIKE '%{ndate}' ORDER BY event_id ASC"""
-        ).fetchall()
+        cur.execute(
+            """SELECT event_url, location_url, show, event_date FROM EVENTS WHERE
+                event_date LIKE %s ORDER BY event_id ASC""",
+            (f"%{ndate}",),
+        )
+
+        otd_links = cur.fetchall()
 
         embed = create_embed(
-            f"On This Day: {datetime.datetime.strptime(ndate.strip('-'), '%m-%d').strftime('%B %d')}",
-            f"Number of Shows: {str(len(otd_links))}",
+            f"On This Day: {datetime.datetime.strptime(ndate.strip('-'), '%m-%d').strftime('%B %d')}",  # noqa: DTZ007, E501
+            f"Number of Shows: {len(otd_links)!s}",
             ctx,
         )
 

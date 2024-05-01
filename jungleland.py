@@ -1,27 +1,35 @@
-"""
-jungleland
-gets information from Jungleland.dnsalias and Jungleland.it
-"""
+"""jungleland gets information from Jungleland.dnsalias and Jungleland.it."""
 
 import re
-from import_stuff import bot, dateinDB, cur, location_name_get
-from error_message import error_message
+
+from discord.ext import commands
+
 from create_embed import create_embed
+from error_message import error_message
+from import_stuff import bot, cur, date_in_db, location_name_get
 
 
 @bot.command(aliases=["jl", "jungleland"])
-async def jungleland_torrent(ctx, date=None):
-    """Returns link to Jungleland Torrents for Specified Date"""
+async def jungleland_torrent(ctx: commands.Context, date: str = "") -> None:
+    """Return link to Jungleland Torrents for Specified Date."""
+    if date_in_db(date):
+        cur.execute(
+            """SELECT location_url, show FROM EVENTS WHERE event_date = %s""",
+            (date,),
+        )
 
-    if dateinDB(date):
-        location = cur.execute(
-            f"""SELECT location_url, show FROM EVENTS WHERE event_date LIKE '{str(date)}'"""
-        ).fetchone()
+        location = cur.fetchone()
+
         title = location_name_get(location[0], location[1])
         embed = create_embed(f"Jungleland Results For: {date}", title, ctx)
 
         d = date.split("-")
-        url = f"http://jungleland.dnsalias.com/torrents-browse-date.php?year={d[0]}&month={re.sub('^0', '', d[1])}&day={re.sub('^0', '', d[-1])}&incldead=1"
+
+        year = d[0]
+        month = re.sub("^0", "", d[1])
+        day = re.sub("^0", "", d[-1])
+
+        url = f"http://jungleland.dnsalias.com/torrents-browse-date.php?year={year}&month={month}&day={day}&incldead=1"
 
         embed.add_field(name="", value=f"[Jungleland]({url})", inline=False)
 
@@ -31,26 +39,39 @@ async def jungleland_torrent(ctx, date=None):
 
 
 @bot.command(aliases=["artwork"])
-async def jungleland_art(ctx, date=None):
-    """Returns list of artwork on Jungleland.it for specified date"""
-    if dateinDB(date):
-        links = cur.execute(
-            f"""SELECT artwork_url FROM ARTWORK WHERE date LIKE '{str(date)}'"""
-        ).fetchall()
+async def jungleland_art(ctx: commands.Context, date: str = "") -> None:
+    """Return list of artwork on Jungleland.it for specified date."""
+    if date_in_db(date):
+        cur.execute(
+            """SELECT artwork_url FROM ARTWORK WHERE date = %s""",
+            (date,),
+        )
+
+        links = cur.fetchall()
 
         if links:
-            location = cur.execute(
-                f"""SELECT location_url, show FROM EVENTS WHERE event_date LIKE '{str(date)}'"""
-            ).fetchone()
+            cur.execute(
+                """SELECT location_url, show FROM EVENTS WHERE event_date = %s""",
+                (date,),
+            )
+
+            location = cur.fetchone()
+
             title = location_name_get(location[0], location[1])
             embed = create_embed(
-                f"Jungleland Artwork Results For: {str(date)}", title, ctx
+                f"Jungleland Artwork Results For: {date!s}",
+                title,
+                ctx,
             )
 
             for link in links:
-                name = cur.execute(
-                    f"""SELECT artwork_name FROM ARTWORK WHERE artwork_url LIKE '%{link[0]}%'"""
-                ).fetchone()
+                cur.execute(
+                    """SELECT artwork_name FROM ARTWORK WHERE artwork_url = %s""",
+                    (link[0],),
+                )
+
+                name = cur.fetchone()
+
                 embed.add_field(
                     name="",
                     value=f"- [{name[0]}](http://www.jungleland.it/html/{link[0]})",

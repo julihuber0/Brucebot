@@ -1,7 +1,4 @@
-"""
-error_message
-returns various error messages
-"""
+"""error_message returns various error messages."""
 
 
 def error_message(error_type):
